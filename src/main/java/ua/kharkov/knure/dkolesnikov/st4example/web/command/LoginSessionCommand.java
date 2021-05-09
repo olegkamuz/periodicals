@@ -18,38 +18,37 @@ import java.io.IOException;
  *
  * @author D.Kolesnikov
  */
-public class LoginCommand extends Command {
+public class LoginSessionCommand extends Command {
 
     private static final long serialVersionUID = -3071536593627692473L;
 
-    private static final Logger log = Logger.getLogger(LoginCommand.class);
+    private static final Logger log = Logger.getLogger(LoginSessionCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
+        // return string to direct to login.jsp if not in session
+        // if in session work like simple login
 
         log.debug("Command starts");
 
         HttpSession session = request.getSession();
 
-        //check if user already logged in, if not rest of login process goes
         Object userSession = session.getAttribute("user");
         if (userSession instanceof User) {
-            User user = (User)userSession;
-            if (user.getRoleId() == 0) {
-                log.trace("Already logged in as admin, login --> " + user.getLogin());
+            if (((User) userSession).getRoleId() == 0) {
                 return Path.COMMAND__LIST_ORDERS;
             }
 
-            if (user.getRoleId() == 1) {
-                log.trace("Already logged in as client, login --> " + user.getLogin());
+            if (((User) userSession).getRoleId() == 1)
                 return Path.COMMAND__LIST_MENU;
-            }
+        } else {
+            return Path.PAGE__LOGIN;
         }
 
         // obtain login and password from the request
         String login = request.getParameter("login");
-        log.trace("Request parameter: loging --> " + login);
+        log.trace("Login of logged user --> " + login);
 
         String password = request.getParameter("password");
 

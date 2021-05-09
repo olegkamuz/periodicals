@@ -20,11 +20,12 @@ public class CommandContainer {
 	static {
 		// common commands
 		commands.put("login", new LoginCommand());
+        commands.put("login_session", new LoginSessionCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("noCommand", new NoCommand());
 		commands.put("viewSettings", new ViewSettingsCommand());
 		commands.put("updateSettings", new UpdateSettingsCommand());
-		
+
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());
 		
