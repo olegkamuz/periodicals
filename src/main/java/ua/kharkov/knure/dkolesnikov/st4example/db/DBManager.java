@@ -7,8 +7,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,7 +20,6 @@ import java.sql.SQLException;
 public class DBManager {
 
     private static final Logger log = Logger.getLogger(DBManager.class);
-    private BasicDataSource connectionPool;
     private static final Object monitor = new Object();
 
 
@@ -31,12 +28,6 @@ public class DBManager {
     // //////////////////////////////////////////////////////////
 
     private static DBManager instance;
-
-//    public static synchronized DBManager getInstance() {
-//        if (instance == null)
-//            instance = new DBManager();
-//        return instance;
-//    }
 
     public static DBManager getInstance() {
         if (instance != null) {
@@ -60,51 +51,21 @@ public class DBManager {
     public Connection getConnection() {
         Connection con = null;
         try {
-            con = connectionPool.getConnection();
-            con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            con.setAutoCommit(false);
-        } catch (SQLException e) {
-            log.error("Cannot obtain a connection from the pool", e);
-        }
-        return con;
+			Context initContext = new InitialContext();
+			Context envContext  = (Context)initContext.lookup("java:/comp/env");
 
-//        try {
-//			Context initContext = new InitialContext();
-//			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-//
-//			// ST4DB - the name of data source
-//			DataSource ds = (DataSource)envContext.lookup("jdbc/ST4DB");
-//
-//            con = ds.getConnection();
+			DataSource ds = (DataSource)envContext.lookup("jdbc/ST4DB");
 
-//			log.error("Cannot obtain a connection from the pool", ex);
-//		} catch (NamingException e) {
-//        log.error("Cannot obtain a connection from th pool", e);
-//		}
-//		return con;
+            con = ds.getConnection();
+            con.setTransactionIsolation(((BasicDataSource)ds).getDefaultTransactionIsolation());
+            con.setAutoCommit(((BasicDataSource)ds).getDefaultAutoCommit());
+		} catch (NamingException | SQLException e) {
+        log.error("Cannot obtain a connection from th pool", e);
+		}
+		return con;
     }
 
-//	private DBManager() {
-//	}
-
-    private DBManager() {
-        URI dbUri = null;
-        try {
-            dbUri = new URI(System.getenv("DATABASE_URL"));
-            String dbUrl = "jdbc:mysql://" + dbUri.getHost() + dbUri.getPath();
-            connectionPool = new BasicDataSource();
-
-            if (dbUri.getUserInfo() != null) {
-                connectionPool.setUsername(dbUri.getUserInfo().split(":")[0]);
-                connectionPool.setPassword(dbUri.getUserInfo().split(":")[1]);
-            }
-            connectionPool.setDriverClassName("com.mysql.cj.jdbc.Driver");
-            connectionPool.setUrl(dbUrl);
-            connectionPool.setInitialSize(1);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
+	private DBManager() {}
 
 
     // //////////////////////////////////////////////////////////

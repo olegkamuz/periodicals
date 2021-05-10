@@ -46,10 +46,14 @@ NONE  READ_COMMITTED  READ_UNCOMMITTED  REPEATABLE_READ SERIALIZABLE
     <Resource name="jdbc/ST4DB"
               auth="Container"
               type="javax.sql.DataSource"
-              maxActive="100" maxIdle="30" maxWait="10000"
-              username="springuser" password="ThePassword"
-              driverClassName="com.mysql.jdbc.Driver"
-              defaultAutoCommit="false"
+              username="springuser"
+              password="ThePassword"
+              maxTotal="10"
+              maxIdle="10"
+              maxWaitMillis="10000"
+              InitialSize="3"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              defaultAutoCommit ="false"
               defaultTransactionIsolation="READ_COMMITTED"
               url="jdbc:mysql://localhost:3306/st4db"/>
 
