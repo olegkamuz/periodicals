@@ -51,21 +51,20 @@ public class DBManager {
     public Connection getConnection() {
         Connection con = null;
         try {
-			Context initContext = new InitialContext();
-			Context envContext  = (Context)initContext.lookup("java:/comp/env");
+            Context initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
 
-			DataSource ds = (DataSource)envContext.lookup("jdbc/ST4DB");
+            DataSource ds = (DataSource) envContext.lookup("jdbc/ST4DB");
 
             con = ds.getConnection();
-            con.setTransactionIsolation(((BasicDataSource)ds).getDefaultTransactionIsolation());
-            con.setAutoCommit(((BasicDataSource)ds).getDefaultAutoCommit());
-		} catch (NamingException | SQLException e) {
-        log.error("Cannot obtain a connection from th pool", e);
-		}
-		return con;
+        } catch (NamingException | SQLException e) {
+            log.error("Cannot obtain a connection from th pool", e);
+        }
+        return con;
     }
 
-	private DBManager() {}
+    private DBManager() {
+    }
 
 
     // //////////////////////////////////////////////////////////

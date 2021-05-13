@@ -55,6 +55,7 @@ NONE  READ_COMMITTED  READ_UNCOMMITTED  REPEATABLE_READ SERIALIZABLE
               driverClassName="com.mysql.cj.jdbc.Driver"
               defaultAutoCommit ="false"
               defaultTransactionIsolation="READ_COMMITTED"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
               url="jdbc:mysql://localhost:3306/st4db"/>
 
 </Context>

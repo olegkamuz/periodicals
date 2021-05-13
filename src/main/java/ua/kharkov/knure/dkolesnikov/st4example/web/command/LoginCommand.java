@@ -32,20 +32,20 @@ public class LoginCommand extends Command {
 
         HttpSession session = request.getSession();
 
-        //check if user already logged in, if not rest of login process goes
-        Object userSession = session.getAttribute("user");
-        if (userSession instanceof User) {
-            User user = (User)userSession;
-            if (user.getRoleId() == 0) {
-                log.trace("Already logged in as admin, login --> " + user.getLogin());
-                return Path.COMMAND__LIST_ORDERS;
-            }
-
-            if (user.getRoleId() == 1) {
-                log.trace("Already logged in as client, login --> " + user.getLogin());
-                return Path.COMMAND__LIST_MENU;
-            }
-        }
+//        //check if user already logged in, if not rest of login process goes
+//        Object userSession = session.getAttribute("user");
+//        if (userSession instanceof User) {
+//            User user = (User)userSession;
+//            if (user.getRoleId() == 0) {
+//                log.trace("Already logged in as admin, login --> " + user.getLogin());
+//                return Path.COMMAND__LIST_ORDERS;
+//            }
+//
+//            if (user.getRoleId() == 1) {
+//                log.trace("Already logged in as client, login --> " + user.getLogin());
+//                return Path.COMMAND__LIST_MENU;
+//            }
+//        }
 
         // obtain login and password from the request
         String login = request.getParameter("login");

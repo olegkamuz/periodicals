@@ -7,6 +7,7 @@
 <%@ include file="/WEB-INF/jspf/head.jspf" %>
 	
 <body>
+
 <%--===========================================================================
 Here we use a table layout.
 Class page corresponds to the '.page' element in included CSS document.
