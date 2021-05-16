@@ -28,7 +28,8 @@ public class CommandContainer {
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());
-		
+        commands.put("listByCategoryMenu", new ListByCategoryMenuCommand());
+
 		// admin commands
 		commands.put("listOrders", new ListOrdersCommand());
 		

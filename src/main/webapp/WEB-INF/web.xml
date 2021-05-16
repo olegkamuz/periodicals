@@ -90,7 +90,7 @@
             </init-param>
             <init-param>
                 <param-name>client</param-name>
-                <param-value>listMenu</param-value>
+                <param-value>listMenu listByCategoryMenu</param-value>
             </init-param>
             <init-param>
                 <param-name>common</param-name>

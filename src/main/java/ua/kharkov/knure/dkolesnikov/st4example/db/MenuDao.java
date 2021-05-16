@@ -19,6 +19,9 @@ public class MenuDao {
     private static final String SQL__FIND_MENU_ITEMS_BY_ORDER =
             "select * from menu where id in (select menu_id from orders_menu where order_id=?)";
 
+    private static final String SQL__FIND_MENU_ITEMS_BY_CATEGORY =
+            "select * from menu where category_id=?";
+
     private static final String SQL__FIND_ALL_CATEGORIES =
             "SELECT * FROM categories";
 
@@ -72,9 +75,7 @@ public class MenuDao {
             DBManager.getInstance().commitAndClose(con);
         }
         return menuItemsList;
-    }
-
-    /**
+    }/**
      * Returns menu items of the given order.
      *
      * @param order Order entity.
@@ -90,6 +91,34 @@ public class MenuDao {
             MenuItemMapper mapper = new MenuItemMapper();
             pstmt = con.prepareStatement(SQL__FIND_MENU_ITEMS_BY_ORDER);
             pstmt.setLong(1, order.getId());
+            rs = pstmt.executeQuery();
+            while (rs.next())
+                menuItemsList.add(mapper.mapRow(rs));
+        } catch (SQLException ex) {
+            DBManager.getInstance().rollbackAndClose(con);
+            ex.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(con);
+        }
+        return menuItemsList;
+    }
+
+    /**
+     * Returns menu items of the given order.
+     *
+     * @param category Order entity.
+     * @return List of menu item entities.
+     */
+    public List<MenuItem> findMenuItems(Category category) {
+        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            MenuItemMapper mapper = new MenuItemMapper();
+            pstmt = con.prepareStatement(SQL__FIND_MENU_ITEMS_BY_CATEGORY);
+            pstmt.setLong(1, category.getId());
             rs = pstmt.executeQuery();
             while (rs.next())
                 menuItemsList.add(mapper.mapRow(rs));

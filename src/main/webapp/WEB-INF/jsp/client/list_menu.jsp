@@ -17,6 +17,7 @@
 			<%-- CONTENT --%>
 			
 			<form id="make_order" action="controller">
+
 				<input type="hidden" name="command" value="makeOrder"/>
 				<input type="submit" value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
 				

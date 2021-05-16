@@ -32,21 +32,6 @@ public class LoginCommand extends Command {
 
         HttpSession session = request.getSession();
 
-//        //check if user already logged in, if not rest of login process goes
-//        Object userSession = session.getAttribute("user");
-//        if (userSession instanceof User) {
-//            User user = (User)userSession;
-//            if (user.getRoleId() == 0) {
-//                log.trace("Already logged in as admin, login --> " + user.getLogin());
-//                return Path.COMMAND__LIST_ORDERS;
-//            }
-//
-//            if (user.getRoleId() == 1) {
-//                log.trace("Already logged in as client, login --> " + user.getLogin());
-//                return Path.COMMAND__LIST_MENU;
-//            }
-//        }
-
         // obtain login and password from the request
         String login = request.getParameter("login");
         log.trace("Request parameter: loging --> " + login);
@@ -65,6 +50,7 @@ public class LoginCommand extends Command {
         }
 
         User user = new UserDao().findUserByLogin(login);
+        request.setAttribute("user", user);
         log.trace("Found in DB: user --> " + user);
 
         if (user == null || !password.equals(user.getPassword())) {
@@ -80,7 +66,8 @@ public class LoginCommand extends Command {
                 forward = Path.COMMAND__LIST_ORDERS;
 
             if (userRole == Role.CLIENT)
-                forward = Path.COMMAND__LIST_MENU;
+                forward = Path.COMMAND__LIST_BY_CATEGORY_MENU;
+//            forward = Path.COMMAND__LIST_MENU;
 
             session.setAttribute("user", user);
             log.trace("Set the session attribute: user --> " + user);
