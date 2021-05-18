@@ -40,11 +40,12 @@ public class ListByCategoryMenuCommand extends Command {
 		    map.put(category, menuDao.findMenuItems(category));
         }
 
-		request.setAttribute("menuItemsByCategory", map);
+		request.getSession().setAttribute("menuItemsByCategory", map);
 		log.trace("Set the request attribute: menuByCategoryItems --> " + map);
 		
 		log.debug("Command finished");
-		return Path.PAGE__LIST_BY_CATEGORY_MENU;
+		return Path.REDIRECT__LIST_BY_CATEGORY_MENU;
+//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
 //        return "/WEB-INF/jsp/album.jsp";
 	}
 

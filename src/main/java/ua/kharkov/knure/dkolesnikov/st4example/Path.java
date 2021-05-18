@@ -16,6 +16,9 @@ public final class Path {
 	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
     public static final String PAGE__LIST_BY_CATEGORY_MENU = "/WEB-INF/jsp/client/list_by_category_menu.jsp";
 
+    // redirects
+    public static final String REDIRECT__LIST_BY_CATEGORY_MENU = "redirect:/client/index.jsp";
+
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";
 	public static final String COMMAND__LIST_MENU = "/controller?command=listMenu";

@@ -4,14 +4,14 @@
 	Deployment Descriptor: web.xml
 =============================================================-->
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/eb-app_4_0.xsd"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee https://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/web-app_4_0.xsd"
          id="WebApp_ID" version="4.0">
 
     <display-name>ST4Example1</display-name>
     
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+<!--    <welcome-file-list>-->
+<!--        <welcome-file>index.jsp</welcome-file>-->
+<!--    </welcome-file-list>-->
 
 
     <!--============================================================
@@ -49,10 +49,20 @@
         <servlet-name>Controller</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
-<!--    <servlet-mapping>
+
+    <servlet>
+        <servlet-name>IndexController</servlet-name>
+        <servlet-class>ua.kharkov.knure.dkolesnikov.st4example.web.IndexController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>IndexController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/static/*</url-pattern>
-    </servlet-mapping>-->
+    </servlet-mapping>
 
     <!--============================================================
         Encoding support filter
@@ -81,7 +91,7 @@
         4) out-of-control: commands without access control
         Delimiter - space/tab
     =============================================================-->
-        <filter>
+<!--        <filter>
             <filter-name>CommandAccessFilter</filter-name>
             <filter-class>ua.kharkov.knure.dkolesnikov.st4example.web.filter.CommandAccessFilter</filter-class>
             <init-param>
@@ -105,15 +115,15 @@
         <filter-mapping>
             <filter-name>CommandAccessFilter</filter-name>
             <servlet-name>Controller</servlet-name>
-        </filter-mapping>
+        </filter-mapping>-->
 
 
     <!--============================================================
         Context listener
     =============================================================-->
-    <listener>
+<!--    <listener>
         <listener-class>ua.kharkov.knure.dkolesnikov.st4example.web.listener.ContextListener</listener-class>
-    </listener>
+    </listener>-->
 
 
     <!--============================================================

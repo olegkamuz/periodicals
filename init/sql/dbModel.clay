@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clay-model clay-version="2.0.1">
+<database-model author="" begin-script="" end-script="" id="1d902d3:133e22bf13d:-7fe2" name="dbModel1" sql-dialect-id="jp.azzurri.clay.dialect.HSQLDB_1_7_0_Dialect" version="1.0">
+<schema-list>
+<schema id="1d902d3:133e22bf13d:-7fdf" name="DEFAULT_SCHEMA">
+<table-list>
+<table id="1d902d3:133e22bf13d:-7fe1" name="roles">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fdc" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd7" mandatory="true" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="1d902d3:133e22bf13d:-7fe0" name="PK_ROLES">
+<primary-key-column name="id"/>
+</primary-key>
+</table>
+<table id="1d902d3:133e22bf13d:-7fd6" name="users">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd4" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd3" mandatory="true" name="login">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="10" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd2" mandatory="true" name="password">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd1" mandatory="false" name="first_name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fd0" mandatory="false" name="last_Name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7fcf" mandatory="true" name="role_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1d902d3:133e22bf13d:-7fce" name="PK_USERS">
+<primary-key-column name="id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="1d902d3:133e22bf13d:-7f77" name="FK_users_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_ROLES" referenced-table="roles" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="role_id" referenced-key-column-name="id"/>
+</foreign-key>
+</foreign-key-list>
+</table>
+<table id="1d902d3:133e22bf13d:-7f48" name="statuses">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f46" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f45" mandatory="true" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="1d902d3:133e22bf13d:-7f44" name="PK_STATUSES">
+<primary-key-column name="id"/>
+</primary-key>
+</table>
+<table id="1d902d3:133e22bf13d:-7f3f" name="orders">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f3d" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1dc6a3b:136454dc895:-7fcf" mandatory="true" name="bill">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f3c" mandatory="true" name="user_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f3a" mandatory="true" name="status_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1d902d3:133e22bf13d:-7f39" name="PK_ORDERS">
+<primary-key-column name="id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="1d902d3:133e22bf13d:-7edf" name="FK_orders_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_STATUSES" referenced-table="statuses" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="status_id" referenced-key-column-name="id"/>
+</foreign-key>
+<foreign-key id="1d902d3:133e22bf13d:-7f18" name="FK_orders_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_USERS" referenced-table="users" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="user_id" referenced-key-column-name="id"/>
+</foreign-key>
+<foreign-key id="1dc6a3b:136454dc895:-7d9d" name="FK_orders_3" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_ORDERS_MENU" referenced-table="orders_menu" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="1" source-relationship-type="" target-entity-role="" target-multiplicity="0..*" target-relationship-type=""/>
+</foreign-key-list>
+</table>
+<table id="1d902d3:133e22bf13d:-7f09" name="menu">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f07" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="50" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f05" mandatory="false" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7f04" mandatory="true" name="price">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1d902d3:133e22bf13d:-7e30" mandatory="true" name="category_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1d902d3:133e22bf13d:-7f03" name="PK_MENU">
+<primary-key-column name="id"/>
+</primary-key>
+<foreign-key-list>
+<foreign-key id="1dc6a3b:136454dc895:-7fc2" name="FK_menu_1" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_CATEGORIES" referenced-table="Categories" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-column column-name="category_id" referenced-key-column-name="id"/>
+</foreign-key>
+<foreign-key id="1dc6a3b:136454dc895:-7dd1" name="FK_menu_2" on-delete="UNSPECIFIED" on-update="UNSPECIFIED" referenced-key="PK_ORDERS_MENU" referenced-table="orders_menu" referenced-table-schema="DEFAULT_SCHEMA" source-entity-role="" source-multiplicity="1" source-relationship-type="" target-entity-role="" target-multiplicity="0..*" target-relationship-type=""/>
+</foreign-key-list>
+</table>
+<table id="1dc6a3b:136454dc895:-7fea" name="Categories">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1dc6a3b:136454dc895:-7fe6" mandatory="true" name="id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="20" decimal-digits="0" default-value="" id="1dc6a3b:136454dc895:-7fe5" mandatory="false" name="name">
+<data-type name="VARCHAR" selected-variant-pattern="VARCHAR(%n)"/>
+</column>
+</column-list>
+<primary-key id="1dc6a3b:136454dc895:-7fe9" name="PK_CATEGORIES">
+<primary-key-column name="id"/>
+</primary-key>
+</table>
+<table id="1dc6a3b:136454dc895:-7fa8" name="orders_menu">
+<column-list>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1dc6a3b:136454dc895:-7fa2" mandatory="true" name="orders_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+<column auto-increment="false" column-size="0" decimal-digits="0" default-value="" id="1dc6a3b:136454dc895:-7f9d" mandatory="true" name="menu_id">
+<data-type name="INTEGER" selected-variant-pattern="INTEGER"/>
+</column>
+</column-list>
+<primary-key id="1dc6a3b:136454dc895:-7fa7" name="PK_ORDERS_MENU"/>
+</table>
+</table-list>
+</schema>
+</schema-list>
+</database-model>
+<diagram>
+<table-figure height="57" refid="1d902d3:133e22bf13d:-7fe1" width="117" x="687" y="238"/>
+<table-figure refid="1d902d3:133e22bf13d:-7fd6" x="672" y="63"/>
+<table-figure refid="1d902d3:133e22bf13d:-7f48" x="459" y="236"/>
+<table-figure refid="1d902d3:133e22bf13d:-7f3f" x="462" y="73"/>
+<table-figure refid="1d902d3:133e22bf13d:-7f09" x="83" y="73"/>
+<table-figure refid="1dc6a3b:136454dc895:-7fea" x="100" y="232"/>
+<table-figure refid="1dc6a3b:136454dc895:-7fa8" x="289" y="88"/>
+</diagram>
+</clay-model>
