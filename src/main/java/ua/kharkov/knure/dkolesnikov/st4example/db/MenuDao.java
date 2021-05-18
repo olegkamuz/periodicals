@@ -25,6 +25,37 @@ public class MenuDao {
     private static final String SQL__FIND_ALL_CATEGORIES =
             "SELECT * FROM categories";
 
+    private static final String SQL__FIND_ALL_MENU_ITEMS_BY_CATEGORY_NAME =
+            "SELECT * FROM menu m JOIN categories c ON m.category_id=c.id WHERE c.name=?";
+
+
+    /**
+     * Returns list menu item by category name.
+     *
+     * @param categoryName String to find by
+     * @return List of category entities.
+     */
+    public List<MenuItem> findItemByCategoryName(String categoryName) {
+        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            MenuItemMapper mapper = new MenuItemMapper();
+            pstmt = con.prepareStatement(SQL__FIND_ALL_MENU_ITEMS_BY_CATEGORY_NAME);
+            pstmt.setString(1, categoryName);
+            rs = pstmt.executeQuery();
+            while (rs.next())
+                menuItemsList.add(mapper.mapRow(rs));
+        } catch (SQLException ex) {
+            DBManager.getInstance().rollbackAndClose(con);
+            ex.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(con);
+        }
+        return menuItemsList;
+    }
     /**
      * Returns all categories.
      *

@@ -16,8 +16,6 @@ import ua.kharkov.knure.dkolesnikov.st4example.web.command.CommandContainer;
 /**
  * Main servlet controller.
  * 
- * @author D.Kolesnikov
- * 
  */
 public class Controller extends HttpServlet {
 	
@@ -53,16 +51,24 @@ public class Controller extends HttpServlet {
 		log.trace("Obtained command --> " + command);
 
 		// execute command and get forward address
-		String forward = command.execute(request, response);
-		log.trace("Forward address --> " + forward);
+		String result = command.execute(request, response);
+		log.trace("Forward address --> " + result);
 
-		log.debug("Controller finished, now go to forward address --> " + forward);
+		log.debug("Controller finished, now go to forward address --> " + result);
 
 		// if the forward address is not null go to the address
-		if (forward != null) {
-			RequestDispatcher disp = request.getRequestDispatcher(forward);
-			disp.forward(request, response);
-		}
+//		if (result != null) {
+//			RequestDispatcher disp = request.getRequestDispatcher(result);
+//			disp.forward(request, response);
+//		}
+
+        if (result != null) {
+            if (result.contains("redirect:")) {
+                response.sendRedirect(result.replace("redirect:", "/FP_war"));
+            }
+        } else {
+            request.getRequestDispatcher(result).forward(request, response);
+        }
 	}
 
 }

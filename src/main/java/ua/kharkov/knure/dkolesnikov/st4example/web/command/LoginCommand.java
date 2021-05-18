@@ -16,7 +16,6 @@ import java.io.IOException;
 /**
  * Login command.
  *
- * @author D.Kolesnikov
  */
 public class LoginCommand extends Command {
 

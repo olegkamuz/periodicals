@@ -1,8 +1,7 @@
 
 body {
     background-image: url('../../static/images/periodical_index.jpeg');
-    background-position: center;
-    background-repeat: no-repeat;
+    background-position: inherit;
     margin: 0px;
     background-color: #7b8a95f2;
 }
@@ -16,15 +15,15 @@ body {
 
 #leftHeaderOLEG {
     float: left;
-    padding: 6px;
+    padding: 6px 6px 0px;
 }
 
 #rightHeaderOLEG {
     float: right;
     text-align: center;
     margin-right: 10px;
-    padding: 6px;
     color: wheat;
+    padding: 6px 6px 0px;
 }
 
 a:link, a:visited {
@@ -58,9 +57,16 @@ a {
     width: 100%;
     text-align: center;
 }
-
-.jumbo-wrapper {
+.main-container{
     width: 100%;
     justify-content: center;
     display: flex;
+}
+.wrapper {
+    width: 1165px;
+    background-color: white;
+    padding-bottom: 15px;
+}
+#make_order {
+    margin-bottom: 0px;
 }

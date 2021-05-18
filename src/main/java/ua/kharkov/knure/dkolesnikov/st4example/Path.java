@@ -18,6 +18,7 @@ public final class Path {
 
     // redirects
     public static final String REDIRECT__LIST_BY_CATEGORY_MENU = "redirect:/client/index.jsp";
+    public static final String REDIRECT__LIST_BY_ONE_CATEGORY_MENU = "redirect:/client/one-category-magazines.jsp";
 
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";
