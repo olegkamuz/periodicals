@@ -27,7 +27,6 @@ import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
  * Security filter. Disabled by default. Uncomment Security filter
  * section in web.xml to enable.
  *
- * @author D.Kolesnikov
  */
 public class CommandAccessFilter implements Filter {
 

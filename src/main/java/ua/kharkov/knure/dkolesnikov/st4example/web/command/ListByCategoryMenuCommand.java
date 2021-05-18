@@ -20,8 +20,6 @@ import java.util.Map;
 /**
  * Lists menu items.
  * 
- * @author D.Kolesnikov
- * 
  */
 public class ListByCategoryMenuCommand extends Command {
 

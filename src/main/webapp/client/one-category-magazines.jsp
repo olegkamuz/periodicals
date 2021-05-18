@@ -29,7 +29,7 @@
                 <c:forEach var="category" items="${menuItemsByOneCategory}">
                     <div class="row">
                         <div class="theme-name"><h3>${category.key}</h3></div>
-                        <c:forEach var="menuItem" items="${category.value}" end="2">
+                        <c:forEach var="menuItem" items="${category.value}">
                             <div class="col">
                                 <link rel="stylesheet" href="../static/css/album.css"/>
                                 <img src="../static/images/music_1.jpg" width="100%"/>

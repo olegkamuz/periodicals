@@ -6,9 +6,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 /**
- * Holder for all commands.<br/>
- * 
- * @author D.Kolesnikov
+ * Holder for all commands.
  * 
  */
 public class CommandContainer {
