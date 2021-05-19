@@ -7,42 +7,10 @@
 <%@ include file="/WEB-INF/jspf/head.jspf" %>
 	
 <body>
-
-<%--===========================================================================
-Here we use a table layout.
-Class page corresponds to the '.page' element in included CSS document.
-===========================================================================--%> 
 	<table id="main-container">
-
-<%--=========================================================================== 
-This is the HEADER, containing a top menu.
-header.jspf contains all necessary functionality for it.
-Just included it in this JSP document.
-===========================================================================--%> 
-
-		<%-- HEADER --%>
-		<%-- <%@ include file="/WEB-INF/jspf/header.jspf"%> --%>
-		<%-- HEADER --%>
-
-<%--=========================================================================== 
-This is the CONTENT, containing the main part of the page.
-===========================================================================--%> 
 		<tr >
 			<td class="content center">
-			<%-- CONTENT --%>
-			
-<%--=========================================================================== 
-Defines the web form.
-===========================================================================--%> 
-				<form id="login_form" action="controller" method="post">
-
-<%--=========================================================================== 
-Hidden field. In the query it will act as command=login.
-The purpose of this to define the command name, which have to be executed 
-after you submit current form. 
-===========================================================================--%> 
-					<input type="hidden" name="command" value="login"/>
-
+				<form id="login_form" action="login-check" method="post">
 					<fieldset >
 						<legend>
 							<fmt:message key="login_jsp.label.login"/>
@@ -58,14 +26,9 @@ after you submit current form.
 					
 					<input type="submit" value='<fmt:message key="login_jsp.button.login"/>'>								
 				</form>
-				
-			<%-- CONTENT --%>
-
 			</td>
 		</tr>
-
-		<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-		
 	</table>
+    <%@ include file="/WEB-INF/jspf/footer.jspf"%>
 </body>
 </html>

@@ -18,6 +18,7 @@ public class CommandContainer {
 	static {
 		// common commands
 		commands.put("login", new LoginCommand());
+        commands.put("login-check", new LoginCheckCommand());
         commands.put("login_session", new LoginSessionCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("noCommand", new NoCommand());
@@ -28,6 +29,7 @@ public class CommandContainer {
 		commands.put("listMenu", new ListMenuCommand());
         commands.put("index", new ListByCategoryMenuCommand());
         commands.put("one-category-magazines", new ListByOneCategoryMenuCommand());
+        commands.put("create-subscription", new CreateSubscriptionCommand());
 
 		// admin commands
 		commands.put("listOrders", new ListOrdersCommand());

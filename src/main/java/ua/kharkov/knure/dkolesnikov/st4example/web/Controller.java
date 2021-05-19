@@ -61,7 +61,7 @@ public class Controller extends HttpServlet {
         }
 
         if (result.contains("redirect:")) {
-            response.sendRedirect(result.replace("redirect:", "/FP_war"));
+            response.sendRedirect(result.replace("redirect:", ""));
         } else {
             request.getRequestDispatcher(result).forward(request, response);
         }

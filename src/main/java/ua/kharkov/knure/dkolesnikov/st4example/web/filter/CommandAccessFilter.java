@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
@@ -24,9 +25,7 @@ import ua.kharkov.knure.dkolesnikov.st4example.db.UserDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
 
 /**
- * Security filter. Disabled by default. Uncomment Security filter
- * section in web.xml to enable.
- *
+ * Security filter
  */
 public class CommandAccessFilter implements Filter {
 
@@ -50,27 +49,40 @@ public class CommandAccessFilter implements Filter {
             log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
-            String errorMessasge = "You do not have permission to access the requested resource";
+            if (response instanceof HttpServletResponse) {
+                ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
+            } else {
 
-            request.setAttribute("errorMessage", errorMessasge);
-            log.trace("Set the request attribute: errorMessage --> " + errorMessasge);
+                String errorMessasge = "You do not have permission to access the requested resource";
 
-            request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
-                    .forward(request, response);
+                request.setAttribute("errorMessage", errorMessasge);
+                log.trace("Set the request attribute: errorMessage --> " + errorMessasge);
+
+                request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
+                        .forward(request, response);
+            }
         }
     }
 
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        // todo Just for DEVELOPMENT remove on prod
-        User user = new UserDao().findUserByLogin("петров");
-        ((HttpServletRequest) request).getSession().setAttribute("user", user);
-        ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
-        // todo remove on prod
+//        // todo Just for DEVELOPMENT remove on prod
+//        User user = new UserDao().findUserByLogin("петров");
+//        ((HttpServletRequest) request).getSession().setAttribute("user", user);
+//        ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+//        // todo remove on prod
 
-        String commandName = request.getParameter("command");
-        if (commandName == null || commandName.isEmpty())
+//        String commandName = request.getParameter("command");
+        String commandName;
+        if (request instanceof HttpServletRequest) {
+            commandName = ((HttpServletRequest) request).getServletPath().replace("/", "");
+        } else {
+            return false;
+        }
+
+//        if (commandName == null || commandName.isEmpty())
+        if (commandName.isEmpty())
             return false;
 
         if (outOfControl.contains(commandName))
