@@ -47,16 +47,9 @@
 
     <servlet-mapping>
         <servlet-name>Controller</servlet-name>
-        <url-pattern>/controller/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>IndexController</servlet-name>
-        <servlet-class>ua.kharkov.knure.dkolesnikov.st4example.web.IndexController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>IndexController</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/index</url-pattern>
+        <url-pattern>/one-category-magazines</url-pattern>
+        <url-pattern>/one-category-magazines?*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

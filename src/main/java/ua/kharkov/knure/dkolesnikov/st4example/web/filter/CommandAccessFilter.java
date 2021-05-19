@@ -69,9 +69,6 @@ public class CommandAccessFilter implements Filter {
         ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
         // todo remove on prod
 
-        httpRequest.getSession().setAttribute("name", "петров");
-        httpRequest.getSession().setAttribute("password", "петров");
-
         String commandName = request.getParameter("command");
         if (commandName == null || commandName.isEmpty())
             return false;

@@ -14,7 +14,9 @@ public final class Path {
 	public static final String PAGE__LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";
 	public static final String PAGE__LIST_ORDERS = "/WEB-INF/jsp/admin/list_orders.jsp";
 	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
-    public static final String PAGE__LIST_BY_CATEGORY_MENU = "/WEB-INF/jsp/client/list_by_category_menu.jsp";
+    public static final String PAGE__LIST_BY_CATEGORY_MENU = "/client/list_by_category_menu.jsp";
+    public static final String PAGE_INDEX = "/client/index.jsp";
+    public static final String PAGE__LIST_BY_ONE_CATEGORY_MENU = "/client/one-category-magazines.jsp";
 
     // redirects
     public static final String REDIRECT__LIST_BY_CATEGORY_MENU = "redirect:/client/index.jsp";

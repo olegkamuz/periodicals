@@ -46,7 +46,8 @@ public class ListByOneCategoryMenuCommand extends Command {
             log.trace("Set the request attribute: menuByOneCategoryItems --> " + map);
 
             log.debug("Command finished");
-            return Path.REDIRECT__LIST_BY_ONE_CATEGORY_MENU;
+//            return Path.REDIRECT__LIST_BY_ONE_CATEGORY_MENU;
+            return Path.PAGE__LIST_BY_ONE_CATEGORY_MENU;
 //        return Path.PAGE__LIST_BY_CATEGORY_MENU;
 //        return "/WEB-INF/jsp/album.jsp";
         }

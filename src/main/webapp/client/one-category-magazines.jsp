@@ -12,7 +12,7 @@
     <%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
 </div>
 <div class="main-container">
-    <form class="form-custom" id="make_order" action="controller">
+    <form class="form-custom" id="make_order" action="create-subscription">
         <div class="wrapper">
             <section class="jumbotron text-center">
                 <div class="container">
@@ -32,7 +32,7 @@
                         <c:forEach var="menuItem" items="${category.value}">
                             <div class="col">
                                 <link rel="stylesheet" href="../static/css/album.css"/>
-                                <img src="../static/images/music_1.jpg" width="100%"/>
+                                <img src="<c:url value="/static/images/music_1.jpg"/>" width="100%"/>
                                 <p>${menuItem.name}</p>
                                 <p>${menuItem.price}</p>
                                 <div class="form-check form-switch">

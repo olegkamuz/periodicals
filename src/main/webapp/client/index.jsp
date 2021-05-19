@@ -12,7 +12,6 @@
     <%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
 </div>
 <div class="main-container">
-    <form class="form-custom" id="make_order" action="controller">
         <div class="wrapper">
             <section class="jumbotron text-center">
                 <div class="container">
@@ -20,33 +19,22 @@
                     <p class="lead text-muted">Here you can find some interesting stuff to read, so don't hesitate
                         subscribe to few magazines and you'll like it.Spend some time with new knowledge sweet as cake,
                         healthy as apple.</p>
-                    <input type="hidden" name="command" value="makeOrder"/>
-                    <input class="btn btn-primary my-2" type="submit"
-                           value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
+                    <h3>Go to category where you can order subscription</h3>
                 </div>
             </section>
             <div class="container">
                 <c:forEach var="category" items="${menuItemsByCategory}">
-                    <c:url value="/controller/one-category-magazines.jsp" var="url">
-                        <c:param name="category" value="${category.key.name}" />
-                        <c:param name="command" value="listByOneCategoryMenu" />
+                    <c:url value="/one-category-magazines" var="url">
+                        <c:param  name="category" value="${category.key.name}" />
                     </c:url>
                     <a href="<c:out value='${url}'/>">
                         <div class="row">
                             <div class="theme-name"><h3>${category.key.name}</h3></div>
                             <c:forEach var="menuItem" items="${category.value}" end="2">
                                 <div class="col">
-                                    <link rel="stylesheet" href="../static/css/album.css"/>
-                                    <img src="../static/images/music_1.jpg" width="100%"/>
+                                    <img src="<c:url value="/static/images/music_1.jpg"/>" width="100%"/>
                                     <p>${menuItem.name}</p>
                                     <p>${menuItem.price}</p>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="itemId${menuItem.id}"
-                                               name="itemId"
-                                               value="${menuItem.id}"/>
-                                        <label class="form-check-label" for="itemId${menuItem.id}">Add this magazine to
-                                            subscription</label>
-                                    </div>
                                 </div>
                             </c:forEach>
                         </div>
@@ -54,7 +42,6 @@
                 </c:forEach>
             </div>
         </div>
-    </form>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

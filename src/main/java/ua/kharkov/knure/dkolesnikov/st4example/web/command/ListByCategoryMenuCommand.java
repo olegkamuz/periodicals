@@ -45,7 +45,9 @@ public class ListByCategoryMenuCommand extends Command {
 		log.trace("Set the request attribute: menuByCategoryItems --> " + map);
 		
 		log.debug("Command finished");
-		return Path.REDIRECT__LIST_BY_CATEGORY_MENU;
+		return Path.PAGE_INDEX;
+//        return Path.REDIRECT__LIST_BY_CATEGORY_MENU;
+//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
 //        return Path.PAGE__LIST_BY_CATEGORY_MENU;
 //        return "/WEB-INF/jsp/album.jsp";
 	}

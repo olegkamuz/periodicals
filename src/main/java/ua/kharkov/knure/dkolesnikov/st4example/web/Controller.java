@@ -42,18 +42,9 @@ public class Controller extends HttpServlet {
 
         log.debug("Controller starts");
 
-        // extract command name from the request
-        String commandName = request.getParameter("command");
-        log.trace("Request parameter: command --> " + commandName);
 
-        String input = ((HttpServletRequest) request).getRequestURL().toString();
-        String regex = "(?<=\\/)([\\-\\w\\s]+)(?=.jsp)";
-        Pattern pi = Pattern.compile(regex);
-        Matcher mi = pi.matcher(input);
-        String res = "";
-        while (mi.find()) {
-            res = mi.group();
-        }
+        String commandName = request.getServletPath().replace("/", "");
+        log.trace("Request parameter: command --> " + commandName);
 
         // obtain command object by its name
         Command command = CommandContainer.get(commandName);
@@ -65,16 +56,12 @@ public class Controller extends HttpServlet {
 
         log.debug("Controller finished, now go to forward address --> " + result);
 
-        // if the forward address is not null go to the address
-//		if (result != null) {
-//			RequestDispatcher disp = request.getRequestDispatcher(result);
-//			disp.forward(request, response);
-//		}
+        if (result == null) {
+            return;
+        }
 
-        if (result != null) {
-            if (result.contains("redirect:")) {
-                response.sendRedirect(result.replace("redirect:", "/FP_war"));
-            }
+        if (result.contains("redirect:")) {
+            response.sendRedirect(result.replace("redirect:", "/FP_war"));
         } else {
             request.getRequestDispatcher(result).forward(request, response);
         }
