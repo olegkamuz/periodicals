@@ -2,6 +2,7 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,11 @@ public class CommandAccessFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             if (response instanceof HttpServletResponse) {
+
+                if (request instanceof HttpServletRequest) {
+                    ((HttpServletRequest) request).getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
+                    ((HttpServletRequest) request).getSession().setAttribute("theme", request.getParameter("theme"));
+                }
                 ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
             } else {
 

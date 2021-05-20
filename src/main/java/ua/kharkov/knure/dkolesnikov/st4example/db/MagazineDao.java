@@ -1,85 +1,87 @@
 package ua.kharkov.knure.dkolesnikov.st4example.db;
 
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Order;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Theme;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Data access object for menu related entities.
+ * Data access object for magazine related entities.
  */
-public class MenuDao {
+public class MagazineDao {
 
-    private static final String SQL__FIND_ALL_MENU_ITEMS =
-            "SELECT * FROM menu";
+    private static final String SQL__FIND_ALL_MAGAZINES =
+            "SELECT * FROM magazine";
 
     private static final String SQL__FIND_MENU_ITEMS_BY_ORDER =
-            "select * from menu where id in (select menu_id from orders_menu where order_id=?)";
+            "select * from magazine where id in (select menu_id from orders_menu where order_id=?)";
 
-    private static final String SQL__FIND_MENU_ITEMS_BY_CATEGORY =
-            "select * from menu where category_id=?";
+    private static final String SQL__FIND_MAGAZINES_BY_THEME =
+            "select * from magazine where theme_id=?";
 
-    private static final String SQL__FIND_ALL_CATEGORIES =
-            "SELECT * FROM categories";
+    private static final String SQL__FIND_ALL_THEME =
+            "SELECT * FROM theme";
 
-    private static final String SQL__FIND_ALL_MENU_ITEMS_BY_CATEGORY_NAME =
-            "SELECT * FROM menu m JOIN categories c ON m.category_id=c.id WHERE c.name=?";
+    private static final String SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME =
+            "SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";
 
 
     /**
-     * Returns list menu item by category name.
+     * Returns magazine by category name.
      *
-     * @param categoryName String to find by
-     * @return List of category entities.
+     * @param themeName String to find by
+     * @return List of theme entities.
      */
-    public List<MenuItem> findItemByCategoryName(String categoryName) {
-        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+    public List<Magazine> findMagazineByThemeName(String themeName) {
+        List<Magazine> magazinesList = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            MenuItemMapper mapper = new MenuItemMapper();
-            pstmt = con.prepareStatement(SQL__FIND_ALL_MENU_ITEMS_BY_CATEGORY_NAME);
-            pstmt.setString(1, categoryName);
+            MagazineMapper mapper = new MagazineMapper();
+            pstmt = con.prepareStatement(SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME);
+            pstmt.setString(1, themeName);
             rs = pstmt.executeQuery();
             while (rs.next())
-                menuItemsList.add(mapper.mapRow(rs));
+                magazinesList.add(mapper.mapRow(rs));
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             ex.printStackTrace();
         } finally {
             DBManager.getInstance().commitAndClose(con);
         }
-        return menuItemsList;
+        return magazinesList;
     }
     /**
      * Returns all categories.
      *
      * @return List of category entities.
      */
-    public List<Category> findCategories() {
-        List<Category> categoriesList = new ArrayList<Category>();
+    public List<Theme> findThemes() {
+        List<Theme> themesList = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            CategoryMapper mapper = new CategoryMapper();
+            ThemeMapper mapper = new ThemeMapper();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL__FIND_ALL_CATEGORIES);
+            rs = stmt.executeQuery(SQL__FIND_ALL_THEME);
             while (rs.next())
-                categoriesList.add(mapper.mapRow(rs));
+                themesList.add(mapper.mapRow(rs));
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             ex.printStackTrace();
         } finally {
             DBManager.getInstance().commitAndClose(con);
         }
-        return categoriesList;
+        return themesList;
     }
 
     /**
@@ -87,51 +89,51 @@ public class MenuDao {
      *
      * @return List of menu item entities.
      */
-    public List<MenuItem> findMenuItems() {
-        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+    public List<Magazine> findMagazines() {
+        List<Magazine> magazinesList = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            MenuItemMapper mapper = new MenuItemMapper();
+            MagazineMapper mapper = new MagazineMapper();
             stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL__FIND_ALL_MENU_ITEMS);
+            rs = stmt.executeQuery(SQL__FIND_ALL_MAGAZINES);
             while (rs.next())
-                menuItemsList.add(mapper.mapRow(rs));
+                magazinesList.add(mapper.mapRow(rs));
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             ex.printStackTrace();
         } finally {
             DBManager.getInstance().commitAndClose(con);
         }
-        return menuItemsList;
+        return magazinesList;
     }/**
      * Returns menu items of the given order.
      *
      * @param order Order entity.
      * @return List of menu item entities.
      */
-    public List<MenuItem> findMenuItems(Order order) {
-        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+    public List<Magazine> findMagazines(Order order) {
+        List<Magazine> magazinesList = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            MenuItemMapper mapper = new MenuItemMapper();
+            MagazineMapper mapper = new MagazineMapper();
             pstmt = con.prepareStatement(SQL__FIND_MENU_ITEMS_BY_ORDER);
             pstmt.setLong(1, order.getId());
             rs = pstmt.executeQuery();
             while (rs.next())
-                menuItemsList.add(mapper.mapRow(rs));
+                magazinesList.add(mapper.mapRow(rs));
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             ex.printStackTrace();
         } finally {
             DBManager.getInstance().commitAndClose(con);
         }
-        return menuItemsList;
+        return magazinesList;
     }
 
     /**
@@ -140,15 +142,15 @@ public class MenuDao {
      * @param category Order entity.
      * @return List of menu item entities.
      */
-    public List<MenuItem> findMenuItems(Category category) {
-        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+    public List<Magazine> findMagazines(Category category) {
+        List<Magazine> menuItemsList = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            MenuItemMapper mapper = new MenuItemMapper();
-            pstmt = con.prepareStatement(SQL__FIND_MENU_ITEMS_BY_CATEGORY);
+            MagazineMapper mapper = new MagazineMapper();
+            pstmt = con.prepareStatement(SQL__FIND_MAGAZINES_BY_THEME);
             pstmt.setLong(1, category.getId());
             rs = pstmt.executeQuery();
             while (rs.next())
@@ -163,53 +165,54 @@ public class MenuDao {
     }
 
     /**
-     * Returns menu items with given identifiers.
+     * Returns magazine with given identifiers.
      *
-     * @param ids Identifiers of menu items.
-     * @return List of menu item entities.
+     * @param ids Identifiers of magazine.
+     * @return List of magazine entities.
      */
-    public List<MenuItem> findMenuItems(String[] ids) {
-        List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+    public List<Magazine> findMagazines(String[] ids) {
+        List<Magazine> magazinesList = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            MenuItemMapper mapper = new MenuItemMapper();
+            MagazineMapper mapper = new MagazineMapper();
 
             // create SQL query like "... id IN (1, 2, 7)"
             StringBuilder query = new StringBuilder(
-                    "SELECT * FROM menu WHERE id IN (");
-            for (String idAsString : ids)
+                    "SELECT * FROM magazine WHERE id IN (");
+            for (String idAsString : ids) {
                 query.append(idAsString).append(',');
+            }
             query.deleteCharAt(query.length() - 1);
             query.append(')');
 
             stmt = con.createStatement();
             rs = stmt.executeQuery(query.toString());
             while (rs.next())
-                menuItemsList.add(mapper.mapRow(rs));
+                magazinesList.add(mapper.mapRow(rs));
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             ex.printStackTrace();
         } finally {
             DBManager.getInstance().commitAndClose(con);
         }
-        return menuItemsList;
+        return magazinesList;
     }
 
     /**
-     * Extracts a category from the result set row.
+     * Extracts a theme from the result set row.
      */
-    private static class CategoryMapper implements EntityMapper<Category> {
+    private static class ThemeMapper implements EntityMapper<Theme> {
 
         @Override
-        public Category mapRow(ResultSet rs) {
+        public Theme mapRow(ResultSet rs) {
             try {
-                Category category = new Category();
-                category.setId(rs.getLong(Fields.ENTITY__ID));
-                category.setName(rs.getString(Fields.CATEGORY__NAME));
-                return category;
+                Theme theme = new Theme();
+                theme.setId(rs.getLong(Fields.ENTITY__ID));
+                theme.setName(rs.getString(Fields.THEME__NAME));
+                return theme;
             } catch (SQLException e) {
                 throw new IllegalStateException(e);
             }
@@ -217,19 +220,20 @@ public class MenuDao {
     }
 
     /**
-     * Extracts a menu item from the result set row.
+     * Extracts a magazine from the result set row.
      */
-    private static class MenuItemMapper implements EntityMapper<MenuItem> {
+    private static class MagazineMapper implements EntityMapper<Magazine> {
 
         @Override
-        public MenuItem mapRow(ResultSet rs) {
+        public Magazine mapRow(ResultSet rs) {
             try {
-                MenuItem menuItem = new MenuItem();
-                menuItem.setId(rs.getLong(Fields.ENTITY__ID));
-                menuItem.setName(rs.getString(Fields.MENU_ITEM__NAME));
-                menuItem.setPrice(rs.getInt(Fields.MENU_ITEM__PRICE));
-                menuItem.setCategoryId(rs.getLong(Fields.MENU_ITEM__CATEGORY_ID));
-                return menuItem;
+                Magazine magazine = new Magazine();
+                magazine.setId(rs.getLong(Fields.ENTITY__ID));
+                magazine.setName(rs.getString(Fields.MAGAZINE__NAME));
+                magazine.setPrice(rs.getInt(Fields.MAGAZINE__PRICE));
+                magazine.setImage(rs.getString(Fields.MAGAZINE__IMAGE));
+                magazine.setThemeId(rs.getLong(Fields.MAGAZINE__THEME_ID));
+                return magazine;
             } catch (SQLException e) {
                 throw new IllegalStateException(e);
             }

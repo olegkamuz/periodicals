@@ -2,9 +2,8 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.command;
 
 import org.apache.log4j.Logger;
 import ua.kharkov.knure.dkolesnikov.st4example.Path;
-import ua.kharkov.knure.dkolesnikov.st4example.db.MenuDao;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
+import ua.kharkov.knure.dkolesnikov.st4example.db.MagazineDao;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Lists menu items.
+ * Lists magazines by one theme.
  */
 public class ListByOneCategoryMenuCommand extends Command {
 
@@ -32,26 +30,38 @@ public class ListByOneCategoryMenuCommand extends Command {
 
         log.debug("Command starts");
 
-        Map<String, List<MenuItem>> map = new HashMap<>();
+        Map<String, List<Magazine>> map = new HashMap<>();
 
-        MenuDao menuDao = new MenuDao();
-        List<MenuItem> list = new ArrayList<>();
-        String categoryName;
-        if ((categoryName = request.getParameter("category")) != null) {
-            list = menuDao.findItemByCategoryName(URLDecoder.decode(request.getParameter("category"), StandardCharsets.UTF_8.name()));
+        MagazineDao magazineDao = new MagazineDao();
 
-            map.put(categoryName, list);
+        List<Magazine> list;
+        String themeName;
+        Object theme = request.getSession().getAttribute("theme");
 
-            request.getSession().setAttribute("menuItemsByOneCategory", map);
-            log.trace("Set the request attribute: menuByOneCategoryItems --> " + map);
+        if (theme instanceof String && !(themeName = (String) theme).equals("")) {
+            list = magazineDao.findMagazineByThemeName(themeName);
+            request.getSession().setAttribute("theme", "");
 
-            log.debug("Command finished");
-//            return Path.REDIRECT__LIST_BY_ONE_CATEGORY_MENU;
-            return Path.PAGE__LIST_BY_ONE_CATEGORY_MENU;
-//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
-//        return "/WEB-INF/jsp/album.jsp";
+            request.getSession().setAttribute("checked", request.getSession().getAttribute("magazineId"));
+            request.getSession().setAttribute("magazineId", "");
+
+            return getPreparedForward(request, map, list, themeName);
+        } else if ((themeName = request.getParameter("theme")) != null) {
+            list = magazineDao.findMagazineByThemeName(URLDecoder.decode(request.getParameter("theme"), StandardCharsets.UTF_8.name()));
+
+            return getPreparedForward(request, map, list, themeName);
         }
 
-        return Path.PAGE__LIST_BY_CATEGORY_MENU;
+        return Path.PAGE__LIST_MAGAZINES_BY_THEMES;
+    }
+
+    private String getPreparedForward(HttpServletRequest request, Map<String, List<Magazine>> map, List<Magazine> list, String themeName) {
+        map.put(themeName, list);
+
+        request.getSession().setAttribute("magazinesByOneTheme", map);
+        log.trace("Set the request attribute: magazinesByOneTheme --> " + map);
+
+        log.debug("Command finished");
+        return Path.PAGE__LIST_MAGAZINES_BY_ONE_THEME;
     }
 }

@@ -15,7 +15,6 @@ import java.io.IOException;
 
 /**
  * Login check command.
- *
  */
 public class LoginCheckCommand extends Command {
 
@@ -61,13 +60,19 @@ public class LoginCheckCommand extends Command {
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
 
-            if (userRole == Role.ADMIN)
+            if (userRole == Role.ADMIN) {
                 forward = Path.COMMAND__LIST_ORDERS;
+            }
 
-            if (userRole == Role.CLIENT)
+            if (userRole == Role.CLIENT) {
+                if (session.getAttribute("theme") != null && session.getAttribute("magazineId") != null) {
+                    forward = Path.REDIRECT__LIST_MAGAZINES_BY_ONE_THEME;
+                } else {
 //                forward = Path.
 //                forward = Path.COMMAND__LIST_BY_CATEGORY_MENU;
-//            forward = Path.COMMAND__LIST_MENU;
+                    forward = Path.COMMAND__LIST_MENU;
+                }
+            }
 
             session.setAttribute("user", user);
             log.trace("Set the session attribute: user --> " + user);

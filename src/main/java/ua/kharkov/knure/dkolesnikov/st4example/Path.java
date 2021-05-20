@@ -14,13 +14,16 @@ public final class Path {
 	public static final String PAGE__LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";
 	public static final String PAGE__LIST_ORDERS = "/WEB-INF/jsp/admin/list_orders.jsp";
 	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
-    public static final String PAGE__LIST_BY_CATEGORY_MENU = "/client/list_by_category_menu.jsp";
+    public static final String PAGE__LIST_MAGAZINES_BY_THEMES = "/client/list_by_category_menu.jsp";
     public static final String PAGE_INDEX = "/client/index.jsp";
-    public static final String PAGE__LIST_BY_ONE_CATEGORY_MENU = "/client/one-category-magazines.jsp";
+    public static final String PAGE__LIST_MAGAZINES_BY_ONE_THEME = "/client/one-category-magazines.jsp";
+
+    // forward
+    public static final String FORWARD__LIST_MAGAZINES_BY_ONE_THEME = "/one-category-magazines";
 
     // redirects
-    public static final String REDIRECT__LIST_BY_CATEGORY_MENU = "redirect:/client/index.jsp";
-    public static final String REDIRECT__LIST_BY_ONE_CATEGORY_MENU = "redirect:/client/one-category-magazines.jsp";
+    public static final String REDIRECT__LIST_MAGAZINES_BY_THEME = "redirect:/client/index.jsp";
+    public static final String REDIRECT__LIST_MAGAZINES_BY_ONE_THEME = "redirect:/one-category-magazines";
     public static final String REDIRECT__LOGIN = "redirect:/login";
 
 	// commands

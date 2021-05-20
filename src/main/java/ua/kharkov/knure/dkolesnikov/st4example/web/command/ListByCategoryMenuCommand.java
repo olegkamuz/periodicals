@@ -2,17 +2,16 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.command;
 
 import org.apache.log4j.Logger;
 import ua.kharkov.knure.dkolesnikov.st4example.Path;
-import ua.kharkov.knure.dkolesnikov.st4example.db.MenuDao;
+import ua.kharkov.knure.dkolesnikov.st4example.db.MagazineDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Theme;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +32,12 @@ public class ListByCategoryMenuCommand extends Command {
 
 		log.debug("Command starts");
 
-		Map<Category, List<MenuItem>> map = new HashMap<>();
+		Map<Theme, List<Magazine>> map = new HashMap<>();
 
-        MenuDao menuDao = new MenuDao();
+        MagazineDao magazineDao = new MagazineDao();
 
-        for(Category category: menuDao.findCategories()){
-		    map.put(category, menuDao.findMenuItems(category));
+        for(Theme theme: magazineDao.findThemes()){
+            map.put(theme, magazineDao.findMagazineByThemeName(theme.getName()));
         }
 
 		request.getSession().setAttribute("menuItemsByCategory", map);
@@ -46,10 +45,6 @@ public class ListByCategoryMenuCommand extends Command {
 		
 		log.debug("Command finished");
 		return Path.PAGE_INDEX;
-//        return Path.REDIRECT__LIST_BY_CATEGORY_MENU;
-//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
-//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
-//        return "/WEB-INF/jsp/album.jsp";
 	}
 
 }

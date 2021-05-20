@@ -2,9 +2,11 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.command;
 
 import org.apache.log4j.Logger;
 import ua.kharkov.knure.dkolesnikov.st4example.Path;
-import ua.kharkov.knure.dkolesnikov.st4example.db.MenuDao;
+import ua.kharkov.knure.dkolesnikov.st4example.db.MagazineDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Theme;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Lists menu items.
+ * Create Subscription.
  * 
  */
 public class CreateSubscriptionCommand extends Command {
@@ -30,12 +32,12 @@ public class CreateSubscriptionCommand extends Command {
 
 		log.debug("Command starts");
 
-		Map<Category, List<MenuItem>> map = new HashMap<>();
+		Map<Theme, List<Magazine>> map = new HashMap<>();
 
-        MenuDao menuDao = new MenuDao();
+        MagazineDao magazineDao = new MagazineDao();
 
-        for(Category category: menuDao.findCategories()){
-		    map.put(category, menuDao.findMenuItems(category));
+        for(Theme theme: magazineDao.findThemes()){
+		    map.put(theme, magazineDao.findMagazineByThemeName(theme.getName()));
         }
 
 		request.getSession().setAttribute("menuItemsByCategory", map);

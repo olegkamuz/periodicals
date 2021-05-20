@@ -20,26 +20,32 @@
                     <p class="lead text-muted">Here you can find some interesting stuff to read, so don't hesitate
                         subscribe to few magazines and you'll like it.Spend some time with new knowledge sweet as cake,
                         healthy as apple.</p>
-                    <input type="hidden" name="command" value="makeOrder"/>
                     <input class="btn btn-primary my-2" type="submit"
                            value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
                 </div>
             </section>
             <div class="container">
-                <c:forEach var="category" items="${menuItemsByOneCategory}">
+                <c:forEach var="category" items="${magazinesByOneTheme}">
+                    <input type="hidden" name="theme" value="${category.key}"/>
                     <div class="row">
                         <div class="theme-name"><h3>${category.key}</h3></div>
                         <c:forEach var="menuItem" items="${category.value}">
                             <div class="col">
                                 <link rel="stylesheet" href="../static/css/album.css"/>
-                                <img src="<c:url value="/static/images/music_1.jpg"/>" width="100%"/>
+                                <img src="<c:url value="/static/images/${menuItem.image}"/>" width="100%"/>
                                 <p>${menuItem.name}</p>
                                 <p>${menuItem.price}</p>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="itemId${menuItem.id}"
-                                           name="itemId"
-                                           value="${menuItem.id}"/>
-                                    <label class="form-check-label" for="itemId${menuItem.id}">Add this magazine to
+                                    <input class="form-check-input" type="checkbox" id="magazineId${menuItem.id}"
+                                           name="magazineId"
+                                           value="${menuItem.id}"
+                                            <c:forEach var="item" items="${checked}">
+                                                <c:if test="${item eq menuItem.id}">
+                                                    checked
+                                                </c:if>
+                                            </c:forEach>
+                                    />
+                                    <label class="form-check-label" for="magazineId${menuItem.id}">Add this magazine to
                                         subscription</label>
                                 </div>
                             </div>

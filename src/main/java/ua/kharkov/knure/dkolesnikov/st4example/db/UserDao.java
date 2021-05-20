@@ -13,20 +13,19 @@ import java.sql.SQLException;
 public class UserDao {
 
     private static final String SQL__FIND_USER_BY_LOGIN =
-            "SELECT * FROM users WHERE login=?";
+            "SELECT * FROM `user` WHERE login=?";
 
     private static final String SQL__FIND_USER_BY_ID =
-            "SELECT * FROM users WHERE id=?";
+            "SELECT * FROM `user` WHERE id=?";
 
     private static final String SQL_UPDATE_USER =
-            "UPDATE users SET password=?, first_name=?, last_name=?, locale_name=?"+
+            "UPDATE `user` SET password=?, first_name=?, last_name=?, locale_name=?"+
                     "	WHERE id=?";
 
     /**
      * Returns a user with the given identifier.
      *
-     * @param id
-     *            User identifier.
+     * @param id User identifier.
      * @return User entity.
      */
     public User findUser(Long id) {
@@ -56,8 +55,7 @@ public class UserDao {
     /**
      * Returns a user with the given login.
      *
-     * @param login
-     *            User login.
+     * @param login User login.
      * @return User entity.
      */
     public User findUserByLogin(String login) {
@@ -87,8 +85,7 @@ public class UserDao {
     /**
      * Update user.
      *
-     * @param user
-     *            user to update.
+     * @param user user to update.
      */
     public void updateUser(User user) {
         Connection con = null;
@@ -110,8 +107,7 @@ public class UserDao {
     /**
      * Update user.
      *
-     * @param user
-     *            user to update.
+     * @param user to update.
      * @throws SQLException
      */
     public void updateUser(Connection con, User user) throws SQLException {
