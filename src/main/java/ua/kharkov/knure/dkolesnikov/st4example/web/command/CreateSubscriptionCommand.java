@@ -3,10 +3,12 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.command;
 import org.apache.log4j.Logger;
 import ua.kharkov.knure.dkolesnikov.st4example.Path;
 import ua.kharkov.knure.dkolesnikov.st4example.db.MagazineDao;
+import ua.kharkov.knure.dkolesnikov.st4example.db.SubscriptionDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Theme;
+import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,23 +34,16 @@ public class CreateSubscriptionCommand extends Command {
 
 		log.debug("Command starts");
 
-		Map<Theme, List<Magazine>> map = new HashMap<>();
-
-        MagazineDao magazineDao = new MagazineDao();
-
-        for(Theme theme: magazineDao.findThemes()){
-		    map.put(theme, magazineDao.findMagazineByThemeName(theme.getName()));
+        if(request.getSession().getAttribute("user") instanceof User){
+            String[] magazineIds = request.getParameterMap().get("magazineId");
+            Long userId = ((User)request.getSession().getAttribute("user")).getId();
+            for(String magazineId: magazineIds){
+                (new SubscriptionDao()).insertSubscription(userId, Long.parseLong(magazineId));
+            }
         }
 
-		request.getSession().setAttribute("menuItemsByCategory", map);
-		log.trace("Set the request attribute: menuByCategoryItems --> " + map);
-		
 		log.debug("Command finished");
 		return Path.PAGE_INDEX;
-//        return Path.REDIRECT__LIST_BY_CATEGORY_MENU;
-//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
-//        return Path.PAGE__LIST_BY_CATEGORY_MENU;
-//        return "/WEB-INF/jsp/album.jsp";
 	}
 
 }

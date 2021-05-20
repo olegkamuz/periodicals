@@ -105,7 +105,7 @@ VALUES (DEFAULT, 'Maximum PC', 160, 'maximum-pc.jpg', 3);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Linux Format', 260, 'linux-format.jpg', 3);
 
-CREATE TABLE IF NOT EXISTS `periodical`.`Subscription`
+CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
 (
     `user_id`     INT UNSIGNED NOT NULL,
     `magazine_id` INT UNSIGNED NOT NULL,
