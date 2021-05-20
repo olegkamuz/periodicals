@@ -25,6 +25,7 @@ public final class Path {
     public static final String REDIRECT__LIST_MAGAZINES_BY_THEME = "redirect:/client/index.jsp";
     public static final String REDIRECT__LIST_MAGAZINES_BY_ONE_THEME = "redirect:/one-category-magazines";
     public static final String REDIRECT__LOGIN = "redirect:/login";
+    public static final String REDIRECT__INDEX = "redirect:/index";
 
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";

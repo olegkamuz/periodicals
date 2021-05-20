@@ -28,7 +28,7 @@ public class UserDao {
      * @param id User identifier.
      * @return User entity.
      */
-    public User findUser(Long id) {
+    public User findUserById(Long id) {
         User user = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -136,6 +136,7 @@ public class UserDao {
                 user.setId(rs.getLong(Fields.ENTITY__ID));
                 user.setLogin(rs.getString(Fields.USER__LOGIN));
                 user.setPassword(rs.getString(Fields.USER__PASSWORD));
+                user.setBalance(rs.getBigDecimal(Fields.USER__BALANCE));
                 user.setFirstName(rs.getString(Fields.USER__FIRST_NAME));
                 user.setLastName(rs.getString(Fields.USER__LAST_NAME));
                 user.setLocaleName(rs.getString(Fields.USER__LOCALE_NAME));

@@ -30,6 +30,8 @@ public class MagazineDao {
     private static final String SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME =
             "SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";
 
+    private static final String SQL__FIND_MAGAZINE_BY_ID =
+            "SELECT * FROM magazine WHERE id=?";
 
     /**
      * Returns magazine by category name.
@@ -57,6 +59,33 @@ public class MagazineDao {
             DBManager.getInstance().commitAndClose(con);
         }
         return magazinesList;
+    }
+    /**
+     * Returns magazine by id.
+     *
+     * @param id id to find by.
+     * @return Magazine entity.
+     */
+    public Magazine findMagazineById(Long id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            MagazineMapper mapper = new MagazineMapper();
+            pstmt = con.prepareStatement(SQL__FIND_MAGAZINE_BY_ID);
+            pstmt.setLong(1, id);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                return mapper.mapRow(rs);
+            }
+        } catch (SQLException ex) {
+            DBManager.getInstance().rollbackAndClose(con);
+            ex.printStackTrace();
+        } finally {
+            DBManager.getInstance().commitAndClose(con);
+        }
+        return null;
     }
     /**
      * Returns all categories.
@@ -230,7 +259,7 @@ public class MagazineDao {
                 Magazine magazine = new Magazine();
                 magazine.setId(rs.getLong(Fields.ENTITY__ID));
                 magazine.setName(rs.getString(Fields.MAGAZINE__NAME));
-                magazine.setPrice(rs.getInt(Fields.MAGAZINE__PRICE));
+                magazine.setPrice(rs.getBigDecimal(Fields.MAGAZINE__PRICE));
                 magazine.setImage(rs.getString(Fields.MAGAZINE__IMAGE));
                 magazine.setThemeId(rs.getLong(Fields.MAGAZINE__THEME_ID));
                 return magazine;

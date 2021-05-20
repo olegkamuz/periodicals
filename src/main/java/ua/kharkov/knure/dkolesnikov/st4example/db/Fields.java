@@ -12,6 +12,7 @@ public final class Fields {
 	
 	public static final String USER__LOGIN = "login";
 	public static final String USER__PASSWORD = "password";
+    public static final String USER__BALANCE = "balance";
 	public static final String USER__FIRST_NAME = "first_name";
 	public static final String USER__LAST_NAME = "last_name";
 	public static final String USER__LOCALE_NAME = "locale_name";

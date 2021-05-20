@@ -48,7 +48,7 @@ VALUES (DEFAULT, 'admin', 'admin', DEFAULT, 'Ivanov', 'Ivan', NULL, 0, 0);
 INSERT INTO `user`
 VALUES (DEFAULT, 'client', 'client', DEFAULT, 'Петр', 'Петров', NULL, 1, 0);
 INSERT INTO `user`
-VALUES (DEFAULT, 'петров', 'петров', DEFAULT, 'Иван', 'Петров', NULL, 1, 0);
+VALUES (DEFAULT, 'петров', 'петров', 10000.00, 'Иван', 'Петров', NULL, 1, 0);
 
 CREATE TABLE IF NOT EXISTS `periodical`.`theme`
 (

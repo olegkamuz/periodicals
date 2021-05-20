@@ -1,5 +1,7 @@
 package ua.kharkov.knure.dkolesnikov.st4example.db.entity;
 
+import java.math.BigDecimal;
+
 /**
  * Magazine item entity.
  */
@@ -9,7 +11,7 @@ public class Magazine extends Entity {
 
     private String name;
 
-    private Integer price;
+    private BigDecimal price;
 
     private String image;
 
@@ -23,11 +25,11 @@ public class Magazine extends Entity {
         this.name = name;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -49,7 +51,7 @@ public class Magazine extends Entity {
 
     @Override
     public String toString() {
-        return "MenuItem [name=" + name + ", price=" + price + ", image=" + image + ", categoryId="
+        return "Magazine [name=" + name + ", price=" + price + ", image=" + image + ", categoryId="
                 + themeId + ", getId()=" + getId() + "]";
     }
 

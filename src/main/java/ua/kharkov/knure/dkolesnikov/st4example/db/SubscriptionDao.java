@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Data access object for Order entity and UserOrderBean bean.
@@ -36,33 +37,31 @@ public class SubscriptionDao {
             "SELECT * FROM orders WHERE status_id=?";
 
     /********************* NOT USED *******************************/
-	private static final String SQL__INSERT_SUBSCRIPTION =
-			"INSERT INTO subscription (user_id, magazine_id) VALUES (?, ?)";
+    private static final String SQL__INSERT_SUBSCRIPTION =
+            "INSERT INTO subscription (user_id, magazine_id) VALUES (?, ?)";
 
-	private static final String SQL_INSERT_ORDER_MENU =
-			"INSERT INTO orders_menu VALUES (?, ?)";
+    private static final String SQL_INSERT_ORDER_MENU =
+            "INSERT INTO orders_menu VALUES (?, ?)";
 
-	private static final String SQL_UPDATE_ORDER =
-			"UPDATE orders SET status_id=? WHERE id=?";
+    private static final String SQL_UPDATE_ORDER =
+            "UPDATE orders SET status_id=? WHERE id=?";
 
-	private static final String SQL__UPDATE_ORDER_SET_BILL =
-			"UPDATE orders SET bill=" +
-					"(SELECT SUM(m.price) FROM menu m, orders_menu om " +
-					"WHERE m.id=om.menu_id and om.order_id=?) " +
-					"WHERE id=?";
+    private static final String SQL__UPDATE_ORDER_SET_BILL =
+            "UPDATE orders SET bill=" +
+                    "(SELECT SUM(m.price) FROM menu m, orders_menu om " +
+                    "WHERE m.id=om.menu_id and om.order_id=?) " +
+                    "WHERE id=?";
+
     /**************************************************************/
 
-
-
-    public boolean insertSubscription(Long userId, Long magazineId){
+    public boolean insertSubscription(Long userId, List<Long> magazineIds) {
         PreparedStatement pstmt = null;
         Connection con = null;
         try {
             con = DBManager.getInstance().getConnection();
-            pstmt = con.prepareStatement(SQL__INSERT_SUBSCRIPTION);
-            pstmt.setLong(1, userId);
-            pstmt.setLong(2, magazineId);
-            return pstmt.execute();
+            for (Long magazineId : magazineIds) {
+                setPreparedStatement(con, userId, magazineId);
+            }
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
             log.error(ex.getMessage(), ex);
@@ -71,6 +70,17 @@ public class SubscriptionDao {
         }
         return false;
     }
+
+    private void setPreparedStatement(Connection con, Long userId, Long magazineId)
+            throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement(SQL__INSERT_SUBSCRIPTION)) {
+            ps.setLong(1, userId);
+            ps.setLong(2, magazineId);
+            ps.executeUpdate();
+        }
+    }
+
+
 
     /**
      * Returns all categories.
@@ -127,8 +137,7 @@ public class SubscriptionDao {
     /**
      * Returns orders with the given status.
      *
-     * @param statusId
-     *            Status identifier.
+     * @param statusId Status identifier.
      * @return List of order entities.
      */
     public List<Order> findOrders(int statusId) {
@@ -156,8 +165,7 @@ public class SubscriptionDao {
     /**
      * Returns orders with given identifiers.
      *
-     * @param ids
-     *            Orders identifiers.
+     * @param ids Orders identifiers.
      * @return List of order entities.
      */
     public List<Order> findOrders(String[] ids) {
@@ -193,13 +201,11 @@ public class SubscriptionDao {
     /**
      * Returns orders of the given user and status
      *
-     * @param user
-     *            User entity.
-     * @param statusId
-     *            Status identifier.
+     * @param user     User entity.
+     * @param statusId Status identifier.
      * @return List of order entities.
      */
-    public List<Order> findOrders(User user, int statusId) {
+    public List<Order> findOrders(User userId, int statusId) {
         List<Order> ordersList = new ArrayList<Order>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -209,7 +215,7 @@ public class SubscriptionDao {
             OrderMapper mapper = new OrderMapper();
             pstmt = con.prepareStatement(SQL__FIND_ORDERS_BY_STATUS_AND_USER);
             pstmt.setInt(1, statusId);
-            pstmt.setLong(2, user.getId());
+            pstmt.setLong(2, userId.getId());
             rs = pstmt.executeQuery();
             while (rs.next())
                 ordersList.add(mapper.mapRow(rs));
