@@ -2,13 +2,11 @@ package ua.kharkov.knure.dkolesnikov.st4example.web.command;
 
 import org.apache.log4j.Logger;
 import ua.kharkov.knure.dkolesnikov.st4example.Path;
+import ua.kharkov.knure.dkolesnikov.st4example.db.DBManager;
+import ua.kharkov.knure.dkolesnikov.st4example.db.Fields;
 import ua.kharkov.knure.dkolesnikov.st4example.db.MagazineDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.SubscriptionDao;
 import ua.kharkov.knure.dkolesnikov.st4example.db.UserDao;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Category;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Magazine;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.MenuItem;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Theme;
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
 
 import javax.servlet.ServletException;
@@ -17,10 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -50,9 +48,21 @@ public class CreateSubscriptionCommand extends Command {
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
                 BigDecimal userBalance = (new UserDao()).findUserById(userId).getBalance();
                 if (userBalance.compareTo(sumPriceMagazines) >= 0) {
-                    MathContext mc = new MathContext(2);
-                    userBalance = userBalance.subtract(sumPriceMagazines, mc);
-                    (new SubscriptionDao()).insertSubscription(userId, magazineIdsLong);
+//                    MathContext mc = new MathContext(2);
+                    userBalance = userBalance.subtract(sumPriceMagazines);
+
+                    Connection con = DBManager.getInstance().getConnection();
+                    try {
+                        (new SubscriptionDao()).setPreparedStatement(con, userId, magazineIdsLong);
+                        (new UserDao()).setPreparedStatementUpdateBalance(con, userId, userBalance);
+                    } catch (SQLException e){
+                        DBManager.getInstance().rollbackAndClose(con);
+                        log.error(e.getMessage(), e);
+                    } finally {
+                        DBManager.getInstance().commitAndClose(con);
+                    }
+
+//                    (new SubscriptionDao()).insertSubscription(userId, magazineIdsLong);
                 }
             }
         }

@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Data access object for Order entity and UserOrderBean bean.
@@ -60,7 +59,7 @@ public class SubscriptionDao {
         try {
             con = DBManager.getInstance().getConnection();
             for (Long magazineId : magazineIds) {
-                setPreparedStatement(con, userId, magazineId);
+                getPreparedStatement(con, userId, magazineId);
             }
         } catch (SQLException ex) {
             DBManager.getInstance().rollbackAndClose(con);
@@ -71,15 +70,21 @@ public class SubscriptionDao {
         return false;
     }
 
-    private void setPreparedStatement(Connection con, Long userId, Long magazineId)
+    public void getPreparedStatement(Connection con, Long userId, Long magazineId)
             throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement(SQL__INSERT_SUBSCRIPTION)) {
+            PreparedStatement ps = con.prepareStatement(SQL__INSERT_SUBSCRIPTION);
             ps.setLong(1, userId);
             ps.setLong(2, magazineId);
             ps.executeUpdate();
-        }
+            ps.close();
     }
 
+    public void setPreparedStatement(Connection con, Long userId, List<Long> magazineIds) throws SQLException {
+        PreparedStatement ps = null;
+            for (Long magazineId : magazineIds) {
+                getPreparedStatement(con, userId, magazineId);
+            }
+    }
 
 
     /**
@@ -201,7 +206,7 @@ public class SubscriptionDao {
     /**
      * Returns orders of the given user and status
      *
-     * @param user     User entity.
+     * @param userId User entity.
      * @param statusId Status identifier.
      * @return List of order entities.
      */

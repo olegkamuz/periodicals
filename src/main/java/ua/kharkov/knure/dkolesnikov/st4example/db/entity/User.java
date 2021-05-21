@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 /**
  * User entity.
  *
- * @author D.Kolesnikov
  */
 public class User extends Entity {
 

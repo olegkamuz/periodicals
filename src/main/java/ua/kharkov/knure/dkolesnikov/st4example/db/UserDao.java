@@ -2,15 +2,20 @@ package ua.kharkov.knure.dkolesnikov.st4example.db;
 
 import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
  * Data access object for User entity.
  */
 public class UserDao {
+    private static final Logger log = Logger.getLogger(UserDao.class);
 
     private static final String SQL__FIND_USER_BY_LOGIN =
             "SELECT * FROM `user` WHERE login=?";
@@ -19,8 +24,11 @@ public class UserDao {
             "SELECT * FROM `user` WHERE id=?";
 
     private static final String SQL_UPDATE_USER =
-            "UPDATE `user` SET password=?, first_name=?, last_name=?, locale_name=?"+
+            "UPDATE `user` SET password=?, first_name=?, last_name=?, locale_name=?" +
                     "	WHERE id=?";
+
+    private static final String SQL__UPDATE_BALANCE_WHERE_ID =
+            "UPDATE `user` SET balance=? WHERE id=?";
 
     /**
      * Returns a user with the given identifier.
@@ -123,6 +131,13 @@ public class UserDao {
     }
 
 
+    public void setPreparedStatementUpdateBalance(Connection con, Long userId, BigDecimal balance) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(SQL__UPDATE_BALANCE_WHERE_ID);
+        ps.setBigDecimal(1, balance);
+        ps.setLong(2, userId);
+        ps.executeUpdate();
+        ps.close();
+    }
 
     /**
      * Extracts a user from the result set row.
