@@ -42,7 +42,7 @@
     =============================================================-->
     <servlet>
         <servlet-name>Controller</servlet-name>
-        <servlet-class>ua.kharkov.knure.dkolesnikov.st4example.web.Controller</servlet-class>
+        <servlet-class>com.training.periodical.web.Controller</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -65,7 +65,7 @@
     =============================================================-->
     <filter>
         <filter-name>EncodingFilter</filter-name>
-        <filter-class>ua.kharkov.knure.dkolesnikov.st4example.web.filter.EncodingFilter</filter-class>
+        <filter-class>com.training.periodical.web.filter.EncodingFilter</filter-class>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
@@ -89,7 +89,7 @@
     =============================================================-->
     <filter>
         <filter-name>CommandAccessFilter</filter-name>
-        <filter-class>ua.kharkov.knure.dkolesnikov.st4example.web.filter.CommandAccessFilter</filter-class>
+        <filter-class>com.training.periodical.web.filter.CommandAccessFilter</filter-class>
         <init-param>
             <param-name>admin</param-name>
             <param-value>listOrders</param-value>
@@ -118,7 +118,7 @@
         Context listener
     =============================================================-->
     <!--    <listener>
-            <listener-class>ua.kharkov.knure.dkolesnikov.st4example.web.listener.ContextListener</listener-class>
+            <listener-class>ContextListener</listener-class>
         </listener>-->
 
 
