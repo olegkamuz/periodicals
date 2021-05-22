@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class UserDao {
     private static final Logger log = Logger.getLogger(UserDao.class);
+    private Connection con;
 
     private static final String SQL__FIND_USER_BY_LOGIN =
             "SELECT * FROM `user` WHERE login=?";
@@ -29,6 +30,12 @@ public class UserDao {
 
     private static final String SQL__UPDATE_BALANCE_WHERE_ID =
             "UPDATE `user` SET balance=? WHERE id=?";
+
+    public  UserDao(){}
+
+    public UserDao(Connection con) {
+       this.con = con;
+    }
 
     /**
      * Returns a user with the given identifier.
@@ -131,7 +138,7 @@ public class UserDao {
     }
 
 
-    public void setPreparedStatementUpdateBalance(Connection con, Long userId, BigDecimal balance) throws SQLException {
+    public void updateBalance(Long userId, BigDecimal balance) throws SQLException {
         PreparedStatement ps = con.prepareStatement(SQL__UPDATE_BALANCE_WHERE_ID);
         ps.setBigDecimal(1, balance);
         ps.setLong(2, userId);

@@ -1,17 +1,10 @@
 package ua.kharkov.knure.dkolesnikov.st4example.db;
 
 import org.apache.log4j.Logger;
-import ua.kharkov.knure.dkolesnikov.st4example.db.bean.UserOrderBean;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.Order;
-import ua.kharkov.knure.dkolesnikov.st4example.db.entity.User;
-import ua.kharkov.knure.dkolesnikov.st4example.web.Controller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +12,8 @@ import java.util.List;
  */
 public class SubscriptionDao {
 
-    private static final Logger log = Logger.getLogger(Controller.class);
+    private static final Logger log = Logger.getLogger(UserDao.class);
+    private Connection con;
 
     private static final String SQL__GET_USER_ORDER_BEANS =
             "SELECT o.id, u.first_name, u.last_name, o.bill, s.name" +
@@ -53,21 +47,9 @@ public class SubscriptionDao {
 
     /**************************************************************/
 
-    public boolean insertSubscription(Long userId, List<Long> magazineIds) {
-        PreparedStatement pstmt = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            for (Long magazineId : magazineIds) {
-                getPreparedStatement(con, userId, magazineId);
-            }
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            log.error(ex.getMessage(), ex);
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return false;
+
+    public SubscriptionDao(Connection con){
+        this.con = con;
     }
 
     public void getPreparedStatement(Connection con, Long userId, Long magazineId)
@@ -79,198 +61,24 @@ public class SubscriptionDao {
             ps.close();
     }
 
-    public void setPreparedStatement(Connection con, Long userId, List<Long> magazineIds) throws SQLException {
+    public void createSubscription(Long userId, List<Long> magazineIds) throws SQLException {
         PreparedStatement ps = null;
             for (Long magazineId : magazineIds) {
                 getPreparedStatement(con, userId, magazineId);
             }
     }
 
-
-    /**
-     * Returns all categories.
-     *
-     * @return List of category entities.
-     */
-    public List<UserOrderBean> getUserOrderBeans() {
-        List<UserOrderBean> orderUserBeanList = new ArrayList<UserOrderBean>();
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL__GET_USER_ORDER_BEANS);
-            UserOrderBeanMapper mapper = new UserOrderBeanMapper();
-            while (rs.next())
-                orderUserBeanList.add(mapper.mapRow(rs));
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            ex.printStackTrace();
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return orderUserBeanList;
-    }
-
-    /**
-     * Returns all orders.
-     *
-     * @return List of order entities.
-     */
-    public List<Order> findOrders() {
-        List<Order> ordersList = new ArrayList<Order>();
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            OrderMapper mapper = new OrderMapper();
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(SQL__FIND_ALL_ORDERS);
-            while (rs.next())
-                ordersList.add(mapper.mapRow(rs));
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            ex.printStackTrace();
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return ordersList;
-    }
-
-    /**
-     * Returns orders with the given status.
-     *
-     * @param statusId Status identifier.
-     * @return List of order entities.
-     */
-    public List<Order> findOrders(int statusId) {
-        List<Order> ordersList = new ArrayList<Order>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            OrderMapper mapper = new OrderMapper();
-            pstmt = con.prepareStatement(SQL__FIND_ORDERS_BY_STATUS);
-            pstmt.setInt(1, statusId);
-            rs = pstmt.executeQuery();
-            while (rs.next())
-                ordersList.add(mapper.mapRow(rs));
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            ex.printStackTrace();
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return ordersList;
-    }
-
-    /**
-     * Returns orders with given identifiers.
-     *
-     * @param ids Orders identifiers.
-     * @return List of order entities.
-     */
-    public List<Order> findOrders(String[] ids) {
-        List<Order> ordersList = new ArrayList<Order>();
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            OrderMapper mapper = new OrderMapper();
-
-            // create SQL query like "... id IN (1, 2, 7)"
-            StringBuilder query = new StringBuilder(
-                    "SELECT * FROM orders WHERE id IN (");
-            for (String idAsString : ids)
-                query.append(idAsString).append(',');
-            query.deleteCharAt(query.length() - 1);
-            query.append(')');
-
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query.toString());
-            while (rs.next())
-                ordersList.add(mapper.mapRow(rs));
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            ex.printStackTrace();
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return ordersList;
-    }
-
-    /**
-     * Returns orders of the given user and status
-     *
-     * @param userId User entity.
-     * @param statusId Status identifier.
-     * @return List of order entities.
-     */
-    public List<Order> findOrders(User userId, int statusId) {
-        List<Order> ordersList = new ArrayList<Order>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Connection con = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            OrderMapper mapper = new OrderMapper();
-            pstmt = con.prepareStatement(SQL__FIND_ORDERS_BY_STATUS_AND_USER);
-            pstmt.setInt(1, statusId);
-            pstmt.setLong(2, userId.getId());
-            rs = pstmt.executeQuery();
-            while (rs.next())
-                ordersList.add(mapper.mapRow(rs));
-        } catch (SQLException ex) {
-            DBManager.getInstance().rollbackAndClose(con);
-            ex.printStackTrace();
-        } finally {
-            DBManager.getInstance().commitAndClose(con);
-        }
-        return ordersList;
-    }
-
-    /**
-     * Extracts a user order bean from the result set row.
-     */
-    private static class UserOrderBeanMapper implements EntityMapper<UserOrderBean> {
-
-        @Override
-        public UserOrderBean mapRow(ResultSet rs) {
-            try {
-                UserOrderBean bean = new UserOrderBean();
-                bean.setId(rs.getLong(Fields.USER_ORDER_BEAN__ORDER_ID));
-                bean.setOrderBill(rs.getInt(Fields.USER_ORDER_BEAN__ORDER_BILL));
-                bean.setUserFirstName(rs.getString(Fields.USER_ORDER_BEAN__USER_FIRST_NAME));
-                bean.setUserLastName(rs.getString(Fields.USER_ORDER_BEAN__USER_LAST_NAME));
-                bean.setStatusName(rs.getString(Fields.USER_ORDER_BEAN__STATUS_NAME));
-                return bean;
-            } catch (SQLException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
-
-    /**
-     * Extracts order from the result set row.
-     */
-    private static class OrderMapper implements EntityMapper<Order> {
-
-        @Override
-        public Order mapRow(ResultSet rs) {
-            try {
-                Order order = new Order();
-                order.setId(rs.getLong(Fields.ENTITY__ID));
-                order.setBill(rs.getInt(Fields.ORDER__BILL));
-                order.setUserId(rs.getLong(Fields.ORDER__USER_ID));
-                order.setStatusId(rs.getInt(Fields.ORDER__STATUS_ID));
-                return order;
-            } catch (SQLException e) {
-                throw new IllegalStateException(e);
-            }
-        }
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
