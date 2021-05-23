@@ -2,7 +2,7 @@
 Header (top area). 
 ===========================================================================--%> 
 
-<%@ page import="com.training.periodical.db.Role" %>
+<%@ page import="com.training.periodical.model.dao.Role" %>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
