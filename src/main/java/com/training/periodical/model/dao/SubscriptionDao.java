@@ -6,11 +6,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data access object for Order entity and UserOrderBean bean.
  */
-public class SubscriptionDao {
+public class SubscriptionDao extends AbstractDao {
 
     private static final Logger log = Logger.getLogger(UserDao.class);
     private Connection con;
@@ -68,6 +69,10 @@ public class SubscriptionDao {
             }
     }
 
+    @Override
+    public Optional getById(long id) throws SQLException {
+        return Optional.empty();
+    }
 }
 
 

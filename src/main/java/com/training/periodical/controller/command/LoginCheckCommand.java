@@ -61,7 +61,7 @@ public class LoginCheckCommand extends Command {
             log.trace("userRole --> " + userRole);
 
             if (userRole == Role.ADMIN) {
-                forward = Path.COMMAND__LIST_ORDERS;
+                forward = Path.REDIRECT__INDEX;
             }
 
             if (userRole == Role.CLIENT) {

@@ -8,7 +8,7 @@ import com.training.periodical.model.dao.MagazineDao;
 import com.training.periodical.model.dao.SubscriptionDao;
 import com.training.periodical.model.dao.UserDao;
 import com.training.periodical.entity.User;
-import com.training.periodical.model.service.CreateSubscriptionService;
+import com.training.periodical.model.service.SubscriptionService;
 import com.training.periodical.model.service.TransactionManager;
 
 import javax.servlet.ServletException;
@@ -26,11 +26,19 @@ import java.util.stream.Collectors;
 /**
  * Create Subscription.
  */
-public class CreateSubscriptionCommand extends Command {
-
+public class SubscriptionCommand extends Command {
     private static final long serialVersionUID = 7732286214029478505L;
+    private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
+    private UserService userService;
+    private SubscriptionService subscriptionService;
+    private TransactionManager transactionManager;
 
-    private static final Logger log = Logger.getLogger(CreateSubscriptionCommand.class);
+    public SubscriptionCommand(UserService userService, SubscriptionService subscriptionService, TransactionManager transactionManager) {
+        this.userService = userService;
+        this.subscriptionService = subscriptionService;
+        this.transactionManager = transactionManager;
+    }
+
 
     @Override
     public String execute(HttpServletRequest request,
@@ -68,7 +76,9 @@ public class CreateSubscriptionCommand extends Command {
                 if (userBalance.compareTo(sumPriceMagazines) >= 0) {
                     userBalance = userBalance.subtract(sumPriceMagazines);
 
-                    (new CreateSubscriptionService(new UserDao(con), new SubscriptionDao(con), new TransactionManager(con))).createSubscriptionPurchase(userId, magazineIdsLong, userBalance);
+                    subscriptionService.createSubscriptionPurchase(userId, magazineIdsLong,userBalance, transactionManager);
+
+//                    (new SubscriptionService(new UserDao(con), new SubscriptionDao(con), new TransactionManager(con))).createSubscriptionPurchase(userId, magazineIdsLong, userBalance);
                 }
             }
         }

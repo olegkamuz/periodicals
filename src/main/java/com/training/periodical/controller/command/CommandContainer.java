@@ -19,17 +19,17 @@ public class CommandContainer {
 		// common commands
 		commands.put("login", new LoginCommand());
         commands.put("login-check", new LoginCheckCommand());
-        commands.put("login_session", new LoginSessionCommand());
+//        commands.put("login_session", new LoginSessionCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("noCommand", new NoCommand());
 		commands.put("viewSettings", new ViewSettingsCommand());
 		commands.put("updateSettings", new UpdateSettingsCommand());
 
 		// client commands
-		commands.put("listMenu", new ListMenuCommand());
+//		commands.put("listMenu", new ListMenuCommand());
         commands.put("index", new ListByCategoryMenuCommand());
         commands.put("one-category-magazines", new ListByOneCategoryMenuCommand());
-        commands.put("create-subscription", new CreateSubscriptionCommand());
+//        commands.put("create-subscription", new SubscriptionCommand(userService, subscriptionService, transactionManager));
 
 		// admin commands
 //		commands.put("listOrders", new ListOrdersCommand());

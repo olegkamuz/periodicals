@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.training.periodical.controller.command.Command;
+import com.training.periodical.controller.command.CommandFactory;
 import org.apache.log4j.Logger;
 
 import com.training.periodical.controller.command.CommandContainer;
@@ -46,7 +47,15 @@ public class Controller extends HttpServlet {
         Command command = CommandContainer.get(commandName);
         log.trace("Obtained command --> " + command);
 
-        String result = command.execute(request, response);
+        String result = "";
+//        = command.execute(request, response);
+        try (CommandFactory commandFactory = new CommandFactory()) {
+            Command action = commandFactory.create(commandName);
+            result = action.execute(request, response);
+        } catch (SQLException e){
+            log.error(e.getMessage(), e);
+        }
+
         log.trace("Forward address --> " + result);
 
         log.debug("Controller finished, now go to address --> " + result);
