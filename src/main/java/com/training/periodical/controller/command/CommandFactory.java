@@ -8,9 +8,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class CommandFactory implements AutoCloseable {
-    private Connection connection;
-    private ServiceFactory serviceFactory;
-    private TransactionManager transactionManager;
+    private final Connection connection;
+    private final ServiceFactory serviceFactory;
+    private final TransactionManager transactionManager;
 
     public CommandFactory() {
         connection = DBManager.getInstance().getConnection();
@@ -39,7 +39,11 @@ public class CommandFactory implements AutoCloseable {
     }
 
     @Override
-    public void close() throws SQLException {
-        connection.close();
+    public void close() throws CommandException{
+        try {
+            connection.close();
+        } catch (SQLException e){
+            throw new CommandException("exception in close method at CommandFactory",e);
+        }
     }
 }

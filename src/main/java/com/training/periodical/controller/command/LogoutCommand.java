@@ -12,27 +12,25 @@ import org.apache.log4j.Logger;
 
 /**
  * Logout command.
- * 
- * @author D.Kolesnikov
- * 
+ *
  */
-public class LogoutCommand extends Command {
+public class LogoutCommand implements Command {
 
-	private static final long serialVersionUID = -2785976616686657267L;
+    private static final long serialVersionUID = -2785976616686657267L;
 
-	private static final Logger log = Logger.getLogger(LogoutCommand.class);
+    private static final Logger log = Logger.getLogger(LogoutCommand.class);
 
-	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
-		log.debug("Command starts");
-		
-		HttpSession session = request.getSession(false);
-		if (session != null)
-			session.invalidate();
+    @Override
+    public String execute(HttpServletRequest request,
+                          HttpServletResponse response) throws CommandException {
+        log.debug("Command starts");
 
-		log.debug("Command finished");
-		return Path.PAGE__LOGIN;
-	}
+        HttpSession session = request.getSession(false);
+        if (session != null)
+            session.invalidate();
+
+        log.debug("Command finished");
+        return Path.PAGE__LOGIN;
+    }
 
 }

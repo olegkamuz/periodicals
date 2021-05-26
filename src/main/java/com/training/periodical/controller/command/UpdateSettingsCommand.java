@@ -14,56 +14,52 @@ import java.io.IOException;
 
 /**
  * Update settings items.
- * 
- * @author D.Kolesnikov
- * 
  */
-public class UpdateSettingsCommand extends Command {
+public class UpdateSettingsCommand implements Command {
 
-	private static final long serialVersionUID = 7732286214029478505L;
 
-	private static final Logger log = Logger.getLogger(UpdateSettingsCommand.class);
+    private static final Logger log = Logger.getLogger(UpdateSettingsCommand.class);
 
-	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
-		
-		log.debug("Command starts");
-		
-		// UPDATE USER ////////////////////////////////////////////////////////
-		
-		User user = (User)request.getSession().getAttribute("user");
-		boolean updateUser = false;
-		
-		// update first name
-		String firstName = request.getParameter("firstName");
-		if (firstName != null && !firstName.isEmpty()) {
-			user.setFirstName(firstName);
-			updateUser = true;
-		}
+    @Override
+    public String execute(HttpServletRequest request,
+                          HttpServletResponse response) throws CommandException {
 
-		// update last name
-		String lastName = request.getParameter("lastName");
-		if (lastName != null && !lastName.isEmpty()) {
-			user.setLastName(lastName);
-			updateUser = true;
-		}
+        log.debug("Command starts");
 
-		String localeToSet = request.getParameter("localeToSet");
-		if (localeToSet != null && !localeToSet.isEmpty()) {
-			HttpSession session = request.getSession();
-			Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);			
-			session.setAttribute("defaultLocale", localeToSet);
-			user.setLocaleName(localeToSet);
-			updateUser = true;
-		}
-		
-		if (updateUser == true)
-			new UserDao().updateUser(user);
+        // UPDATE USER ////////////////////////////////////////////////////////
 
-		
-		log.debug("Command finished");
-		return Path.PAGE__SETTINGS;
-	}
+        User user = (User) request.getSession().getAttribute("user");
+        boolean updateUser = false;
+
+        // update first name
+        String firstName = request.getParameter("firstName");
+        if (firstName != null && !firstName.isEmpty()) {
+            user.setFirstName(firstName);
+            updateUser = true;
+        }
+
+        // update last name
+        String lastName = request.getParameter("lastName");
+        if (lastName != null && !lastName.isEmpty()) {
+            user.setLastName(lastName);
+            updateUser = true;
+        }
+
+        String localeToSet = request.getParameter("localeToSet");
+        if (localeToSet != null && !localeToSet.isEmpty()) {
+            HttpSession session = request.getSession();
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            session.setAttribute("defaultLocale", localeToSet);
+            user.setLocaleName(localeToSet);
+            updateUser = true;
+        }
+
+        if (updateUser == true)
+            new UserDao().updateUser(user);
+
+
+        log.debug("Command finished");
+        return Path.PAGE__SETTINGS;
+    }
 
 }

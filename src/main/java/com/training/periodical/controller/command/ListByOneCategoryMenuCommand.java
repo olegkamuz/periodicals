@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -18,15 +19,13 @@ import java.util.Map;
 /**
  * Lists magazines by one theme.
  */
-public class ListByOneCategoryMenuCommand extends Command {
-
-    private static final long serialVersionUID = 7732286214029478505L;
+public class ListByOneCategoryMenuCommand implements Command {
 
     private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                          HttpServletResponse response) throws CommandException {
 
         log.debug("Command starts");
 
@@ -47,7 +46,11 @@ public class ListByOneCategoryMenuCommand extends Command {
 
             return getPreparedForward(request, map, list, themeName);
         } else if ((themeName = request.getParameter("theme")) != null) {
-            list = magazineDao.findMagazineByThemeName(URLDecoder.decode(request.getParameter("theme"), StandardCharsets.UTF_8.name()));
+            try {
+                list = magazineDao.findMagazineByThemeName(URLDecoder.decode(request.getParameter("theme"), StandardCharsets.UTF_8.name()));
+            } catch (UnsupportedEncodingException e) {
+               throw new CommandException(e);
+            }
 
             return getPreparedForward(request, map, list, themeName);
         }

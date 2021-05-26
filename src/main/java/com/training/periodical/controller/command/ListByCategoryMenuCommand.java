@@ -18,15 +18,13 @@ import java.util.Map;
  * Lists menu items.
  * 
  */
-public class ListByCategoryMenuCommand extends Command {
-
-	private static final long serialVersionUID = 7732286214029478505L;
+public class ListByCategoryMenuCommand implements Command {
 
 	private static final Logger log = Logger.getLogger(ListByCategoryMenuCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
+			HttpServletResponse response) throws CommandException {
 
 		log.debug("Command starts");
 

@@ -8,6 +8,7 @@
 	
 <body>
 	<table id="main-container">
+
 		<tr >
 			<td class="content center">
 				<form id="login_form" action="login-check" method="post">

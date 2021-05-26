@@ -10,17 +10,14 @@ import java.io.IOException;
 
 /**
  * Login command. Just to return page path;
- *
  */
-public class LoginCommand extends Command {
-
-    private static final long serialVersionUID = -3071536593627692473L;
+public class LoginCommand implements Command {
 
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                          HttpServletResponse response) throws CommandException {
 
         log.debug("Command starts");
 

@@ -1,6 +1,7 @@
 package com.training.periodical.model.service;
 
 import com.training.periodical.entity.User;
+import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.SubscriptionDao;
 import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
@@ -25,7 +26,7 @@ public class SubscriptionService implements Service<User> {
         try {
             subscriptionDao.createSubscription(userId, magazineIds);
             userService.updateBalance(userId, userBalance);
-        } catch (SQLException e){
+        } catch (ServiceException | DaoException e){
             transactionManager.rollbackAndClose();
             log.error(e.getMessage(), e);
         } finally {

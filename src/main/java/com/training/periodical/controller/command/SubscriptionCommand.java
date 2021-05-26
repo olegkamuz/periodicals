@@ -1,5 +1,6 @@
 package com.training.periodical.controller.command;
 
+import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +28,11 @@ import java.util.stream.Collectors;
 /**
  * Create Subscription.
  */
-public class SubscriptionCommand extends Command {
-    private static final long serialVersionUID = 7732286214029478505L;
+public class SubscriptionCommand implements Command {
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
-    private UserService userService;
-    private SubscriptionService subscriptionService;
-    private TransactionManager transactionManager;
+    private final UserService userService;
+    private final SubscriptionService subscriptionService;
+    private final TransactionManager transactionManager;
 
     public SubscriptionCommand(UserService userService, SubscriptionService subscriptionService, TransactionManager transactionManager) {
         this.userService = userService;
@@ -42,7 +43,7 @@ public class SubscriptionCommand extends Command {
 
     @Override
     public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                          HttpServletResponse response) throws CommandException {
 
         log.debug("Command starts");
 
@@ -59,26 +60,27 @@ public class SubscriptionCommand extends Command {
                         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
 
-                Connection con = DBManager.getInstance().getConnection();
 
                 BigDecimal userBalance = null;
-                Optional<User> optionalUser = null;
                 try {
-                    optionalUser = (new UserService(new UserDao(con))).findUserById(userId);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    Optional<User> optionalUser = userService.getById(userId);
+                    if (optionalUser.isPresent()) {
+                        User user = optionalUser.get();
+                        userBalance = user.getBalance();
+                    }
+                } catch (ServiceException e) {
+                    throw new CommandException("exception in " +
+                            this.getClass().getEnclosingMethod().getName() +
+                            " method at " +
+                            this.getClass().getSimpleName() , e);
                 }
-                if (optionalUser.isPresent()) {
-                    User user = optionalUser.get();
-                    userBalance = user.getBalance();
-                }
+
 
                 if (userBalance.compareTo(sumPriceMagazines) >= 0) {
                     userBalance = userBalance.subtract(sumPriceMagazines);
 
                     subscriptionService.createSubscriptionPurchase(userId, magazineIdsLong,userBalance, transactionManager);
 
-//                    (new SubscriptionService(new UserDao(con), new SubscriptionDao(con), new TransactionManager(con))).createSubscriptionPurchase(userId, magazineIdsLong, userBalance);
                 }
             }
         }
@@ -86,5 +88,7 @@ public class SubscriptionCommand extends Command {
         log.debug("Command finished");
         return Path.REDIRECT__INDEX;
     }
+
+
 
 }

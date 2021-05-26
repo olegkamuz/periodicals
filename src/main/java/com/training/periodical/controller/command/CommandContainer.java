@@ -13,7 +13,7 @@ public class CommandContainer {
 	
 	private static final Logger log = Logger.getLogger(CommandContainer.class);
 	
-	private static Map<String, Command> commands = new TreeMap<String, Command>();
+	private static final Map<String, Command> commands = new TreeMap<String, Command>();
 	
 	static {
 		// common commands

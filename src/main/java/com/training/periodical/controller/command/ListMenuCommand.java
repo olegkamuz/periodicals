@@ -10,20 +10,16 @@ import java.io.IOException;
 
 /**
  * Lists menu items.
- * 
- * @author D.Kolesnikov
- * 
  */
-public class ListMenuCommand extends Command {
+public class ListMenuCommand implements Command {
 
-	private static final long serialVersionUID = 7732286214029478505L;
 
-	private static final Logger log = Logger.getLogger(ListMenuCommand.class);
+    private static final Logger log = Logger.getLogger(ListMenuCommand.class);
 
-	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
-		
+    @Override
+    public String execute(HttpServletRequest request,
+                          HttpServletResponse response) throws CommandException {
+
 //		log.debug("Command starts");
 //
 //		// get menu items list
@@ -42,7 +38,7 @@ public class ListMenuCommand extends Command {
 //		log.trace("Set the request attribute: menuItems --> " + menuItems);
 //
 //		log.debug("Command finished");
-		return Path.PAGE__LIST_MENU;
-	}
+        return Path.PAGE__LIST_MENU;
+    }
 
 }

@@ -12,27 +12,23 @@ import com.training.periodical.Path;
 
 /**
  * No command.
- * 
- * @author D.Kolesnikov
- * 
  */
-public class NoCommand extends Command {
+public class NoCommand implements Command {
 
-	private static final long serialVersionUID = -2785976616686657267L;
 
-	private static final Logger log = Logger.getLogger(NoCommand.class);
+    private static final Logger log = Logger.getLogger(NoCommand.class);
 
-	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException {
-		log.debug("Command starts");
-		
-		String errorMessage = "No such command";
-		request.setAttribute("errorMessage", errorMessage);
-		log.error("Set the request attribute: errorMessage --> " + errorMessage);
+    @Override
+    public String execute(HttpServletRequest request,
+                          HttpServletResponse response) throws CommandException {
+        log.debug("Command starts");
 
-		log.debug("Command finished");
-		return Path.PAGE__ERROR_PAGE;
-	}
+        String errorMessage = "No such command";
+        request.setAttribute("errorMessage", errorMessage);
+        log.error("Set the request attribute: errorMessage --> " + errorMessage);
+
+        log.debug("Command finished");
+        return Path.PAGE__ERROR_PAGE;
+    }
 
 }

@@ -16,15 +16,13 @@ import java.io.IOException;
 /**
  * Login check command.
  */
-public class LoginCheckCommand extends Command {
-
-    private static final long serialVersionUID = -3071536593627692473L;
+public class LoginCheckCommand implements Command {
 
     private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                          HttpServletResponse response) throws CommandException {
 
         log.debug("Command starts");
 

@@ -25,7 +25,7 @@ public class UserDao extends AbstractDao<User>{
     }
 
     @Override
-    public Optional<User> getById(long id) throws SQLException {
+    public Optional<User> getById(long id) throws DaoException {
         return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_ID, new UserBuilder(),String.valueOf(id));
     }
 
@@ -130,12 +130,14 @@ public class UserDao extends AbstractDao<User>{
     }
 
 
-    public void updateBalance(Long userId, BigDecimal balance) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement(UserQuery.SQL__UPDATE_BALANCE_WHERE_ID);
-        ps.setBigDecimal(1, balance);
-        ps.setLong(2, userId);
-        ps.executeUpdate();
-        ps.close();
+    public void updateBalance(Long userId, BigDecimal balance) throws DaoException {
+        String[] parameters = {String.valueOf(balance), String.valueOf(userId)};
+        executeUpdate(UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
+//        PreparedStatement ps = getConnection().prepareStatement(UserQuery.SQL__UPDATE_BALANCE_WHERE_ID);
+//        ps.setBigDecimal(1, balance);
+//        ps.setLong(2, userId);
+//        ps.executeUpdate();
+//        ps.close();
     }
 
     /**
