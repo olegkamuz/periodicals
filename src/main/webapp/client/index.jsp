@@ -23,18 +23,18 @@
                 </div>
             </section>
             <div class="container">
-                <c:forEach var="category" items="${menuItemsByCategory}">
+                <c:forEach var="theme" items="${menuItemsByCategory}">
                     <c:url value="/one-category-magazines" var="url">
-                        <c:param  name="theme" value="${category.key.name}" />
+                        <c:param  name="theme" value="${theme.key.name}" />
                     </c:url>
                     <a href="<c:out value='${url}'/>">
                         <div class="row">
-                            <div class="theme-name"><h3>${category.key.name}</h3></div>
-                            <c:forEach var="menuItem" items="${category.value}" end="2">
+                            <div class="theme-name"><h3>${theme.key.name}</h3></div>
+                            <c:forEach var="magazine" items="${theme.value}" end="2">
                                 <div class="col">
-                                    <img src="<c:url value="/static/images/${menuItem.image}"/>" width="100%"/>
-                                    <p>${menuItem.name}</p>
-                                    <p>${menuItem.price}</p>
+                                    <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
+                                    <p>${magazine.name}</p>
+                                    <p>${magazine.price}</p>
                                 </div>
                             </c:forEach>
                         </div>

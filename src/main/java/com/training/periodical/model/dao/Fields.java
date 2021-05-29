@@ -11,7 +11,9 @@ public final class Fields {
 	public static final String ENTITY__ID = "id";
 
 	public static final String USER__ID = "user_id";
-    public static final String MAGAZINE__ID = "magazine_id";
+    public static final String MAGAZINE__ID = "id";
+
+    public static final String THEME_NAME = "name";
 
 	public static final String USER__LOGIN = "login";
 	public static final String USER__PASSWORD = "password";

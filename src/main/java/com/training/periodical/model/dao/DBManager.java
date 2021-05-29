@@ -54,32 +54,5 @@ public class DBManager {
     private DBManager() {
     }
 
-    /**
-     * Commits and close the given connection.
-     *
-     * @param con Connection to be committed and closed.
-     */
-    public void commitAndClose(Connection con) {
-        try {
-            con.commit();
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
-     * Rollbacks and close the given connection.
-     *
-     * @param con Connection to be rolled back and closed.
-     */
-    public void rollbackAndClose(Connection con) {
-        try {
-            con.rollback();
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
 
 }

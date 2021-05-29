@@ -3,6 +3,10 @@ package com.training.periodical.controller.command;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.training.periodical.model.service.MagazineService;
+import com.training.periodical.model.service.SubscriptionService;
+import com.training.periodical.model.service.ThemeService;
+import com.training.periodical.model.service.UserService;
 import org.apache.log4j.Logger;
 
 /**
@@ -27,9 +31,12 @@ public class CommandContainer {
 
 		// client commands
 //		commands.put("listMenu", new ListMenuCommand());
-        commands.put("index", new ListByCategoryMenuCommand());
-        commands.put("one-category-magazines", new ListByOneCategoryMenuCommand());
-//        commands.put("create-subscription", new SubscriptionCommand(userService, subscriptionService, transactionManager));
+        commands.put("index", new ListByCategoryMenuCommand(new ThemeService(), new  MagazineService()));
+        commands.put("one-category-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
+        commands.put("create-subscription",
+                new SubscriptionCommand(
+                        new SubscriptionService(),
+                        new UserService(), new MagazineService()));
 
 		// admin commands
 //		commands.put("listOrders", new ListOrdersCommand());

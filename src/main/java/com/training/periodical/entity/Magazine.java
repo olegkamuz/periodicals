@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  */
 public class Magazine extends Entity {
 
-    private static final long serialVersionUID = 4716395168539434663L;
+    private long id;
 
     private String name;
 

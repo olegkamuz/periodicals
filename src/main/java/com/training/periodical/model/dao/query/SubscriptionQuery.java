@@ -1,4 +1,4 @@
-package com.training.periodical.model.dao;
+package com.training.periodical.model.dao.query;
 
 public class SubscriptionQuery {
     public static final String SQL__GET_USER_ORDER_BEANS =

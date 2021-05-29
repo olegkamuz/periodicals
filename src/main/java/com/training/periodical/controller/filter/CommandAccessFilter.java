@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 import javax.servlet.Filter;
@@ -18,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.training.periodical.entity.User;
+import com.training.periodical.model.dao.AbstractDaoFactory;
+import com.training.periodical.model.dao.DaoException;
+import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
 
 import com.training.periodical.Path;
@@ -72,9 +77,13 @@ public class CommandAccessFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 //        // todo Just for DEVELOPMENT remove on prod
-//        User user = new UserDao().findUserByLogin("петров");
-//        ((HttpServletRequest) request).getSession().setAttribute("user", user);
-//        ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+        try {
+            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
 //        // todo remove on prod
 
 //        String commandName = request.getParameter("command");
@@ -84,6 +93,8 @@ public class CommandAccessFilter implements Filter {
         } else {
             return false;
         }
+
+        AbstractDaoFactory.getInstance();
 
 //        if (commandName == null || commandName.isEmpty())
         if (commandName.isEmpty())

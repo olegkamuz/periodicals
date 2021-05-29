@@ -42,7 +42,7 @@
     =============================================================-->
     <servlet>
         <servlet-name>Controller</servlet-name>
-        <servlet-class>com.training.periodical.controller.Controller</servlet-class>
+        <servlet-class>com.training.periodical.controller.controller.Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

@@ -8,6 +8,8 @@ public abstract class Entity {
 
 	private Long id;
 
+	private String tableName;
+
 	public Long getId() {
 		return id;
 	}
@@ -15,5 +17,7 @@ public abstract class Entity {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public String getTableName() { return this.tableName;}
 
 }

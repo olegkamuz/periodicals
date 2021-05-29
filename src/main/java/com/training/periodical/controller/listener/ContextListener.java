@@ -14,8 +14,6 @@ import org.apache.log4j.PropertyConfigurator;
 /**
  * Context listener.
  * 
- * @author D.Kolesnikov
- * 
  */
 public class ContextListener implements ServletContextListener {
 

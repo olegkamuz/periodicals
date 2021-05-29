@@ -4,6 +4,8 @@ import com.training.periodical.Path;
 import com.training.periodical.model.dao.Role;
 import com.training.periodical.model.dao.UserDao;
 import com.training.periodical.entity.User;
+import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.model.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Login check command.
@@ -45,7 +48,17 @@ public class LoginCheckCommand implements Command {
             return forward;
         }
 
-        User user = new UserDao().findUserByLogin(login);
+        User user = null;
+        try {
+            Optional<User> optionalUser = (new UserService()).findUserByLogin(login);
+            if (optionalUser.isPresent()) {
+                user = optionalUser.get();
+            } else {
+                throw new CommandException("exception in execute method at " + this.getClass().getSimpleName());
+            }
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
         request.setAttribute("user", user);
         log.trace("Found in DB: user --> " + user);
 
@@ -66,8 +79,6 @@ public class LoginCheckCommand implements Command {
                 if (session.getAttribute("theme") != null && session.getAttribute("magazineId") != null) {
                     forward = Path.REDIRECT__LIST_MAGAZINES_BY_ONE_THEME;
                 } else {
-//                forward = Path.
-//                forward = Path.COMMAND__LIST_BY_CATEGORY_MENU;
                     forward = Path.COMMAND__LIST_MENU;
                 }
             }

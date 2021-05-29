@@ -1,6 +1,10 @@
 package com.training.periodical.model.builder;
 
+import com.training.periodical.entity.User;
+import com.training.periodical.model.dao.DaoException;
+
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Defines general contract for mapping database result set rows to application entities.
@@ -8,5 +12,5 @@ import java.sql.ResultSet;
  * but only extract information from the row in current cursor position.
  */
 public interface Builder<T> {
-    T build(ResultSet rs);
+    T build(ResultSet rs) throws SQLException;
 }

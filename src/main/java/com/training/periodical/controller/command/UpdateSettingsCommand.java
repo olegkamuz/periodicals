@@ -54,8 +54,8 @@ public class UpdateSettingsCommand implements Command {
             updateUser = true;
         }
 
-        if (updateUser == true)
-            new UserDao().updateUser(user);
+//        if (updateUser == true)
+//            new UserDao().updateUser(user);
 
 
         log.debug("Command finished");

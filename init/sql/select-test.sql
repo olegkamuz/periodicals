@@ -8,3 +8,7 @@ SELECT o.id, u.first_name, u.last_name, o.bill, s.name
 	WHERE o.user_id=u.id AND o.status_id=s.id;
 
 DISCONNECT;
+
+SELECT sum(price) AS total FROM magazine WHERE id IN ('5','6')
+
+

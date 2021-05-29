@@ -25,27 +25,27 @@
                 </div>
             </section>
             <div class="container">
-                <c:forEach var="category" items="${magazinesByOneTheme}">
-                    <input type="hidden" name="theme" value="${category.key}"/>
+                <c:forEach var="theme" items="${magazinesByOneTheme}">
+                    <input type="hidden" name="theme" value="${theme.key}"/>
                     <div class="row">
-                        <div class="theme-name"><h3>${category.key}</h3></div>
-                        <c:forEach var="menuItem" items="${category.value}">
+                        <div class="theme-name"><h3>${theme.key}</h3></div>
+                        <c:forEach var="magazine" items="${theme.value}">
                             <div class="col">
                                 <link rel="stylesheet" href="../static/css/album.css"/>
-                                <img src="<c:url value="/static/images/${menuItem.image}"/>" width="100%"/>
-                                <p>${menuItem.name}</p>
-                                <p>${menuItem.price}</p>
+                                <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
+                                <p>${magazine.name}</p>
+                                <p>${magazine.price}</p>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="magazineId${menuItem.id}"
+                                    <input class="form-check-input" type="checkbox" id="magazineId${magazine.id}"
                                            name="magazineId"
-                                           value="${menuItem.id}"
+                                           value="${magazine.id}"
                                             <c:forEach var="item" items="${checked}">
-                                                <c:if test="${item eq menuItem.id}">
+                                                <c:if test="${item eq magazine.id}">
                                                     checked
                                                 </c:if>
                                             </c:forEach>
                                     />
-                                    <label class="form-check-label" for="magazineId${menuItem.id}">Add this magazine to
+                                    <label class="form-check-label" for="magazineId${magazine.id}">Add this magazine to
                                         subscription</label>
                                 </div>
                             </div>

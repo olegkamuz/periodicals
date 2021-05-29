@@ -1,42 +1,51 @@
 package com.training.periodical.model.service;
 
-import com.training.periodical.entity.User;
+import com.training.periodical.entity.Subscription;
+import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
+import com.training.periodical.model.dao.IDaoFactory;
 import com.training.periodical.model.dao.SubscriptionDao;
 import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
-public class SubscriptionService implements Service<User> {
+public class SubscriptionService extends AbstractService<Subscription> {
     private static final Logger log = Logger.getLogger(SubscriptionService.class);
-    private UserService userService;
-    private SubscriptionDao subscriptionDao;
+    private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-
-    public SubscriptionService(UserService userService, SubscriptionDao subscriptionDao) {
-        this.userService = userService;
-        this.subscriptionDao = subscriptionDao;
-    }
-
-    public void createSubscriptionPurchase(Long userId, List<Long> magazineIds, BigDecimal userBalance, TransactionManager transactionManager){
-        try {
-            subscriptionDao.createSubscription(userId, magazineIds);
-            userService.updateBalance(userId, userBalance);
-        } catch (ServiceException | DaoException e){
-            transactionManager.rollbackAndClose();
-            log.error(e.getMessage(), e);
-        } finally {
-            transactionManager.commitAndClose();
+    public void createSubscriptionPurchase(Long userId, String[] magazineIds, BigDecimal userBalance) throws ServiceException {
+        try (SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao();
+             Connection connection = subscriptionDao.getConnection();
+             UserDao userDao = daoFactory.createUserDao(connection)) {
+            subscriptionDao.createSubscription(userId, magazineIds, userDao, userBalance);
+            log.info(this.getClass().getSimpleName() + " creating subscription using Daos");
+        } catch (DaoException | SQLException e) {
+            throw createServiceException("createSubscriptionPurchase", e);
         }
     }
 
     @Override
-    public Optional<User> getById(long id) {
+    public Optional<Subscription> findById(long id) {
         return Optional.empty();
+    }
+
+    @Override
+    protected ServiceException createServiceException(String methodName, DaoException e) {
+        return new ServiceException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    protected ServiceException createServiceException(String methodName, Exception e) {
+        return new ServiceException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 }
 

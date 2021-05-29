@@ -26,25 +26,25 @@
                 </div>
             </section>
             <div class="container">
-                <c:forEach var="category" items="${menuItemsByCategory}">
+                <c:forEach var="theme" items="${menuItemsByCategory}">
                     <c:url value="/controller/one-category-magazines.jsp" var="url">
-                        <c:param name="category" value="${category.key.name}" />
+                        <c:param name="category" value="${theme.key.name}" />
                         <c:param name="command" value="listByOneCategoryMenu" />
                     </c:url>
                     <a href="<c:out value='${url}'/>">
                         <div class="row">
-                            <div class="theme-name"><h3>${category.key.name}</h3></div>
-                            <c:forEach var="menuItem" items="${category.value}" end="2">
+                            <div class="theme-name"><h3>${theme.key.name}</h3></div>
+                            <c:forEach var="magazine" items="${theme.value}" end="2">
                                 <div class="col">
                                     <link rel="stylesheet" href="../static/css/album.css"/>
                                     <img src="../static/images/music_1.jpg" width="100%"/>
-                                    <p>${menuItem.name}</p>
-                                    <p>${menuItem.price}</p>
+                                    <p>${magazine.name}</p>
+                                    <p>${magazine.price}</p>
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="itemId${menuItem.id}"
+                                        <input class="form-check-input" type="checkbox" id="itemId${magazine.id}"
                                                name="itemId"
-                                               value="${menuItem.id}"/>
-                                        <label class="form-check-label" for="itemId${menuItem.id}">Add this magazine to
+                                               value="${magazine.id}"/>
+                                        <label class="form-check-label" for="itemId${magazine.id}">Add this magazine to
                                             subscription</label>
                                     </div>
                                 </div>

@@ -1,14 +1,13 @@
 package com.training.periodical.controller.command;
 
+import com.training.periodical.model.service.MagazineService;
+import com.training.periodical.model.service.ServiceException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
-import com.training.periodical.model.dao.MagazineDao;
 import com.training.periodical.entity.Magazine;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -22,40 +21,49 @@ import java.util.Map;
 public class ListByOneCategoryMenuCommand implements Command {
 
     private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
+    private final MagazineService magazineService;
+
+    public ListByOneCategoryMenuCommand(MagazineService magazineService) {
+        this.magazineService = magazineService;
+    }
 
     @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
-
         log.debug("Command starts");
-
         Map<String, List<Magazine>> map = new HashMap<>();
+        String theme;
 
-        MagazineDao magazineDao = new MagazineDao();
+        if (request.getSession().getAttribute("theme") == null) { // first visit
+            theme = getDecodedTheme(request);
+            request.getSession().setAttribute("theme", theme);
+        } else { // already visited
+            theme = (String) request.getSession().getAttribute("theme");
 
-        List<Magazine> list;
-        String themeName;
-        Object theme = request.getSession().getAttribute("theme");
-
-        if (theme instanceof String && !(themeName = (String) theme).equals("")) {
-            list = magazineDao.findMagazineByThemeName(themeName);
-            request.getSession().setAttribute("theme", "");
-
-            request.getSession().setAttribute("checked", request.getSession().getAttribute("magazineId"));
-            request.getSession().setAttribute("magazineId", "");
-
-            return getPreparedForward(request, map, list, themeName);
-        } else if ((themeName = request.getParameter("theme")) != null) {
-            try {
-                list = magazineDao.findMagazineByThemeName(URLDecoder.decode(request.getParameter("theme"), StandardCharsets.UTF_8.name()));
-            } catch (UnsupportedEncodingException e) {
-               throw new CommandException(e);
-            }
-
-            return getPreparedForward(request, map, list, themeName);
+            request.getSession().removeAttribute("theme");
+            request.getSession().setAttribute("checked",
+                    request.getSession().getAttribute("magazineId"));
+            request.getSession().removeAttribute("magazineId");
         }
 
-        return Path.PAGE__LIST_MAGAZINES_BY_THEMES;
+        return getPreparedForward(request, map, getMagazineList((String) theme), (String) theme);
+    }
+
+    private String getDecodedTheme(HttpServletRequest request) throws CommandException {
+        try {
+            return URLDecoder.decode(request.getParameter("theme"),
+                    StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            throw new CommandException(e);
+        }
+    }
+
+    private List<Magazine> getMagazineList(String theme) throws CommandException {
+        try {
+            return magazineService.findMagazineByThemeName(theme);
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
     }
 
     private String getPreparedForward(HttpServletRequest request, Map<String, List<Magazine>> map, List<Magazine> list, String themeName) {

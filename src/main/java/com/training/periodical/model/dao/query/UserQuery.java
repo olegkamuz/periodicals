@@ -1,4 +1,4 @@
-package com.training.periodical.model.dao;
+package com.training.periodical.model.dao.query;
 
 public class UserQuery {
     public static final String SQL__FIND_USER_BY_LOGIN =
