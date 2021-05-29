@@ -1,6 +1,5 @@
 package com.training.periodical.model.service;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
@@ -28,6 +27,14 @@ public class UserService extends AbstractService<User> {
             return userDao.findUserByLogin(login);
         } catch (DaoException e) {
             throw createServiceException("findUserByLogin", e);
+        }
+    }
+
+    public void registerUser(User user) throws ServiceException{
+        try(UserDao userDao = daoFactory.createUserDao()){
+            userDao.create(user);
+        } catch (DaoException e) {
+            throw createServiceException("registerUser", e);
         }
     }
 

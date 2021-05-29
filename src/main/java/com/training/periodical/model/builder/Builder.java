@@ -12,5 +12,6 @@ import java.sql.SQLException;
  * but only extract information from the row in current cursor position.
  */
 public interface Builder<T> {
+
     T build(ResultSet rs) throws SQLException;
 }

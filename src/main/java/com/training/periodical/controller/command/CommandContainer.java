@@ -3,6 +3,7 @@ package com.training.periodical.controller.command;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.SubscriptionService;
 import com.training.periodical.model.service.ThemeService;
@@ -29,9 +30,12 @@ public class CommandContainer {
 		commands.put("viewSettings", new ViewSettingsCommand());
 		commands.put("updateSettings", new UpdateSettingsCommand());
 
+		// out of control
+        commands.put("index", new ListByCategoryMenuCommand(new ThemeService(), new MagazineService()));
+        commands.put("registration", new RegistrationCommand(new UserService(), new UserBuilder()));
+
 		// client commands
 //		commands.put("listMenu", new ListMenuCommand());
-        commands.put("index", new ListByCategoryMenuCommand(new ThemeService(), new  MagazineService()));
         commands.put("one-category-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
         commands.put("create-subscription",
                 new SubscriptionCommand(

@@ -1,5 +1,6 @@
 package com.training.periodical.model.dao;
 
+import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.Subscription;
 import com.training.periodical.entity.User;
 
@@ -32,6 +33,20 @@ public class UserDao extends AbstractDao<User> {
     public List<User> findAll() throws DaoException {
         return findAll(connection, builder);
     }
+
+    public void create(User user) throws DaoException {
+        String[] parameters = {
+                user.getLogin(),
+                user.getPassword(),
+                String.valueOf(user.getBalance()),
+                user.getFirstName(),
+                user.getLastName(),
+                String.valueOf(user.getRoleId())
+        };
+        executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters); // get id from result
+    }
+    public void update(User user){}
+    public void delete(int id){}
 
     /**
      * Returns a user with the given identifier.

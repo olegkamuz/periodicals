@@ -1,6 +1,7 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.Magazine;
+import com.training.periodical.entity.Subscription;
 import com.training.periodical.entity.Theme;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
@@ -28,6 +29,10 @@ public class MagazineDao extends AbstractDao<Magazine> {
     public List<Magazine> findAll() throws DaoException {
         return findAll(connection, builder);
     }
+
+    public void create(Magazine magazine) {}
+    public void update(Magazine magazine){}
+    public void delete(int id){}
 
     /**
      * Returns magazine by category name.

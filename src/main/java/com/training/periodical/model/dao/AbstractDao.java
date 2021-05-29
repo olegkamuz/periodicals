@@ -1,7 +1,5 @@
 package com.training.periodical.model.dao;
 
-import com.training.periodical.entity.Entity;
-import com.training.periodical.entity.Magazine;
 import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.dao.query.ThemeQuery;
 
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractDao<T> implements IDao<T>, AutoCloseable {
+public abstract class AbstractDao<T> implements IDao<T> {
 
     protected String tableName;
 

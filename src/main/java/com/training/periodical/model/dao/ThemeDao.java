@@ -19,6 +19,10 @@ public class ThemeDao extends AbstractDao<Theme> {
         tableName = "theme";
     }
 
+    public void create(Theme theme) {}
+    public void update(Theme theme){}
+    public void delete(int id){}
+
     public List<Theme> findAll() throws DaoException {
         return findAll(connection, builder);
     }

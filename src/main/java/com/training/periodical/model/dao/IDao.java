@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public interface IDao<T> {
+public interface IDao<T> extends AutoCloseable {
+    void create(T entity) throws DaoException;
     Optional<T> findById(long id) throws DaoException;
     List<T> findAll(Connection connection, Builder builder) throws DaoException;
+    void update(T entity);
+    void delete(int id);
 }

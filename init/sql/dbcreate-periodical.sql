@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS `periodical`.`user`
     `balance`     DECIMAL(10, 2)      NULL DEFAULT 0.00,
     `first_name`  varchar(20)         NOT NULL,
     `last_name`   varchar(20)         NOT NULL,
-    `locale_name` VARCHAR(20),
     `role_id`     INT UNSIGNED        NOT NULL,
     `blocked`     TINYINT(1) UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
@@ -44,11 +43,11 @@ CREATE TABLE IF NOT EXISTS `periodical`.`user`
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_ru_0900_ai_ci;
 INSERT INTO `user`
-VALUES (DEFAULT, 'admin', 'admin', DEFAULT, 'Ivanov', 'Ivan', NULL, 0, 0);
+VALUES (DEFAULT, 'admin', 'admin', DEFAULT, 'Ivanov', 'Ivan', 0, 0);
 INSERT INTO `user`
-VALUES (DEFAULT, 'client', 'client', DEFAULT, 'Петр', 'Петров', NULL, 1, 0);
+VALUES (DEFAULT, 'client', 'client', DEFAULT, 'Петр', 'Петров', 1, 0);
 INSERT INTO `user`
-VALUES (DEFAULT, 'петров', 'петров', 10000.00, 'Иван', 'Петров', NULL, 1, 0);
+VALUES (DEFAULT, 'петров', 'петров', 10000.00, 'Иван', 'Петров', 1, 0);
 
 CREATE TABLE IF NOT EXISTS `periodical`.`theme`
 (

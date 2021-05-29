@@ -2,6 +2,7 @@ package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.Subscription;
+import com.training.periodical.entity.Theme;
 import com.training.periodical.model.builder.SubscriptionBuilder;
 import com.training.periodical.model.dao.query.SubscriptionQuery;
 import com.training.periodical.model.dao.query.ThemeQuery;
@@ -29,6 +30,9 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
         tableName = "subscription";
     }
 
+    public void create(Subscription subscription) {}
+    public void update(Subscription subscription){}
+    public void delete(int id){}
 
     public List<Subscription> findAll() throws DaoException {
         return findAll(connection, builder);

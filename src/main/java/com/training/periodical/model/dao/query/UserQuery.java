@@ -11,6 +11,9 @@ public class UserQuery {
             "UPDATE `user` SET password=?, first_name=?, last_name=?, locale_name=?" +
                     "	WHERE id=?";
 
+    public static final String SQL__CREATE_USER =
+            "INSERT INTO `user` VALUES (DEFAULT, ?, ?, DEFAULT, ?, ?, NULL, 1, 0)";
+
     public static final String SQL__UPDATE_BALANCE_WHERE_ID =
             "UPDATE `user` SET balance=? WHERE id=?";
 }
