@@ -1,5 +1,7 @@
 package com.training.periodical.model.dao;
 
+import com.training.periodical.bean.UserSubscriptionBean;
+
 import java.sql.Connection;
 
 public interface IDaoFactory {
@@ -9,4 +11,5 @@ public interface IDaoFactory {
     SubscriptionDao createSubscriptionDao();
     MagazineDao createMagazineDao();
     ThemeDao createThemeDao();
+    UserSubscriptionDao createUserSubscriptionDao();
 }

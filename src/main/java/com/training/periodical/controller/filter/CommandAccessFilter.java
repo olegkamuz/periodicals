@@ -54,7 +54,6 @@ public class CommandAccessFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             if (response instanceof HttpServletResponse) {
-
                 if (request instanceof HttpServletRequest) {
                     ((HttpServletRequest) request).getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
                     ((HttpServletRequest) request).getSession().setAttribute("theme", request.getParameter("theme"));
@@ -77,13 +76,13 @@ public class CommandAccessFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
 //        // todo Just for DEVELOPMENT purposes, remove on prod
-//        try {
-//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
-//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
-//        } catch (DaoException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
 //        // todo remove on prod
 
 //        String commandName = request.getParameter("command");

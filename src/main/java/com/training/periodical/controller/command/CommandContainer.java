@@ -8,6 +8,7 @@ import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.SubscriptionService;
 import com.training.periodical.model.service.ThemeService;
 import com.training.periodical.model.service.UserService;
+import com.training.periodical.model.service.UserSubscriptionService;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,7 +37,7 @@ public class CommandContainer {
         commands.put("registration-save", new RegistrationSaveCommand(new UserService(), new UserBuilder()));
 
 		// client commands
-//		commands.put("listMenu", new ListMenuCommand());
+		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionService()));
         commands.put("one-category-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
         commands.put("create-subscription",
                 new SubscriptionCommand(

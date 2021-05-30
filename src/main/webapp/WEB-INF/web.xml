@@ -41,12 +41,12 @@
         Controller
     =============================================================-->
     <servlet>
-        <servlet-name>Controller</servlet-name>
+        <servlet-name>Servlet</servlet-name>
         <servlet-class>com.training.periodical.controller.controller.Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Controller</servlet-name>
+        <servlet-name>Servlet</servlet-name>
         <url-pattern>/index</url-pattern>
         <url-pattern>/one-category-magazines</url-pattern>
         <url-pattern>/one-category-magazines?*</url-pattern>
@@ -55,6 +55,7 @@
         <url-pattern>/login-check</url-pattern>
         <url-pattern>/registration</url-pattern>
         <url-pattern>/registration-save</url-pattern>
+        <url-pattern>/user-cabinet</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -77,7 +78,7 @@
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/WEB-INF/jsp/*</url-pattern>
-        <servlet-name>Controller</servlet-name>
+        <servlet-name>Servlet</servlet-name>
     </filter-mapping>
 
 
@@ -98,7 +99,7 @@
         </init-param>
         <init-param>
             <param-name>client</param-name>
-            <param-value>listMenu create-subscription</param-value>
+            <param-value>user-cabinet create-subscription</param-value>
         </init-param>
         <init-param>
             <param-name>common</param-name>
@@ -112,7 +113,7 @@
 
     <filter-mapping>
         <filter-name>CommandAccessFilter</filter-name>
-        <servlet-name>Controller</servlet-name>
+        <servlet-name>Servlet</servlet-name>
     </filter-mapping>
 
 

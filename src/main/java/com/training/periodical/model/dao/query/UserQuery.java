@@ -16,4 +16,10 @@ public class UserQuery {
 
     public static final String SQL__UPDATE_BALANCE_WHERE_ID =
             "UPDATE `user` SET balance=? WHERE id=?";
+
+    public static final String SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID =
+    "select m.name, m.price, m.image, t.name from subscription s" +
+            " join magazine m on m.id = s.magazine_id" +
+            " join theme t on t.id = m.theme_id" +
+            " where user_id=?";
 }

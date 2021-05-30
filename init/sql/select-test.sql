@@ -13,6 +13,5 @@ SELECT sum(price) AS total FROM magazine WHERE id IN ('5','6')
 
 
 
-INSERT INTO `user` VALUES (DEFAULT, 'Oleg', '1', DEFAULT, 'Олег', 'Камуз', NULL, 1, 0)
-
+select m.name, m.price, m.image, t.name from subscription s join magazine m on m.id = s.magazine_id join theme t on t.id = m.theme_id where user_id = 3
 

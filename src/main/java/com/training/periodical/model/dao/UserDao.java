@@ -1,18 +1,19 @@
 package com.training.periodical.model.dao;
 
+import com.training.periodical.bean.UserSubscriptionBean;
 import com.training.periodical.entity.Magazine;
-import com.training.periodical.entity.Subscription;
 import com.training.periodical.entity.User;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
+import com.training.periodical.model.builder.UserSubscriptionsBuilder;
 import com.training.periodical.model.dao.query.UserQuery;
 import org.apache.log4j.Logger;
 

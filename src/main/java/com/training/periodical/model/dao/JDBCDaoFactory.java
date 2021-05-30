@@ -4,6 +4,7 @@ import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.builder.SubscriptionBuilder;
 import com.training.periodical.model.builder.ThemeBuilder;
 import com.training.periodical.model.builder.UserBuilder;
+import com.training.periodical.model.builder.UserSubscriptionsBuilder;
 
 import java.sql.Connection;
 
@@ -14,6 +15,11 @@ public class JDBCDaoFactory extends AbstractDaoFactory{
     @Override
     public UserDao createUserDao() {
         return new UserDao(dbManager.getConnection(), new UserBuilder());
+    }
+
+    @Override
+    public UserSubscriptionDao createUserSubscriptionDao() {
+        return new UserSubscriptionDao(dbManager.getConnection(), new UserBuilder(), new UserSubscriptionsBuilder());
     }
 
     public UserDao createUserDao(Connection connection) {
