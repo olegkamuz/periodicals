@@ -34,7 +34,7 @@ public class UserCabinetCommand implements Command {
                 userId != null && !userId.equals("")) {
             try {
                 BigDecimal newBalance = (new BigDecimal(replenish))
-                        .add(((User)request.getSession().getAttribute("user")).getBalance());
+                        .add(((User) request.getSession().getAttribute("user")).getBalance());
                 userService.updateBalance(userId, String.valueOf(newBalance));
                 ((User) request.getSession().getAttribute("user")).setBalance(newBalance);
             } catch (ServiceException e) {
@@ -42,6 +42,15 @@ public class UserCabinetCommand implements Command {
             }
         }
 
+        if (!isAttributeSet(request, "subscriptionList")) {
+            setSessionSubscriptionList(request);
+        }
+
+        log.debug("User cabinet command finish");
+        return Path.PAGE__USER_CABINET;
+    }
+
+    private void setSessionSubscriptionList(HttpServletRequest request) throws CommandException {
         List<UserSubscriptionBean> subscriptionList = null;
         try {
             subscriptionList = USService.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
@@ -49,9 +58,9 @@ public class UserCabinetCommand implements Command {
             throw new CommandException(e);
         }
         request.getSession().setAttribute("subscriptionList", subscriptionList);
+    }
 
-
-        log.debug("User cabinet command finish");
-        return Path.PAGE__USER_CABINET;
+    private boolean isAttributeSet(HttpServletRequest request, String attributeName) {
+        return request.getSession().getAttribute(attributeName) != null;
     }
 }

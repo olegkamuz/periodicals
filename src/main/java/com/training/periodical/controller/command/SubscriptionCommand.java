@@ -51,8 +51,16 @@ public class SubscriptionCommand implements Command {
                     this.getClass().getSimpleName(), e);
         }
 
+        cleanSessionSubscriptionList(request);
+
         log.debug("Command finished");
         return Path.REDIRECT__INDEX; // todo user cabinet
+    }
+
+    private void cleanSessionSubscriptionList(HttpServletRequest request) {
+        if (request.getSession().getAttribute("subscriptionList") != null){
+            request.getSession().removeAttribute("subscriptionList");
+        }
     }
 
     private BigDecimal getSubtractedBalance() {
