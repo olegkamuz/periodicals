@@ -13,61 +13,12 @@ import java.util.Optional;
 
 public class RegistrationCommand implements Command {
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
-    private final UserService userService;
-    private final UserBuilder userBuilder;
-
-    public RegistrationCommand(UserService userService, UserBuilder userBuilder) {
-        this.userService = userService;
-        this.userBuilder = userBuilder;
-    }
 
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        log.info("Executing Registration command");
+        log.info("Registration command starts");
 
-        String result = "";
-        if (
-                request.getParameter("login") == null ||
-                        request.getParameter("login").equals("") ||
-                        request.getParameter("password") == null ||
-                        request.getParameter("password").equals("") ||
-                        request.getParameter("email") == null ||
-                        request.getParameter("email").equals("")
-        ) {
-            request.setAttribute("msg", "Please fill in all the fields of the form"); //TODO in18ze
-            return result;
-        }
-
-        if (isExistedUser(request)) {
-            request.setAttribute("msg", "User already exists"); //TODO in18ze
-            return result;
-        }
-
-        try {
-            userService.registerUser(buildUser(request));
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
-
-        log.info("User registered successfully");
-        request.setAttribute("msgSuccess", "You have been registered successfully");
-        return Path.REDIRECT__LOGIN;
-    }
-
-    private User buildUser(HttpServletRequest request) {
-        return userBuilder.setLogin(request.getParameter("login"))
-                .setPassword(request.getParameter("password"))
-                .setFirstName(request.getParameter("firstName"))
-                .setLastName(request.getParameter("lastName"))
-                .build();
-    }
-
-    private boolean isExistedUser(HttpServletRequest request) throws CommandException {
-        Optional<User> optionalUser = null;
-        try {
-            optionalUser = userService.findUserByLogin(request.getParameter("login"));
-            return optionalUser.isPresent();
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+        log.info("Registration command finish");
+        return Path.PAGE__REGISTRATION;
+//        return Path.REDIRECT__REGISTRATION;
     }
 }

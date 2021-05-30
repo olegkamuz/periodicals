@@ -2,18 +2,15 @@ package com.training.periodical.controller.command;
 
 import com.training.periodical.Path;
 import com.training.periodical.model.dao.Role;
-import com.training.periodical.model.dao.UserDao;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -79,7 +76,7 @@ public class LoginCheckCommand implements Command {
                 if (session.getAttribute("theme") != null && session.getAttribute("magazineId") != null) {
                     forward = Path.REDIRECT__LIST_MAGAZINES_BY_ONE_THEME;
                 } else {
-                    forward = Path.COMMAND__LIST_MENU;
+                    forward = Path.FORWARD__INDEX;
                 }
             }
 
@@ -92,7 +89,7 @@ public class LoginCheckCommand implements Command {
             log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
 
             // work with i18n
-            String userLocaleName = user.getLocaleName();
+            String userLocaleName = user.getLocale();
             log.trace("userLocalName --> " + userLocaleName);
 
             if (userLocaleName != null && !userLocaleName.isEmpty()) {

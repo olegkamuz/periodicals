@@ -19,9 +19,9 @@ public class LoginCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
 
-        log.debug("Command starts");
+        log.debug("Login command starts");
 
-        log.debug("Command finished");
+        log.debug("Login command finished");
         return Path.PAGE__LOGIN;
 
     }

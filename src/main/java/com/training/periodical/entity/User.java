@@ -14,7 +14,10 @@ public class User extends Entity { // add serialization
     private BigDecimal balance;
     private String firstName;
     private String lastName;
+    private String locale;
     private int roleId;
+
+    public User(){}
 
     public User(long id, String login, String password,
                 BigDecimal balance, String firstName,
@@ -26,6 +29,12 @@ public class User extends Entity { // add serialization
         this.firstName = firstName;
         this.lastName = lastName;
         this.roleId = roleId;
+    }
+    public User(String login, String password, String firstName, String lastName) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public BigDecimal getBalance() {
@@ -64,12 +73,18 @@ public class User extends Entity { // add serialization
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
-
+    public String getLocale() {
+        return locale;
+    }
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
     @Override
     public String toString() {
-        return "User [login=" + login + ", password=" + password
-                + ", firstName=" + firstName + ", lastName=" + lastName
-                + ", roleId=" + roleId + "]";
+        return "User [login=" + login + ", password=" + password +
+                ", balance " + balance + ", firstName=" + firstName +
+                ", lastName=" + lastName + ",localeName=" + locale +
+                ", roleId=" + roleId + "]";
     }
 
 }

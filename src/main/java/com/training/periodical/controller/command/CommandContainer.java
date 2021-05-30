@@ -32,7 +32,8 @@ public class CommandContainer {
 
 		// out of control
         commands.put("index", new ListByCategoryMenuCommand(new ThemeService(), new MagazineService()));
-        commands.put("registration", new RegistrationCommand(new UserService(), new UserBuilder()));
+        commands.put("registration", new RegistrationCommand());
+        commands.put("registration-save", new RegistrationSaveCommand(new UserService(), new UserBuilder()));
 
 		// client commands
 //		commands.put("listMenu", new ListMenuCommand());

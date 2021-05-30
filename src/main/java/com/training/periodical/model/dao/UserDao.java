@@ -38,10 +38,8 @@ public class UserDao extends AbstractDao<User> {
         String[] parameters = {
                 user.getLogin(),
                 user.getPassword(),
-                String.valueOf(user.getBalance()),
                 user.getFirstName(),
-                user.getLastName(),
-                String.valueOf(user.getRoleId())
+                user.getLastName()
         };
         executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters); // get id from result
     }

@@ -27,7 +27,13 @@
 					
 					<input type="submit" value='<fmt:message key="login_jsp.button.login"/>'>								
 				</form>
-			</td>
+
+                <link rel="stylesheet" href="<c:url value="/static/css/main.css" />">
+
+                <a href="/registration">
+                    <fmt:message key="login_jsp.label.registration"/>
+                </a>
+            </td>
 		</tr>
 	</table>
     <%@ include file="/WEB-INF/jspf/footer.jspf"%>

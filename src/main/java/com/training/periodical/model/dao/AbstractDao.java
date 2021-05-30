@@ -70,6 +70,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
+
         }
     }
 

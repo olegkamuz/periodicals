@@ -12,3 +12,7 @@ DISCONNECT;
 SELECT sum(price) AS total FROM magazine WHERE id IN ('5','6')
 
 
+
+INSERT INTO `user` VALUES (DEFAULT, 'Oleg', '1', DEFAULT, 'Олег', 'Камуз', NULL, 1, 0)
+
+

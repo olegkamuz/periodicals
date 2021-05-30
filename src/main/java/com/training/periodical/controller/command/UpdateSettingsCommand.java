@@ -2,15 +2,12 @@ package com.training.periodical.controller.command;
 
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
-import com.training.periodical.model.dao.UserDao;
 import com.training.periodical.entity.User;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-import java.io.IOException;
 
 /**
  * Update settings items.
@@ -50,7 +47,7 @@ public class UpdateSettingsCommand implements Command {
             HttpSession session = request.getSession();
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
-            user.setLocaleName(localeToSet);
+            user.setLocale(localeToSet);
             updateUser = true;
         }
 

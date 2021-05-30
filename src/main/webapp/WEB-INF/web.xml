@@ -53,6 +53,8 @@
         <url-pattern>/create-subscription</url-pattern>
         <url-pattern>/login</url-pattern>
         <url-pattern>/login-check</url-pattern>
+        <url-pattern>/registration</url-pattern>
+        <url-pattern>/registration-save</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -104,7 +106,7 @@
         </init-param>
         <init-param>
             <param-name>out-of-control</param-name>
-            <param-value>index login login-check logout one-category-magazines</param-value>
+            <param-value>registration-save registration index login login-check logout one-category-magazines</param-value>
         </init-param>
     </filter>
 
