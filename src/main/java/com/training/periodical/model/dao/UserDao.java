@@ -1,15 +1,15 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.bean.UserSubscriptionBean;
-import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.User;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
@@ -23,7 +23,15 @@ import org.apache.log4j.Logger;
 public class UserDao extends AbstractDao<User> {
     private static final Logger log = Logger.getLogger(UserDao.class);
     private UserBuilder builder;
+    private UserSubscriptionsBuilder USBuilder;
     private final Connection connection;
+
+    public UserDao(Connection connection, UserBuilder userBuilder, UserSubscriptionsBuilder usBuilder) {
+        this.connection = connection;
+        this.builder = userBuilder;
+        USBuilder = usBuilder;
+        tableName = "user";
+    }
 
     public UserDao(Connection connection, UserBuilder userBuilder) {
         this.connection = connection;
@@ -33,6 +41,29 @@ public class UserDao extends AbstractDao<User> {
 
     public List<User> findAll() throws DaoException {
         return findAll(connection, builder);
+    }
+
+    public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
+        String[] parameters = {String.valueOf(userId)};
+        try {
+//            return executeBeanQuery(connection, UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID, new UserBuilder(), parameters);
+            return executeBeanQuery(parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    protected List<UserSubscriptionBean> executeBeanQuery(String... parameters) throws SQLException {
+        ResultSet resultSet;
+        List<UserSubscriptionBean> entity = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement(UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID);
+        prepareStatement(preparedStatement, parameters);
+        resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            UserSubscriptionBean build = USBuilder.build(resultSet);
+            entity.add(build);
+        }
+        return entity;
     }
 
     public void create(User user) throws DaoException {

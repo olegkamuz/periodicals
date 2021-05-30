@@ -11,5 +11,4 @@ public interface IDaoFactory {
     SubscriptionDao createSubscriptionDao();
     MagazineDao createMagazineDao();
     ThemeDao createThemeDao();
-    UserSubscriptionDao createUserSubscriptionDao();
 }

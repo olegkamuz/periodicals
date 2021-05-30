@@ -14,14 +14,10 @@ public class JDBCDaoFactory extends AbstractDaoFactory{
 
     @Override
     public UserDao createUserDao() {
-        return new UserDao(dbManager.getConnection(), new UserBuilder());
+        return new UserDao(dbManager.getConnection(), new UserBuilder(), new UserSubscriptionsBuilder());
     }
 
     @Override
-    public UserSubscriptionDao createUserSubscriptionDao() {
-        return new UserSubscriptionDao(dbManager.getConnection(), new UserBuilder(), new UserSubscriptionsBuilder());
-    }
-
     public UserDao createUserDao(Connection connection) {
         return new UserDao(connection, new UserBuilder());
     }

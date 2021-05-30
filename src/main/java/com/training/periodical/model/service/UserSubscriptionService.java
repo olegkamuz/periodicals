@@ -4,7 +4,7 @@ import com.training.periodical.bean.UserSubscriptionBean;
 import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.IDaoFactory;
-import com.training.periodical.model.dao.UserSubscriptionDao;
+import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserSubscriptionService extends AbstractService<UserSubscriptionBea
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
     public List<UserSubscriptionBean> findSubscriptionByUserId(long userId) throws ServiceException{
-        try (final UserSubscriptionDao USDao = daoFactory.createUserSubscriptionDao()) {
+        try (final UserDao USDao = daoFactory.createUserDao()) {
             return USDao.getSubscriptionsByUserId(userId);
         } catch (DaoException e) {
             throw createServiceException("findSubscriptionByUserId", e);
