@@ -36,9 +36,9 @@ public class CommandAccessFilter implements Filter {
     private static final Logger log = Logger.getLogger(CommandAccessFilter.class);
 
     // commands access
-    private static Map<Role, List<String>> accessMap = new HashMap<Role, List<String>>();
-    private static List<String> commons = new ArrayList<String>();
-    private static List<String> outOfControl = new ArrayList<String>();
+    private static Map<Role, List<String>> accessMap = new HashMap<>();
+    private static List<String> commons = new ArrayList<>();
+    private static List<String> outOfControl = new ArrayList<>();
 
     public void destroy() {
         log.debug("Filter destruction starts");
@@ -62,10 +62,10 @@ public class CommandAccessFilter implements Filter {
                 ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
             } else {
 
-                String errorMessasge = "You do not have permission to access the requested resource";
+                String errorMessage = "You do not have permission to access the requested resource";
 
-                request.setAttribute("errorMessage", errorMessasge);
-                log.trace("Set the request attribute: errorMessage --> " + errorMessasge);
+                request.setAttribute("errorMessage", errorMessage);
+                log.trace("Set the request attribute: errorMessage --> " + errorMessage);
 
                 request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
                         .forward(request, response);

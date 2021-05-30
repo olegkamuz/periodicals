@@ -36,7 +36,6 @@ public class Servlet extends HttpServlet {
      */
     private void processRequest(HttpServletRequest request,
                                 HttpServletResponse response) throws IOException, ServletException {
-
         log.debug("Controller starts");
 
         String commandName = request.getServletPath().replace("/", "");

@@ -17,13 +17,13 @@ import java.util.Map;
 /**
  * Lists menu items.
  */
-public class ListByCategoryMenuCommand implements Command {
+public class IndexCommand implements Command {
 
-    private static final Logger log = Logger.getLogger(ListByCategoryMenuCommand.class);
+    private static final Logger log = Logger.getLogger(IndexCommand.class);
     private final ThemeService themeService;
     private final MagazineService magazineService;
 
-    public ListByCategoryMenuCommand(ThemeService themeService, MagazineService magazineService) {
+    public IndexCommand(ThemeService themeService, MagazineService magazineService) {
         this.themeService = themeService;
         this.magazineService = magazineService;
     }
