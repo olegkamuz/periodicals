@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public class UserService extends AbstractService<User> {
     private static final Logger log = Logger.getLogger(UserService.class);
-    private IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
+    private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    public void updateBalance(long userId, BigDecimal userBalance) throws ServiceException {
+    public void updateBalance(String userId, String userBalance) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             userDao.updateBalance(userId, userBalance);
         } catch (DaoException e) {

@@ -22,25 +22,25 @@ import org.apache.log4j.Logger;
  */
 public class UserDao extends AbstractDao<User> {
     private static final Logger log = Logger.getLogger(UserDao.class);
-    private UserBuilder builder;
+    private UserBuilder userBuilder;
     private UserSubscriptionsBuilder USBuilder;
     private final Connection connection;
 
     public UserDao(Connection connection, UserBuilder userBuilder, UserSubscriptionsBuilder usBuilder) {
         this.connection = connection;
-        this.builder = userBuilder;
+        this.userBuilder = userBuilder;
         USBuilder = usBuilder;
         tableName = "user";
     }
 
     public UserDao(Connection connection, UserBuilder userBuilder) {
         this.connection = connection;
-        this.builder = userBuilder;
+        this.userBuilder = userBuilder;
         tableName = "user";
     }
 
     public List<User> findAll() throws DaoException {
-        return findAll(connection, builder);
+        return findAll(connection, userBuilder);
     }
 
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
@@ -87,7 +87,7 @@ public class UserDao extends AbstractDao<User> {
     @Override
     public Optional<User> findById(long id) throws DaoException {
         try {
-            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_ID, builder, String.valueOf(id));
+            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_ID, userBuilder, String.valueOf(id));
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -132,7 +132,7 @@ public class UserDao extends AbstractDao<User> {
     public Optional<User> findUserByLogin(String login) throws DaoException {
         try {
             String[] parameters = {login};
-            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_LOGIN, builder, parameters);
+            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_LOGIN, userBuilder, parameters);
         } catch (SQLException ex) {
             rollback(connection);
             throw new DaoException(ex);
@@ -192,8 +192,8 @@ public class UserDao extends AbstractDao<User> {
 //    }
 
 
-    public void updateBalance(Long userId, BigDecimal balance) throws DaoException {
-        String[] parameters = {String.valueOf(balance), String.valueOf(userId)};
+    public void updateBalance(String userId, String balance) throws DaoException {
+        String[] parameters = {balance, userId};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 

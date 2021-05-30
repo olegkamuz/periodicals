@@ -5,7 +5,7 @@ package com.training.periodical.entity;
  */
 public abstract class Entity {
 
-    private Long id;
+    public Long id;
 
     public Long getId() {
         return id;

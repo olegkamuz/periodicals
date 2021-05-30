@@ -15,8 +15,18 @@
     <div class="wrapper">
         <section class="jumbotron text-center">
             <div class="container">
-                <p class="lead text-muted">Hello, ${userLogin}</p>
-                <p class="lead text-muted">your balance is: ${userBalance}</p>
+                <p class="lead text-muted">Hello, ${user.login}</p>
+                <p class="lead text-muted">your balance is: ${user.balance}</p>
+                <form id="login_form" action="user-cabinet" method="post">
+                    <input type="hidden" name="user-id" value="${user.id}"/>
+                    <fieldset>
+                        <legend>
+                            <fmt:message key="user-cabinet_jsp.label.replenish"/>
+                        </legend>
+                        <input name="replenish"/><br/>
+                    </fieldset><br/>
+                    <input type="submit" value='<fmt:message key="user-cabinet_jsp.label.replenish"/>'>
+                </form>
                 <p class="lead text-muted">here is your subscriptions:</p>
             </div>
         </section>

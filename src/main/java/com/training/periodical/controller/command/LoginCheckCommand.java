@@ -19,6 +19,11 @@ import java.util.Optional;
 public class LoginCheckCommand implements Command {
 
     private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
+    private final UserService userService;
+
+    public LoginCheckCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String execute(HttpServletRequest request,
@@ -47,7 +52,7 @@ public class LoginCheckCommand implements Command {
 
         User user = null;
         try {
-            Optional<User> optionalUser = (new UserService()).findUserByLogin(login);
+            Optional<User> optionalUser = userService.findUserByLogin(login);
             if (optionalUser.isPresent()) {
                 user = optionalUser.get();
             } else {

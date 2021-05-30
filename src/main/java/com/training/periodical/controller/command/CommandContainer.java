@@ -24,7 +24,7 @@ public class CommandContainer {
 	static {
 		// common commands
 		commands.put("login", new LoginCommand());
-        commands.put("login-check", new LoginCheckCommand());
+        commands.put("login-check", new LoginCheckCommand(new UserService()));
 //        commands.put("login_session", new LoginSessionCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("noCommand", new NoCommand());
@@ -37,7 +37,7 @@ public class CommandContainer {
         commands.put("registration-save", new RegistrationSaveCommand(new UserService(), new UserBuilder()));
 
 		// client commands
-		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionService()));
+		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionService(),new UserService()));
         commands.put("one-category-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
         commands.put("create-subscription",
                 new SubscriptionCommand(

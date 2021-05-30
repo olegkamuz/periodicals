@@ -8,7 +8,6 @@ import java.math.BigDecimal;
  */
 public class User extends Entity { // add serialization
 
-    private Long id;
     private String login;
     private String password;
     private BigDecimal balance;
@@ -19,10 +18,10 @@ public class User extends Entity { // add serialization
 
     public User(){}
 
-    public User(long id, String login, String password,
+    public User(long userId, String login, String password,
                 BigDecimal balance, String firstName,
                 String lastName, int roleId){
-        this.id = id;
+        id = userId;
         this.login = login;
         this.password = password;
         this.balance = balance;
