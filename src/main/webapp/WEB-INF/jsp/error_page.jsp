@@ -9,6 +9,7 @@
 <%@ include file="/WEB-INF/jspf/head.jspf" %>
 	
 <body>
+<h1>ERROR PAGE</h1>
 
 	<table id="main-container">
 

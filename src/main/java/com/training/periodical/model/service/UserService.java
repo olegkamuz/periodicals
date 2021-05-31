@@ -8,6 +8,7 @@ import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService extends AbstractService<User> {
@@ -27,6 +28,14 @@ public class UserService extends AbstractService<User> {
             return userDao.findUserByLogin(login);
         } catch (DaoException e) {
             throw createServiceException("findUserByLogin", e);
+        }
+    }
+
+    public List<User> findAll() throws ServiceException {
+        try (UserDao userDao = daoFactory.createUserDao()) {
+            return userDao.findAll();
+        } catch (DaoException e) {
+            throw createServiceException("findAll", e);
         }
     }
 

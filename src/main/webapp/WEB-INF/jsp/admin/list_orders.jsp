@@ -16,6 +16,7 @@
 			<td class="content">
 			<%-- CONTENT --%>
 
+
 			<c:choose>
 			<c:when test="${fn:length(userOrderBeanList) == 0}">No such orders</c:when>
 	

@@ -9,7 +9,8 @@ public final class Path {
 	// pages
 	public static final String PAGE__LOGIN = "/login.jsp";
     public static final String PAGE__REGISTRATION = "/registration.jsp";
-    public static final String PAGE__USER_CABINET = "/client/user-cabinet.jsp";
+    public static final String PAGE__USER_CABINET = "/WEB-INF/jsp/client/user-cabinet.jsp";
+    public static final String PAGE__ADMIN_CABINET = "/WEB-INF/jsp/admin/admin-cabinet.jsp";
 
 	public static final String PAGE__ERROR_PAGE = "/WEB-INF/jsp/error_page.jsp";
 	public static final String PAGE__LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";

@@ -1,5 +1,6 @@
 package com.training.periodical.model.dao;
 
+import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.dao.query.ThemeQuery;
 
@@ -17,7 +18,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
 
     public String getTableName() { return this.tableName;}
 
-    public List<T> findAll(Connection connection, Builder builder) throws DaoException {
+    public List<T> findAll(Connection connection, Builder<T> builder) throws DaoException {
         try {
             String[] parameters = {};
             return executeQuery(connection, ThemeQuery.getFindAllFromTable(tableName), builder, parameters);

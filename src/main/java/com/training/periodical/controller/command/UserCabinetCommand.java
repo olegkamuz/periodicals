@@ -25,7 +25,7 @@ public class UserCabinetCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        log.debug("User cabinet command starts");
+        log.info("User cabinet command starts");
 
         String replenish = request.getParameter("replenish");
         String userId = request.getParameter("user-id");
@@ -46,7 +46,7 @@ public class UserCabinetCommand implements Command {
             setSessionSubscriptionList(request);
         }
 
-        log.debug("User cabinet command finish");
+        log.info("User cabinet command finish");
         return Path.PAGE__USER_CABINET;
     }
 

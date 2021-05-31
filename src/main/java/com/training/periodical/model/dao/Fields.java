@@ -22,7 +22,8 @@ public final class Fields {
 	public static final String USER__LAST_NAME = "last_name";
 	public static final String USER__LOCALE_NAME = "locale_name";
 	public static final String USER__ROLE_ID = "role_id";
-	
+    public static final String USER__BLOCKED = "blocked";
+
 	public static final String ORDER__BILL = "bill";
 	public static final String ORDER__USER_ID = "user_id";
 	public static final String ORDER__STATUS_ID= "status_id";

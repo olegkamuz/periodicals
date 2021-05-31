@@ -9,11 +9,6 @@
 
     <display-name>Periodical</display-name>
 
-    <!--    <welcome-file-list>-->
-    <!--        <welcome-file>index.jsp</welcome-file>-->
-    <!--    </welcome-file-list>-->
-
-
     <!--============================================================
         i18n support
     =============================================================-->
@@ -56,6 +51,7 @@
         <url-pattern>/registration</url-pattern>
         <url-pattern>/registration-save</url-pattern>
         <url-pattern>/user-cabinet</url-pattern>
+        <url-pattern>/admin-cabinet</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -95,7 +91,7 @@
         <filter-class>com.training.periodical.controller.filter.CommandAccessFilter</filter-class>
         <init-param>
             <param-name>admin</param-name>
-            <param-value>listOrders</param-value>
+            <param-value>admin-cabinet</param-value>
         </init-param>
         <init-param>
             <param-name>client</param-name>

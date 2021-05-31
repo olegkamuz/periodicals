@@ -7,7 +7,6 @@ import java.math.BigDecimal;
  *
  */
 public class User extends Entity { // add serialization
-
     private String login;
     private String password;
     private BigDecimal balance;
@@ -15,12 +14,13 @@ public class User extends Entity { // add serialization
     private String lastName;
     private String locale;
     private int roleId;
+    private int blocked;
 
     public User(){}
 
     public User(long userId, String login, String password,
                 BigDecimal balance, String firstName,
-                String lastName, int roleId){
+                String lastName, int roleId, int blocked){
         id = userId;
         this.login = login;
         this.password = password;
@@ -28,6 +28,7 @@ public class User extends Entity { // add serialization
         this.firstName = firstName;
         this.lastName = lastName;
         this.roleId = roleId;
+        this.blocked = blocked;
     }
     public User(String login, String password, String firstName, String lastName) {
         this.login = login;
@@ -36,6 +37,12 @@ public class User extends Entity { // add serialization
         this.lastName = lastName;
     }
 
+    public int getBlocked() {
+        return blocked;
+    }
+    public void setBlocked(int blocked) {
+        this.blocked = blocked;
+    }
     public BigDecimal getBalance() {
         return balance;
     }
@@ -80,10 +87,20 @@ public class User extends Entity { // add serialization
     }
     @Override
     public String toString() {
+        return id == null ? getNoIdStr() : getWithIdStr();
+    }
+
+    private String getWithIdStr(){
+        return "User [id=" + id + ", login=" + login + ", password=" + password +
+                ", balance " + balance + ", firstName=" + firstName +
+                ", lastName=" + lastName + ",localeName=" + locale +
+                ", roleId=" + roleId + ", blocked=" + blocked + "]";
+    }
+    private String getNoIdStr(){
         return "User [login=" + login + ", password=" + password +
                 ", balance " + balance + ", firstName=" + firstName +
                 ", lastName=" + lastName + ",localeName=" + locale +
-                ", roleId=" + roleId + "]";
+                ", roleId=" + roleId + ", blocked=" + blocked + "]";
     }
 
 }
