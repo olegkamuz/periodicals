@@ -23,6 +23,14 @@ public class UserService extends AbstractService<User> {
         }
     }
 
+    public int update(String userId, String column, String value) throws ServiceException{
+        try(UserDao userDao = daoFactory.createUserDao()) {
+            return userDao.update(userId, column, value);
+        } catch (DaoException e) {
+           throw createServiceException("update", e);
+        }
+    }
+
     public Optional<User> findUserByLogin(String login) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findUserByLogin(login);

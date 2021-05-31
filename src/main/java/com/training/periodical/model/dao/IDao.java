@@ -11,6 +11,6 @@ public interface IDao<T> extends AutoCloseable {
     void create(T entity) throws DaoException;
     Optional<T> findById(long id) throws DaoException;
     List<T> findAll(Connection connection, Builder<T> builder) throws DaoException;
-    void update(T entity);
+    int update(String userId, String column, String value) throws DaoException;
     void delete(int id);
 }

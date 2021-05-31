@@ -20,7 +20,9 @@ public class ThemeDao extends AbstractDao<Theme> {
     }
 
     public void create(Theme theme) {}
-    public void update(Theme theme){}
+    public int update(String themeId, String column, String value) throws DaoException{
+        return 0;
+    }
     public void delete(int id){}
 
     public List<Theme> findAll() throws DaoException {

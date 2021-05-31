@@ -75,7 +75,14 @@ public class UserDao extends AbstractDao<User> {
         };
         executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters); // get id from result
     }
-    public void update(User user){}
+
+    @Override
+    public int update(String userId, String column, String value) throws DaoException{
+        String query = UserQuery.getUpdateColumnQuery(userId, column);
+        String[] parameters = {value, userId};
+        return executeUpdate(connection, query, parameters);
+    }
+
     public void delete(int id){}
 
     /**

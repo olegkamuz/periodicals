@@ -18,8 +18,12 @@ public class UserQuery {
             "UPDATE `user` SET balance=? WHERE id=?";
 
     public static final String SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID =
-    "select m.name, m.price, m.image, t.name from subscription s" +
-            " join magazine m on m.id = s.magazine_id" +
-            " join theme t on t.id = m.theme_id" +
-            " where user_id=?";
+    "SELECT m.name, m.price, m.image, t.name FROM subscription s" +
+            " JOIN magazine m ON m.id = s.magazine_id" +
+            " JOIN theme t ON t.id = m.theme_id" +
+            " WHERE user_id=?";
+
+    public static String getUpdateColumnQuery(String userId, String column) {
+        return "UPDATE `user` SET `" + column + "`=? WHERE `id`=?";
+    }
 }

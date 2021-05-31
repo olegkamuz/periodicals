@@ -33,6 +33,11 @@
                                 <td>${user.firstName}</td>
                                 <td>${user.lastName}</td>
                                 <td>${user.blocked}</td>
+                                <form action="admin-cabinet" method="post">
+                                    <input type="hidden" name="user_id" value="${user.id}"/>
+                                    <input type="hidden" name="change_block" value="${user.blocked}"/>
+                                    <td><input type="submit" value='<fmt:message key="admin-cabinet_jsp.button.change_blocked"/>'/></td>
+                                </form>
                             </tr>
                         </c:forEach>
                         </tbody>

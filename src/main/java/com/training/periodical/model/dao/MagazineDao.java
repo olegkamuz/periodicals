@@ -31,7 +31,9 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     public void create(Magazine magazine) {}
-    public void update(Magazine magazine){}
+    public int update(String magazineId, String column, String value){
+        return 0;
+    }
     public void delete(int id){}
 
     /**

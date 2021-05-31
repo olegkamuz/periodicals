@@ -63,12 +63,12 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
 
-    protected void executeUpdate(Connection connection, String query, String... parameters) throws DaoException {
+    protected int executeUpdate(Connection connection, String query, String... parameters) throws DaoException {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(query);
             prepareStatement(preparedStatement, parameters);
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
 

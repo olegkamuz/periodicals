@@ -31,7 +31,9 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     public void create(Subscription subscription) {}
-    public void update(Subscription subscription){}
+    public int update(String subscriptionId, String column, String value) throws DaoException{
+        return 0;
+    }
     public void delete(int id){}
 
     public List<Subscription> findAll() throws DaoException {

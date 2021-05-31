@@ -22,6 +22,17 @@ public class AdminCabinetCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
 
+        String block = request.getParameter("change_block");
+        String userId = request.getParameter("user_id");
+        if (block != null && userId != null) {
+            int changed = Integer.parseInt(block) == 0 ? 1 : 0;
+            try {
+                userService.update(userId, "blocked", String.valueOf(changed));
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        }
+
         try {
             List<User> userList = userService.findAll();
             request.getSession().setAttribute("userList", userList);
