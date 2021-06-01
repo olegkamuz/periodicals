@@ -44,7 +44,7 @@ public class SubscriptionCommand implements Command {
         }
 
         try {
-            if (isEnoughMoney(userId, magazineIds)) subscriptionService.
+            if (isEnoughMoney(String.valueOf(userId), magazineIds)) subscriptionService.
                     createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
         } catch (ServiceException e) {
             throw new CommandException("exception in execute method at " +
@@ -70,7 +70,7 @@ public class SubscriptionCommand implements Command {
         return userBalance = userBalance.subtract(sumPriceMagazines);
     }
 
-    private boolean isEnoughMoney(long userId, String[] magazineIds) throws CommandException {
+    private boolean isEnoughMoney(String userId, String[] magazineIds) throws CommandException {
         try {
             sumPriceMagazines = getSumPriceMagazines(magazineIds);
             if (sumPriceMagazines == null) return false;
@@ -88,7 +88,7 @@ public class SubscriptionCommand implements Command {
         return magazineService.findSumPriceByIds(magazineIds);
     }
 
-    private BigDecimal getUserBalance(Long userId) throws ServiceException {
+    private BigDecimal getUserBalance(String userId) throws ServiceException {
         BigDecimal userBalance;
         Optional<User> optionalUser = userService.findById(userId);
         if (optionalUser.isPresent()) {

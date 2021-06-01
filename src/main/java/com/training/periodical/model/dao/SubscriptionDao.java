@@ -31,7 +31,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     public void create(Subscription subscription) {}
-    public int update(String subscriptionId, String column, String value) throws DaoException{
+    public int update(Subscription subscription) throws DaoException{
         return 0;
     }
     public void delete(int id){}
@@ -56,7 +56,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     @Override
-    public Optional<Subscription> findById(long id) throws DaoException {
+    public Optional<Subscription> findById(String id) throws DaoException {
         return Optional.empty();
     }
 

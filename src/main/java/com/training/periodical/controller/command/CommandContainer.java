@@ -45,7 +45,7 @@ public class CommandContainer {
                         new UserService(), new MagazineService()));
 
 		// admin commands
-		commands.put("admin-cabinet", new AdminCabinetCommand(new UserService()));
+		commands.put("admin-cabinet", new AdminCabinetCommand(new UserService(), new MagazineService()));
 		
 		log.debug("Command container was successfully initialized");
 		log.trace("Number of commands --> " + commands.size());

@@ -7,8 +7,6 @@ import java.math.BigDecimal;
  */
 public class Magazine extends Entity {
 
-    private long id;
-
     private String name;
 
     private BigDecimal price;
@@ -51,7 +49,7 @@ public class Magazine extends Entity {
 
     @Override
     public String toString() {
-        return "Magazine [name=" + name + ", price=" + price + ", image=" + image + ", categoryId="
+        return "Magazine [name=" + name + ", price=" + price + ", image=" + image + ", themeId="
                 + themeId + ", getId()=" + getId() + "]";
     }
 

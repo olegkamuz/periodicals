@@ -6,6 +6,7 @@ import com.training.periodical.entity.Theme;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.ThemeQuery;
+import com.training.periodical.model.dao.query.UserQuery;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -31,8 +32,16 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     public void create(Magazine magazine) {}
-    public int update(String magazineId, String column, String value){
-        return 0;
+
+    public int update(Magazine magazine) throws DaoException{
+        String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
+        Object[] parameters = builder.unBuild(magazine);
+        return executeUpdate(connection, query, parameters);
+    }
+    public int updateNow(Magazine magazine) throws DaoException{
+        String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
+        Object[] parameters = builder.unBuild(magazine);
+        return executeUpdateNow(connection, query, parameters);
     }
     public void delete(int id){}
 
@@ -225,8 +234,12 @@ public class MagazineDao extends AbstractDao<Magazine> {
 //    }
 
     @Override
-    public Optional<Magazine> findById(long id) throws DaoException {
-        return Optional.empty();
+    public Optional<Magazine> findById(String id) throws DaoException {
+        try {
+            return executeSingleResponseQuery(connection, MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override

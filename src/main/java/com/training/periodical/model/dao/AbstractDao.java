@@ -16,7 +16,9 @@ public abstract class AbstractDao<T> implements IDao<T> {
 
     protected String tableName;
 
-    public String getTableName() { return this.tableName;}
+    public String getTableName() {
+        return this.tableName;
+    }
 
     public List<T> findAll(Connection connection, Builder<T> builder) throws DaoException {
         try {
@@ -63,7 +65,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
 
-    protected int executeUpdate(Connection connection, String query, String... parameters) throws DaoException {
+    protected int executeUpdate(Connection connection, String query, Object... parameters) throws DaoException {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -72,6 +74,19 @@ public abstract class AbstractDao<T> implements IDao<T> {
         } catch (SQLException e) {
             throw new DaoException(e);
 
+        }
+    }
+
+    protected int executeUpdateNow(Connection connection, String query, Object... parameters) throws DaoException {
+        PreparedStatement preparedStatement;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            prepareStatement(preparedStatement, parameters);
+            int result = preparedStatement.executeUpdate();
+            connection.commit();
+            return result;
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
     }
 
@@ -85,7 +100,13 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
 
-    protected void prepareStatement(PreparedStatement statement, String... parameters) throws SQLException {
+//    protected void prepareStatement(PreparedStatement statement, String... parameters) throws SQLException {
+//        for (int i = 1; i < parameters.length + 1; i++) {
+//            statement.setObject(i, parameters[i - 1]);
+//        }
+//    }
+
+    protected void prepareStatement(PreparedStatement statement, Object... parameters) throws SQLException {
         for (int i = 1; i < parameters.length + 1; i++) {
             statement.setObject(i, parameters[i - 1]);
         }

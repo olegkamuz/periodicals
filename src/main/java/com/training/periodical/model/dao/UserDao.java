@@ -76,14 +76,19 @@ public class UserDao extends AbstractDao<User> {
         executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters); // get id from result
     }
 
-    @Override
-    public int update(String userId, String column, String value) throws DaoException{
+    public int update(String userId, String column, String value) throws DaoException {
         String query = UserQuery.getUpdateColumnQuery(userId, column);
         String[] parameters = {value, userId};
         return executeUpdate(connection, query, parameters);
     }
 
-    public void delete(int id){}
+    @Override
+    public int update(User user) throws DaoException {
+        return 0;
+    }
+
+    public void delete(int id) {
+    }
 
     /**
      * Returns a user with the given identifier.
@@ -92,9 +97,9 @@ public class UserDao extends AbstractDao<User> {
      * @return User entity.
      */
     @Override
-    public Optional<User> findById(long id) throws DaoException {
+    public Optional<User> findById(String id) throws DaoException {
         try {
-            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_ID, userBuilder, String.valueOf(id));
+            return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_ID, userBuilder, id);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -149,12 +154,12 @@ public class UserDao extends AbstractDao<User> {
     }
 
     public void updateUser(long userId, BigDecimal userBalance) throws DaoException {
-        String[] parameters = {String.valueOf(userBalance),String.valueOf(userId)};
+        String[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 
     public void updateUser(Connection connection, long userId, BigDecimal userBalance) throws DaoException {
-        String[] parameters = {String.valueOf(userBalance),String.valueOf(userId)};
+        String[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 

@@ -56,7 +56,7 @@ public class UserService extends AbstractService<User> {
     }
 
     @Override
-    public Optional<User> findById(long id) throws ServiceException {
+    public Optional<User> findById(String id) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findById(id);
         } catch (DaoException e) {

@@ -15,3 +15,5 @@ SELECT sum(price) AS total FROM magazine WHERE id IN ('5','6')
 
 select m.name, m.price, m.image, t.name from subscription s join magazine m on m.id = s.magazine_id join theme t on t.id = m.theme_id where user_id = 3
 
+UPDATE `magazine` SET name='Ideal Home', price=210.00, image='ideal-home.jpgFROMIDEA', theme_id=1 WHERE id=1
+

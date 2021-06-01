@@ -20,7 +20,7 @@ public class ThemeDao extends AbstractDao<Theme> {
     }
 
     public void create(Theme theme) {}
-    public int update(String themeId, String column, String value) throws DaoException{
+    public int update(Theme theme) throws DaoException{
         return 0;
     }
     public void delete(int id){}
@@ -39,7 +39,7 @@ public class ThemeDao extends AbstractDao<Theme> {
     }
 
     @Override
-    public Optional<Theme> findById(long id) throws DaoException {
+    public Optional<Theme> findById(String id) throws DaoException {
         return Optional.empty();
     }
 }

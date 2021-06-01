@@ -29,7 +29,7 @@ public class SubscriptionService extends AbstractService<Subscription> {
     }
 
     @Override
-    public Optional<Subscription> findById(long id) {
+    public Optional<Subscription> findById(String id) {
         return Optional.empty();
     }
 

@@ -19,4 +19,15 @@ public class MagazineBuilder implements Builder<Magazine> {
         magazine.setThemeId(rs.getLong(Fields.MAGAZINE__THEME_ID));
         return magazine;
     }
+
+    public Object[] unBuild(Magazine magazine) {
+        Object[] objArr =  {
+                magazine.getName(),
+                magazine.getPrice(),
+                magazine.getImage(),
+                magazine.getThemeId(),
+                magazine.getId()
+        };
+        return objArr;
+    }
 }

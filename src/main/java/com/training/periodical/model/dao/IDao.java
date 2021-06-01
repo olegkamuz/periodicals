@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface IDao<T> extends AutoCloseable {
     void create(T entity) throws DaoException;
-    Optional<T> findById(long id) throws DaoException;
+    Optional<T> findById(String id) throws DaoException;
     List<T> findAll(Connection connection, Builder<T> builder) throws DaoException;
-    int update(String userId, String column, String value) throws DaoException;
+    int update(T entity) throws DaoException;
     void delete(int id);
 }
