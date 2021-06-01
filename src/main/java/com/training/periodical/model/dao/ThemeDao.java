@@ -19,11 +19,15 @@ public class ThemeDao extends AbstractDao<Theme> {
         tableName = "theme";
     }
 
-    public void create(Theme theme) {}
+    public int create(Theme theme) {
+        return 0;
+    }
     public int update(Theme theme) throws DaoException{
         return 0;
     }
-    public void delete(int id){}
+    public int delete(long id){
+        return 0;
+    }
 
     public List<Theme> findAll() throws DaoException {
         return findAll(connection, builder);
@@ -39,7 +43,7 @@ public class ThemeDao extends AbstractDao<Theme> {
     }
 
     @Override
-    public Optional<Theme> findById(String id) throws DaoException {
+    public Optional<Theme> findById(long id) throws DaoException {
         return Optional.empty();
     }
 }

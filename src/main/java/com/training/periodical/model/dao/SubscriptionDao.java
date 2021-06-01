@@ -30,11 +30,20 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
         tableName = "subscription";
     }
 
-    public void create(Subscription subscription) {}
-    public int update(Subscription subscription) throws DaoException{
+    @Override
+    public int create(Subscription subscription) {
         return 0;
     }
-    public void delete(int id){}
+
+    @Override
+    public int update(Subscription subscription) throws DaoException {
+        return 0;
+    }
+
+    @Override
+    public int delete(long id) {
+        return 0;
+    }
 
     public List<Subscription> findAll() throws DaoException {
         return findAll(connection, builder);
@@ -43,8 +52,8 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     public void createSubscription(Long userId, String[] magazineIds, UserDao userDao, BigDecimal userBalance) throws DaoException {
         try {
             for (String magazineId : magazineIds) {
-                String[] parameters = {String.valueOf(userId), magazineId};
-                executeUpdate(connection,SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, parameters);
+                Object[] parameters = {userId, magazineId};
+                executeUpdate(connection, SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, parameters);
             }
             userDao.updateUser(connection, userId, userBalance);
         } catch (DaoException e) {
@@ -56,7 +65,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     @Override
-    public Optional<Subscription> findById(String id) throws DaoException {
+    public Optional<Subscription> findById(long id) throws DaoException {
         return Optional.empty();
     }
 
@@ -69,7 +78,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
         }
     }
 
-    public Connection getConnection(){
+    public Connection getConnection() {
         return this.connection;
     }
 

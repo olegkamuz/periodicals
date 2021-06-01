@@ -20,13 +20,14 @@ public class User extends Entity { // add serialization
 
     public User(long userId, String login, String password,
                 BigDecimal balance, String firstName,
-                String lastName, int roleId, int blocked){
+                String lastName, String locale, int roleId, int blocked){
         id = userId;
         this.login = login;
         this.password = password;
         this.balance = balance;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.locale = locale;
         this.roleId = roleId;
         this.blocked = blocked;
     }

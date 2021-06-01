@@ -37,7 +37,7 @@ public class ThemeService extends AbstractService<Theme>{
     }
 
     @Override
-    public Optional<Theme> findById(String id) throws ServiceException {
+    public Optional<Theme> findById(long id) throws ServiceException {
         return Optional.empty();
     }
 }

@@ -1,5 +1,6 @@
 package com.training.periodical.model.builder;
 
+import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.Fields;
 
@@ -18,9 +19,16 @@ public class UserBuilder implements Builder<User> {
     private BigDecimal balance;
     private String firstName;
     private String lastName;
+    private String locale;
     private int roleId;
     private int blocked;
 
+    public String getLocale() {
+        return locale;
+    }
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
     public int getBlocked() {
         return blocked;
     }
@@ -61,7 +69,7 @@ public class UserBuilder implements Builder<User> {
     }
 
     private User fullUser(){
-        return new User(id, login, password, balance, firstName, lastName, roleId, blocked);
+        return new User(id, login, password, balance, firstName, lastName, locale, roleId, blocked);
     }
     private User strippedUser(){
         return new User(login, password, firstName, lastName);
@@ -78,6 +86,35 @@ public class UserBuilder implements Builder<User> {
         user.setRoleId(rs.getInt(Fields.USER__ROLE_ID));
         user.setBlocked(rs.getInt(Fields.USER__BLOCKED));
         return user;
+    }
+
+    public Object[] unBuildStrippedUser(User user) {
+        Object[] objArr =  {
+                "DEFAULT",
+                user.getLogin(),
+                user.getPassword(),
+                "DEFAULT",
+                user.getFirstName(),
+                user.getLastName(),
+                "NULL",
+                "1",
+                "0"
+        };
+        return objArr;
+    }
+    public Object[] unBuild(User user) {
+        Object[] objArr =  {
+                user.getLogin(),
+                user.getPassword(),
+                user.getBalance(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getLocale(),
+                user.getRoleId(),
+                user.getBlocked(),
+                user.getId()
+        };
+        return objArr;
     }
 
 

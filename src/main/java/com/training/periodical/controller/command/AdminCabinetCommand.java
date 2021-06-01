@@ -4,8 +4,6 @@ import com.sun.istack.internal.NotNull;
 import com.training.periodical.Path;
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.User;
-import com.training.periodical.model.dao.DaoException;
-import com.training.periodical.model.dao.UserDao;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
@@ -21,7 +19,6 @@ public class AdminCabinetCommand implements Command {
     private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
     private final UserService userService;
     private final MagazineService magazineService;
-    private String magazineId;
 
     public AdminCabinetCommand(UserService userService, MagazineService magazineService) {
         this.userService = userService;
@@ -33,15 +30,36 @@ public class AdminCabinetCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
 
-        getUsersData(request);
-
+        User user = getUserById(request);
+        changeUser(request, user);
+        showUsersList(request);
 
         Magazine magazine = getMagazineById(request);
         changeMagazine(request, magazine);
+        showMagazinesList(request, magazine);
 
+        log.debug("User cabinet command finish");
+        return Path.PAGE__ADMIN_CABINET;
+    }
 
+    private User getUserById(HttpServletRequest request) throws CommandException {
+        String userId = request.getParameter("user_id");
+        Optional<User> user;
+        if (userId != null && !userId.equals("")) {
+            try {
+                user = userService.findById(Long.parseLong(userId));
+                if (user.isPresent()) {
+                    return user.get();
+                }
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        }
+        return null;
+    }
 
-        if(magazine != null || request.getSession().getAttribute("magazineList") == null) {
+    private void showMagazinesList(HttpServletRequest request, Magazine magazine) throws CommandException {
+        if (magazine != null || request.getSession().getAttribute("magazineList") == null) {
             try {
                 List<Magazine> magazineList = magazineService.findAll();
                 request.getSession().setAttribute("magazineList", magazineList);
@@ -49,21 +67,18 @@ public class AdminCabinetCommand implements Command {
                 throw new CommandException(e);
             }
         }
-
-
-        log.debug("User cabinet command finish");
-        return Path.PAGE__ADMIN_CABINET;
     }
+
     private void changeMagazine(HttpServletRequest request, Magazine magazine) throws CommandException {
-        if(magazine == null) return;
+        if (magazine == null) return;
 
         Object updateMagazine = request.getParameter("update_magazine");
-        if(updateMagazine != null){
+        if (updateMagazine != null) {
             updateMagazine(request, magazine);
         }
 
         Object deleteMagazine = request.getParameter("delete_magazine");
-        if(deleteMagazine != null){
+        if (deleteMagazine != null) {
             Long magazineId = Long.parseLong(request.getParameter("magazine_id"));
             try {
                 magazineService.deleteNow(magazineId);
@@ -75,22 +90,26 @@ public class AdminCabinetCommand implements Command {
 
     private void updateMagazine(HttpServletRequest request,
                                 @NotNull Magazine magazine) throws CommandException {
-            setParameters(request, magazine);
-            updateMagazine(magazine);
+        setParameters(request, magazine);
+        updateMagazine(magazine);
     }
 
-    private void getUsersData(HttpServletRequest request) throws CommandException {
+    private void changeUser(HttpServletRequest request, User user) throws CommandException {
         String block = request.getParameter("change_block");
         String userId = request.getParameter("user_id");
         if (block != null && userId != null) {
             int changed = Integer.parseInt(block) == 0 ? 1 : 0;
+            user.setBlocked(changed);
             try {
-                userService.update(userId, "blocked", String.valueOf(changed));
+                userService.updateNow(user);
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }
         }
 
+    }
+
+    private void showUsersList(HttpServletRequest request) throws CommandException {
         try {
             List<User> userList = userService.findAll();
             request.getSession().setAttribute("userList", userList);
@@ -99,7 +118,7 @@ public class AdminCabinetCommand implements Command {
         }
     }
 
-    private void updateMagazine(Magazine magazine) throws CommandException{
+    private void updateMagazine(Magazine magazine) throws CommandException {
         try {
             magazineService.updateNow(magazine);
         } catch (ServiceException e) {
@@ -107,7 +126,7 @@ public class AdminCabinetCommand implements Command {
         }
     }
 
-    private void setParameters(HttpServletRequest request, Magazine magazine){
+    private void setParameters(HttpServletRequest request, Magazine magazine) {
         String magazineName = request.getParameter("magazine_name_change_value");
         if (magazineName != null && !magazineName.equals("")) {
             magazine.setName(magazineName);
@@ -123,11 +142,11 @@ public class AdminCabinetCommand implements Command {
     }
 
     private Magazine getMagazineById(HttpServletRequest request) throws CommandException {
-        magazineId = request.getParameter("magazine_id");
+        String magazineId = request.getParameter("magazine_id");
         Optional<Magazine> optionalMagazine;
         if (magazineId != null && !magazineId.equals("")) {
             try {
-                optionalMagazine = magazineService.findById(magazineId);
+                optionalMagazine = magazineService.findById(Long.parseLong(magazineId));
                 if (optionalMagazine.isPresent()) {
                     return optionalMagazine.get();
                 }

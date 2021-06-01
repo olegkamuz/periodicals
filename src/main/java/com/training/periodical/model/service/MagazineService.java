@@ -56,7 +56,7 @@ public class MagazineService extends AbstractService<Magazine> {
     }
 
     @Override
-    public Optional<Magazine> findById(String id) throws ServiceException {
+    public Optional<Magazine> findById(long id) throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findById(id);
         } catch (DaoException e) {

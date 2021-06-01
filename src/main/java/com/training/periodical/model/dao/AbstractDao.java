@@ -22,7 +22,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
 
     public List<T> findAll(Connection connection, Builder<T> builder) throws DaoException {
         try {
-            String[] parameters = {};
+            Object[] parameters = {};
             return executeQuery(connection, ThemeQuery.getFindAllFromTable(tableName), builder, parameters);
         } catch (SQLException e) {
             throw new DaoException();
@@ -51,7 +51,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected List<T> executeQuery(Connection connection, String query, Builder<T> builder, String... parameters) throws SQLException {
+    protected List<T> executeQuery(Connection connection, String query, Builder<T> builder, Object... parameters) throws SQLException {
         ResultSet resultSet;
         List<T> entity = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -90,7 +90,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected Optional<T> executeSingleResponseQuery(Connection connection, String query, Builder<T> builder, String... parameters) throws SQLException {
+    protected Optional<T> executeSingleResponseQuery(Connection connection, String query, Builder<T> builder, Object... parameters) throws SQLException {
         List<T> list = executeQuery(connection, query, builder, parameters);
         if (list.size() == 1) {
             return Optional.of(list.get(0));
@@ -98,13 +98,6 @@ public abstract class AbstractDao<T> implements IDao<T> {
             return Optional.empty();
         }
     }
-
-
-//    protected void prepareStatement(PreparedStatement statement, String... parameters) throws SQLException {
-//        for (int i = 1; i < parameters.length + 1; i++) {
-//            statement.setObject(i, parameters[i - 1]);
-//        }
-//    }
 
     protected void prepareStatement(PreparedStatement statement, Object... parameters) throws SQLException {
         for (int i = 1; i < parameters.length + 1; i++) {

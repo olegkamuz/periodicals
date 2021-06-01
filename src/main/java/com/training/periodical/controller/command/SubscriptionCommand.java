@@ -90,7 +90,7 @@ public class SubscriptionCommand implements Command {
 
     private BigDecimal getUserBalance(String userId) throws ServiceException {
         BigDecimal userBalance;
-        Optional<User> optionalUser = userService.findById(userId);
+        Optional<User> optionalUser = userService.findById(Long.parseLong(userId));
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             userBalance = user.getBalance();

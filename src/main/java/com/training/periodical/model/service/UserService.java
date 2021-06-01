@@ -31,6 +31,14 @@ public class UserService extends AbstractService<User> {
         }
     }
 
+    public int updateNow(User user) throws ServiceException{
+        try(UserDao userDao = daoFactory.createUserDao()) {
+            return userDao.updateNow(user);
+        } catch (DaoException e) {
+            throw createServiceException("update", e);
+        }
+    }
+
     public Optional<User> findUserByLogin(String login) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findUserByLogin(login);
@@ -56,7 +64,7 @@ public class UserService extends AbstractService<User> {
     }
 
     @Override
-    public Optional<User> findById(String id) throws ServiceException {
+    public Optional<User> findById(long id) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findById(id);
         } catch (DaoException e) {

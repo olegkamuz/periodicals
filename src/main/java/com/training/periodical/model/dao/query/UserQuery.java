@@ -7,8 +7,8 @@ public class UserQuery {
     public static final String SQL__FIND_USER_BY_ID =
             "SELECT * FROM `user` WHERE id=?";
 
-    public static final String SQL_UPDATE_USER =
-            "UPDATE `user` SET password=?, first_name=?, last_name=?, locale_name=?" +
+    public static final String SQL__UPDATE_USER =
+            "UPDATE `user` SET login=?, password=?, balance=?, first_name=?, last_name=?, locale=?, role_id=?, blocked=?" +
                     "	WHERE id=?";
 
     public static final String SQL__CREATE_USER =

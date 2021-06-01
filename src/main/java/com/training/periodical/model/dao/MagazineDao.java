@@ -31,7 +31,9 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return findAll(connection, builder);
     }
 
-    public void create(Magazine magazine) {}
+    public int create(Magazine magazine) {
+        return 0;
+    }
 
     public int update(Magazine magazine) throws DaoException{
         String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
@@ -43,7 +45,10 @@ public class MagazineDao extends AbstractDao<Magazine> {
         Object[] parameters = builder.unBuild(magazine);
         return executeUpdateNow(connection, query, parameters);
     }
-    public void delete(int id){}
+    @Override
+    public int delete(long id){
+        return 0;
+    }
 
     public int deleteNow(long id) throws DaoException{
         String query = MagazineQuery.SQL__DELETE_MAGAZINE;
@@ -59,7 +64,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
      */
     public List<Magazine> findMagazineByThemeName(String themeName) throws DaoException {
         try {
-            String[] parameters = {themeName};
+            Object[] parameters = {themeName};
             return executeQuery(connection, MagazineQuery.
                     SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, builder, parameters);
         } catch (SQLException ex) {
@@ -70,7 +75,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
         }
     }
 
-    public BigDecimal findSumPriceByIds(String[] ids) throws DaoException {
+    public BigDecimal findSumPriceByIds(Object[] ids) throws DaoException {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(MagazineQuery.
                     getQueryFindSumPriceByIds(ids.length));
@@ -240,7 +245,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
 //    }
 
     @Override
-    public Optional<Magazine> findById(String id) throws DaoException {
+    public Optional<Magazine> findById(long id) throws DaoException {
         try {
             return executeSingleResponseQuery(connection, MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
         } catch (SQLException e) {

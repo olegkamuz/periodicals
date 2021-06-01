@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.builder.UserSubscriptionsBuilder;
+import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.UserQuery;
 import org.apache.log4j.Logger;
 
@@ -44,7 +45,7 @@ public class UserDao extends AbstractDao<User> {
     }
 
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
-        String[] parameters = {String.valueOf(userId)};
+        Object[] parameters = {String.valueOf(userId)};
         try {
 //            return executeBeanQuery(connection, UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID, new UserBuilder(), parameters);
             return executeBeanQuery(parameters);
@@ -53,7 +54,7 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
-    protected List<UserSubscriptionBean> executeBeanQuery(String... parameters) throws SQLException {
+    protected List<UserSubscriptionBean> executeBeanQuery(Object... parameters) throws SQLException {
         ResultSet resultSet;
         List<UserSubscriptionBean> entity = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID);
@@ -66,20 +67,21 @@ public class UserDao extends AbstractDao<User> {
         return entity;
     }
 
-    public void create(User user) throws DaoException {
-        String[] parameters = {
-                user.getLogin(),
-                user.getPassword(),
-                user.getFirstName(),
-                user.getLastName()
-        };
-        executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters); // get id from result
+    public int create(User user) throws DaoException {
+        Object[] parameters = userBuilder.unBuildStrippedUser(user);
+        return executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters);
     }
 
     public int update(String userId, String column, String value) throws DaoException {
         String query = UserQuery.getUpdateColumnQuery(userId, column);
-        String[] parameters = {value, userId};
+        Object[] parameters = {value, userId};
         return executeUpdate(connection, query, parameters);
+    }
+
+    public int updateNow(User user) throws DaoException {
+        String query = UserQuery.SQL__UPDATE_USER;
+        Object[] parameters = userBuilder.unBuild(user);
+        return executeUpdateNow(connection, query, parameters);
     }
 
     @Override
@@ -87,7 +89,9 @@ public class UserDao extends AbstractDao<User> {
         return 0;
     }
 
-    public void delete(int id) {
+    @Override
+    public int delete(long id) {
+        return 0;
     }
 
     /**
@@ -97,7 +101,7 @@ public class UserDao extends AbstractDao<User> {
      * @return User entity.
      */
     @Override
-    public Optional<User> findById(String id) throws DaoException {
+    public Optional<User> findById(long id) throws DaoException {
         try {
             return executeSingleResponseQuery(connection, UserQuery.SQL__FIND_USER_BY_ID, userBuilder, id);
         } catch (SQLException e) {
@@ -154,12 +158,12 @@ public class UserDao extends AbstractDao<User> {
     }
 
     public void updateUser(long userId, BigDecimal userBalance) throws DaoException {
-        String[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
+        Object[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 
     public void updateUser(Connection connection, long userId, BigDecimal userBalance) throws DaoException {
-        String[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
+        Object[] parameters = {String.valueOf(userBalance), String.valueOf(userId)};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 
@@ -205,7 +209,7 @@ public class UserDao extends AbstractDao<User> {
 
 
     public void updateBalance(String userId, String balance) throws DaoException {
-        String[] parameters = {balance, userId};
+        Object[] parameters = {balance, userId};
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 

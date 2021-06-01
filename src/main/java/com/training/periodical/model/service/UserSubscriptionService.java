@@ -23,7 +23,7 @@ public class UserSubscriptionService extends AbstractService<UserSubscriptionBea
     }
 
     @Override
-    public Optional<UserSubscriptionBean> findById(String id) throws ServiceException {
+    public Optional<UserSubscriptionBean> findById(long id) throws ServiceException {
         return Optional.empty();
     }
 
