@@ -31,8 +31,10 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return findAll(connection, builder);
     }
 
-    public int create(Magazine magazine) {
-        return 0;
+    @Override
+    public int create(Magazine magazine) throws DaoException {
+        Object[] parameters = builder.unBuildStrippedMagazine(magazine);
+        return executeUpdateNow(connection, MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
     }
 
     public int update(Magazine magazine) throws DaoException{

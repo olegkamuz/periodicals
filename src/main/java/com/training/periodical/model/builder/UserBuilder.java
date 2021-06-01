@@ -12,7 +12,6 @@ import java.sql.SQLException;
  * Extracts a user from the result set row.
  */
 public class UserBuilder implements Builder<User> {
-
     private Long id;
     private String login;
     private String password;
@@ -65,7 +64,7 @@ public class UserBuilder implements Builder<User> {
     }
 
     public User build() {
-        return id == null ? fullUser() : strippedUser();
+        return id == null ? strippedUser() :fullUser();
     }
 
     private User fullUser(){
@@ -89,21 +88,17 @@ public class UserBuilder implements Builder<User> {
     }
 
     public Object[] unBuildStrippedUser(User user) {
-        Object[] objArr =  {
-                "DEFAULT",
+        return new Object[]{
                 user.getLogin(),
                 user.getPassword(),
-                "DEFAULT",
                 user.getFirstName(),
                 user.getLastName(),
-                "NULL",
                 "1",
                 "0"
         };
-        return objArr;
     }
     public Object[] unBuild(User user) {
-        Object[] objArr =  {
+        return new Object[]{
                 user.getLogin(),
                 user.getPassword(),
                 user.getBalance(),
@@ -114,7 +109,6 @@ public class UserBuilder implements Builder<User> {
                 user.getBlocked(),
                 user.getId()
         };
-        return objArr;
     }
 
 

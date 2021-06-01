@@ -34,7 +34,9 @@
                                 <form action="admin-cabinet" method="post">
                                     <input type="hidden" name="user_id" value="${user.id}"/>
                                     <input type="hidden" name="change_block" value="${user.blocked}"/>
-                                    <td><input type="submit" value='<fmt:message key="admin-cabinet_jsp.button.user.change_blocked"/>'/></td>
+                                    <td><input type="submit"
+                                               value='<fmt:message key="admin-cabinet_jsp.button.user.change_blocked"/>'/>
+                                    </td>
                                 </form>
                             </tr>
                         </c:forEach>
@@ -57,6 +59,7 @@
                             <td><fmt:message key="admin-cabinet_jsp.label.magazine.name"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.label.magazine.price"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.label.magazine.image"/></td>
+                            <td><fmt:message key="admin-cabinet_jsp.label.magazine.themeId"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.button.magazine.change"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.button.magazine.delete"/></td>
                         </tr>
@@ -69,12 +72,32 @@
                                     <td><input name="magazine_name_change_value" value="${magazine.name}"/></td>
                                     <td><input name="magazine_price_change_value" value="${magazine.price}"/></td>
                                     <td><input name="magazine_image_change_value" value="${magazine.image}"/></td>
-                                    <input type="hidden" name="magazine_theme_id_change_value" value="${magazine.themeId}"/>
-                                    <td><input type="submit" name="update_magazine" value='<fmt:message key="admin-cabinet_jsp.button.magazine.change"/>'/></td>
-                                    <td><input type="submit" name="delete_magazine" value='<fmt:message key="admin-cabinet_jsp.button.magazine.delete"/>'/></td>
+                                    <td><input name="magazine_image_change_value" value="${magazine.themeId}"/></td>
+                                    <input type="hidden" name="magazine_theme_id_change_value"
+                                           value="${magazine.themeId}"/>
+                                    <td><input type="submit" name="update_magazine"
+                                               value='<fmt:message key="admin-cabinet_jsp.button.magazine.change"/>'/>
+                                    </td>
+                                    <td><input type="submit" name="delete_magazine"
+                                               value='<fmt:message key="admin-cabinet_jsp.button.magazine.delete"/>'/>
+                                    </td>
                                 </form>
                             </tr>
                         </c:forEach>
+                        <tr>
+                            <td style="text-align: center" size="100%"><fmt:message key="admin-cabinet_jsp.label.magazine.add"/></td>
+                        </tr>
+                        <tr>
+                            <form action="admin-cabinet" method="post">
+                                <td><input name="magazine_name_add_value"/></td>
+                                <td><input name="magazine_price_add_value"/></td>
+                                <td><input name="magazine_image_add_value"/></td>
+                                <td><input name="magazine_theme_id_add_value"/></td>
+                                <input type="hidden" name="magazine_theme_id_change_value" value="${magazine.themeId}"/>
+                                <td><input type="submit" name="add_magazine"
+                                           value='<fmt:message key="admin-cabinet_jsp.button.magazine.add"/>'/></td>
+                            </form>
+                        </tr>
                         </tbody>
                     </table>
                 </c:otherwise>

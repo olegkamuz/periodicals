@@ -23,8 +23,28 @@ public class UserSubscriptionService extends AbstractService<UserSubscriptionBea
     }
 
     @Override
+    public int create(UserSubscriptionBean entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
     public Optional<UserSubscriptionBean> findById(long id) throws ServiceException {
         return Optional.empty();
+    }
+
+    @Override
+    public List<UserSubscriptionBean> findAll() throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public int update(UserSubscriptionBean entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
+    public int delete(long id) throws ServiceException {
+        return 0;
     }
 
     @Override

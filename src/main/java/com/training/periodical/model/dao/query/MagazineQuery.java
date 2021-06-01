@@ -10,6 +10,8 @@ public class MagazineQuery {
     public static final String SQL__FIND_MAGAZINES_BY_THEME =
             "select * from magazine where theme_id=?";
 
+    public static final String SQL__CREATE_MAGAZINE =
+            "INSERT INTO `magazine` VALUES(DEFAULT, ?, ?, ?, ?)";
 
     public static final String SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME =
             "SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";

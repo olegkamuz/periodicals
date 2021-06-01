@@ -45,7 +45,7 @@ public class RegistrationSaveCommand implements Command {
         }
 
         try {
-            userService.registerUser(buildUser(request));
+            userService.create(buildUser(request));
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

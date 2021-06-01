@@ -3,7 +3,6 @@ package com.training.periodical.model.dao;
 import com.training.periodical.model.builder.Builder;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 

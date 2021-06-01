@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class SubscriptionService extends AbstractService<Subscription> {
@@ -29,8 +30,28 @@ public class SubscriptionService extends AbstractService<Subscription> {
     }
 
     @Override
+    public int create(Subscription entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
     public Optional<Subscription> findById(long id) {
         return Optional.empty();
+    }
+
+    @Override
+    public List<Subscription> findAll() throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public int update(Subscription entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
+    public int delete(long id) throws ServiceException {
+        return 0;
     }
 
     @Override

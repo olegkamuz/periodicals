@@ -55,11 +55,22 @@ public class UserService extends AbstractService<User> {
         }
     }
 
-    public void registerUser(User user) throws ServiceException{
+    @Override
+    public int update(User entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
+    public int delete(long id) throws ServiceException {
+        return 0;
+    }
+
+    @Override
+    public int create(User user) throws ServiceException{
         try(UserDao userDao = daoFactory.createUserDao()){
-            userDao.create(user);
+            return userDao.create(user);
         } catch (DaoException e) {
-            throw createServiceException("registerUser", e);
+            throw createServiceException("create", e);
         }
     }
 

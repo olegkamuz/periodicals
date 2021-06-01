@@ -29,11 +29,26 @@ public class ThemeService extends AbstractService<Theme>{
     }
 
     @Override
+    public int update(Theme entity) throws ServiceException {
+        return 0;
+    }
+
+    @Override
+    public int delete(long id) throws ServiceException {
+        return 0;
+    }
+
+    @Override
     protected ServiceException createServiceException(
             String methodName, DaoException e) {
         return new ServiceException("exception in " +
                 methodName + " method at " +
                 this.getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public int create(Theme entity) throws ServiceException {
+        return 0;
     }
 
     @Override

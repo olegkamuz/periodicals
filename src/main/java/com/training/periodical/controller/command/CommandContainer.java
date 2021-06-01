@@ -3,6 +3,7 @@ package com.training.periodical.controller.command;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.SubscriptionService;
@@ -45,7 +46,7 @@ public class CommandContainer {
                         new UserService(), new MagazineService()));
 
 		// admin commands
-		commands.put("admin-cabinet", new AdminCabinetCommand(new UserService(), new MagazineService()));
+		commands.put("admin-cabinet", new AdminCabinetCommand(new UserService(), new MagazineService(), new MagazineBuilder()));
 		
 		log.debug("Command container was successfully initialized");
 		log.trace("Number of commands --> " + commands.size());
