@@ -23,6 +23,14 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
+    public int deleteNow(Long magazineId) throws ServiceException{
+        try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.deleteNow(magazineId);
+        } catch (DaoException e) {
+            throw createServiceException("deleteNow", e);
+        }
+    }
+
     public int update(Magazine magazine) throws ServiceException{
         try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.update(magazine);
@@ -35,7 +43,7 @@ public class MagazineService extends AbstractService<Magazine> {
         try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.updateNow(magazine);
         } catch (DaoException e) {
-            throw createServiceException("update", e);
+            throw createServiceException("updateNow", e);
         }
     }
 

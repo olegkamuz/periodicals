@@ -45,6 +45,12 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
     public void delete(int id){}
 
+    public int deleteNow(long id) throws DaoException{
+        String query = MagazineQuery.SQL__DELETE_MAGAZINE;
+        Object[] parameters = {id};
+        return executeUpdateNow(connection, query, parameters);
+    }
+
     /**
      * Returns magazine by category name.
      *

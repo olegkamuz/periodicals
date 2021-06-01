@@ -58,18 +58,11 @@
                             <td><fmt:message key="admin-cabinet_jsp.label.magazine.price"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.label.magazine.image"/></td>
                             <td><fmt:message key="admin-cabinet_jsp.button.magazine.change"/></td>
+                            <td><fmt:message key="admin-cabinet_jsp.button.magazine.delete"/></td>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="magazine" items="${magazineList}">
-<%--                            <tr>--%>
-<%--                                <td><input name="magazine_name_change_value" value="${magazine.name}"/></td>--%>
-<%--                                <td><input name="magazine_price_change_value" value="${magazine.price}"/></td>--%>
-<%--                                <td><input name="magazine_image_change_value" value="${magazine.image}"/></td>--%>
-<%--                                <td><input name="magazine_threme_id_change_value" value="${magazine.themeId}"/></td>--%>
-<%--                                <input name="magazine_image_change_value"/>--%>
-<%--                                <td>${magazine.image}</td>--%>
-<%--                            </tr>--%>
                             <tr>
                                 <form action="admin-cabinet" method="post">
                                     <input type="hidden" name="magazine_id" value="${magazine.id}"/>
@@ -77,7 +70,8 @@
                                     <td><input name="magazine_price_change_value" value="${magazine.price}"/></td>
                                     <td><input name="magazine_image_change_value" value="${magazine.image}"/></td>
                                     <input type="hidden" name="magazine_theme_id_change_value" value="${magazine.themeId}"/>
-                                    <td><input type="submit" value='<fmt:message key="admin-cabinet_jsp.button.user.change_blocked"/>'/></td>
+                                    <td><input type="submit" name="update_magazine" value='<fmt:message key="admin-cabinet_jsp.button.magazine.change"/>'/></td>
+                                    <td><input type="submit" name="delete_magazine" value='<fmt:message key="admin-cabinet_jsp.button.magazine.delete"/>'/></td>
                                 </form>
                             </tr>
                         </c:forEach>

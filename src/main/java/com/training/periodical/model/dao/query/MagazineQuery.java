@@ -20,6 +20,9 @@ public class MagazineQuery {
     public static final String SQL__UPDATE_MAGAZINE =
             "UPDATE `magazine` SET name=?, price=?, image=?, theme_id=? WHERE id=?";
 
+    public static final String SQL__DELETE_MAGAZINE =
+            "DELETE FROM `magazine` WHERE id=?";
+
     public static String getQueryFindSumPriceByIds(int amount){
         StringBuilder sb = new StringBuilder("SELECT sum(price) AS total FROM magazine WHERE id IN (");
         for (int i = 0; i < amount; i++) {

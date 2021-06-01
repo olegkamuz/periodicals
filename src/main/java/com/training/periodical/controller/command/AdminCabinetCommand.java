@@ -1,5 +1,6 @@
 package com.training.periodical.controller.command;
 
+import com.sun.istack.internal.NotNull;
 import com.training.periodical.Path;
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.User;
@@ -32,6 +33,53 @@ public class AdminCabinetCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
 
+        getUsersData(request);
+
+
+        Magazine magazine = getMagazineById(request);
+        changeMagazine(request, magazine);
+
+
+
+        if(magazine != null || request.getSession().getAttribute("magazineList") == null) {
+            try {
+                List<Magazine> magazineList = magazineService.findAll();
+                request.getSession().setAttribute("magazineList", magazineList);
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        }
+
+
+        log.debug("User cabinet command finish");
+        return Path.PAGE__ADMIN_CABINET;
+    }
+    private void changeMagazine(HttpServletRequest request, Magazine magazine) throws CommandException {
+        if(magazine == null) return;
+
+        Object updateMagazine = request.getParameter("update_magazine");
+        if(updateMagazine != null){
+            updateMagazine(request, magazine);
+        }
+
+        Object deleteMagazine = request.getParameter("delete_magazine");
+        if(deleteMagazine != null){
+            Long magazineId = Long.parseLong(request.getParameter("magazine_id"));
+            try {
+                magazineService.deleteNow(magazineId);
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
+        }
+    }
+
+    private void updateMagazine(HttpServletRequest request,
+                                @NotNull Magazine magazine) throws CommandException {
+            setParameters(request, magazine);
+            updateMagazine(magazine);
+    }
+
+    private void getUsersData(HttpServletRequest request) throws CommandException {
         String block = request.getParameter("change_block");
         String userId = request.getParameter("user_id");
         if (block != null && userId != null) {
@@ -49,26 +97,6 @@ public class AdminCabinetCommand implements Command {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-
-
-        Magazine magazine = getMagazineById(request);
-        if (magazine != null) {
-            setParameters(request, magazine);
-            updateMagazine(magazine);
-        }
-
-        if(magazine != null || request.getSession().getAttribute("magazineList") == null) {
-            try {
-                List<Magazine> magazineList = magazineService.findAll();
-                request.getSession().setAttribute("magazineList", magazineList);
-            } catch (ServiceException e) {
-                throw new CommandException(e);
-            }
-        }
-
-
-        log.debug("User cabinet command finish");
-        return Path.PAGE__ADMIN_CABINET;
     }
 
     private void updateMagazine(Magazine magazine) throws CommandException{
