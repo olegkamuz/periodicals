@@ -32,7 +32,7 @@ public class Validator {
                                 Validator.class.getSimpleName() + " ranges not set");
                     }
                     int intData = Integer.parseInt(data);
-                    if (intData < range_int_from && intData > range_int_to) return false;
+                    if (intData < range_int_from || intData > range_int_to) return false;
             }
         }
         return true;

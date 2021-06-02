@@ -12,6 +12,7 @@ import com.training.periodical.entity.Theme;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,7 @@ public class IndexCommand implements Command {
         int magazineAmount = getMagazineAmount();
 
         int pageAmount = getNumberOfPages(3, magazineAmount);
+        pageAmount = 7;
 
         String currentPageParameter = request.getParameter("page");
 
@@ -46,7 +48,7 @@ public class IndexCommand implements Command {
             return Path.REDIRECT__INDEX + "?page=1";
         }
 
-        paginate(request, Integer.parseInt(currentPageParameter), getNumberOfPages(3, magazineAmount));
+        paginate(request, Integer.parseInt(currentPageParameter), pageAmount);
 
         Map<Theme, List<Magazine>> map = getMagazineByThemes();
         request.getSession().setAttribute("magazinesByThemes", map);
@@ -109,17 +111,28 @@ public class IndexCommand implements Command {
         }
     }
 
+    private List<Integer> getBaseList(int pageAmount) {
+        List<Integer> bs = new ArrayList<>();
+        fillBaseList(bs, Math.min(pageAmount, 6));
+        return bs;
+    }
+
+    private void fillBaseList(List<Integer> baseList, int pageAmount) {
+        for (int i = 1; i <= pageAmount; i++) {
+            baseList.add(i);
+        }
+    }
 
     private void paginate(HttpServletRequest request, int currentPage, int pageAmount) throws CommandException {
+        List<Integer> baseList = getBaseList(pageAmount);
 
-        List<Integer> firstFourPages = Arrays.asList(1, 2, 3, 4);
-        if (pageAmount > 4) {
+        if (pageAmount > 6) {
             boolean pageFirstExists = true;
             boolean pageLastExists = true;
             List<Integer> carriage;
 
             if (currentPage < 4) {
-                carriage = firstFourPages;
+                carriage = baseList;
                 pageFirstExists = false;
             } else if (currentPage >= pageAmount - 2) {
                 carriage = Arrays.asList(pageAmount - 3, pageAmount - 2, pageAmount - 1, pageAmount);
@@ -135,7 +148,7 @@ public class IndexCommand implements Command {
             request.getSession().setAttribute("currentPage", currentPage);
         } else {
             request.getSession().setAttribute("areDots", false);
-            request.getSession().setAttribute("firstFourPages", firstFourPages);
+            request.getSession().setAttribute("baseList", baseList);
             request.getSession().setAttribute("currentPage", currentPage);
         }
         request.getSession().setAttribute("firstPage", 1);
@@ -149,7 +162,6 @@ public class IndexCommand implements Command {
         numberOfPages = magazineAmount / pageSize;
         return magazineAmount % pageSize == 0 ? numberOfPages : ++numberOfPages;
     }
-
 }
 
 

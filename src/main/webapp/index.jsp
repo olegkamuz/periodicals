@@ -77,7 +77,7 @@
 
                         </c:when>
                         <c:otherwise>
-                            <c:forEach var="page" items="${firstFourPages}">
+                            <c:forEach var="page" items="${baseList}">
                                 <c:url var="url" value="/index?page=${page}"/>
                                 <a style="padding: 0 3px"
                                    <c:if test="${currentPage == page}">class="active"</c:if>
