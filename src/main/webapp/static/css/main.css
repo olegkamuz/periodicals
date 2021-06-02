@@ -70,3 +70,19 @@ a {
 #make_order {
     margin-bottom: 0px;
 }
+.page_bar {
+    width: 100%;
+    text-align: center;
+}
+.active{
+    color: #1c1c9a !important;
+}
+.disabled {
+    color: currentColor;
+    cursor: not-allowed;
+    opacity: 0.5;
+    text-decoration: none;
+}
+a.disabled {
+    pointer-events: none;
+}

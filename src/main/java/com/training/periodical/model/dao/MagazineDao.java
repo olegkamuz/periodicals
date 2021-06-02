@@ -7,12 +7,14 @@ import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.ThemeQuery;
 import com.training.periodical.model.dao.query.UserQuery;
+import sun.security.x509.EDIPartyName;
 
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  * Data access object for magazine related entities.
@@ -31,28 +33,81 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return findAll(connection, builder);
     }
 
+    public int getCount() throws DaoException {
+        ResultSet rs = null;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(MagazineQuery.SQL__COUNT_ALL)) {
+            Object[] parameters = {};
+            prepareStatement(preparedStatement, parameters);
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("COUNT(*)");
+            }
+        } catch (SQLException e) {
+            throw new DaoException();
+        } finally {
+            close(rs);
+        }
+        return 0;
+    }
+
+    protected static void close(ResultSet rs) throws DaoException {
+        if (rs == null) return;
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public BigDecimal findSumPriceByIds(Object[] ids) throws DaoException {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(MagazineQuery.
+                    getQueryFindSumPriceByIds(ids.length));
+            prepareStatement(preparedStatement, ids);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getBigDecimal("total");
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            rollback(connection);
+            throw new DaoException(ex);
+        } finally {
+            commit(connection);
+        }
+    }
+
+    public List<Magazine> findBatch(int limit, int offset) throws DaoException {
+        return findAll(connection, builder, limit, offset);
+    }
+
     @Override
     public int create(Magazine magazine) throws DaoException {
         Object[] parameters = builder.unBuildStrippedMagazine(magazine);
         return executeUpdateNow(connection, MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
     }
 
-    public int update(Magazine magazine) throws DaoException{
+    public int update(Magazine magazine) throws DaoException {
         String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
         Object[] parameters = builder.unBuild(magazine);
         return executeUpdate(connection, query, parameters);
     }
-    public int updateNow(Magazine magazine) throws DaoException{
+
+    public int updateNow(Magazine magazine) throws DaoException {
         String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
         Object[] parameters = builder.unBuild(magazine);
         return executeUpdateNow(connection, query, parameters);
     }
+
     @Override
-    public int delete(long id){
+    public int delete(long id) {
         return 0;
     }
 
-    public int deleteNow(long id) throws DaoException{
+    public int deleteNow(long id) throws DaoException {
         String query = MagazineQuery.SQL__DELETE_MAGAZINE;
         Object[] parameters = {id};
         return executeUpdateNow(connection, query, parameters);
@@ -77,25 +132,6 @@ public class MagazineDao extends AbstractDao<Magazine> {
         }
     }
 
-    public BigDecimal findSumPriceByIds(Object[] ids) throws DaoException {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(MagazineQuery.
-                    getQueryFindSumPriceByIds(ids.length));
-            prepareStatement(preparedStatement, ids);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            if (rs.next()) {
-                return rs.getBigDecimal("total");
-            } else {
-                return null;
-            }
-        } catch (SQLException ex) {
-            rollback(connection);
-            throw new DaoException(ex);
-        } finally {
-            commit(connection);
-        }
-    }
 
 //    /**
 //     * Returns magazine by id.
@@ -256,7 +292,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     @Override
-    public void close()  {
+    public void close() {
         try {
             connection.close();
         } catch (SQLException e) {

@@ -39,7 +39,7 @@ public class CommandContainer {
 
 		// client commands
 		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionService(),new UserService()));
-        commands.put("one-category-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
+        commands.put("one-theme-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
         commands.put("create-subscription",
                 new SubscriptionCommand(
                         new SubscriptionService(),

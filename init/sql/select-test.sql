@@ -21,7 +21,23 @@ INSERT INTO `magazine` VALUES(id='DEFAULT', name='Golf Monthly', price=250, imag
 
 INSERT INTO `magazine` VALUES (DEFAULT, 'Golf Monthly', 250, 'golf-monthly.jpg', 2);
 
-INSERT INTO `magazine` VALUES(DEFAULT, 'Golf Monthly', 250, 'golf-monthly.jpg', 2
+
+SELECT COUNT(*) FROM `magazine`
+
+
+SELECT c.id, c.name, c.start_date, c.end_date, c.description,  t.name theme_name,  t.id theme_id,  u.first_name,  u.last_name,  u.login,
+       u.id user_id, (SELECT COUNT(*) FROM students_courses sc WHERE sc.course_id = c.id ) students_count
+FROM
+    courses c
+    LEFT JOIN users u ON c.tutor_id = u.id
+    INNER JOIN themes t ON c.theme_id = t.id
+WHERE (c.theme_id = ? OR ? = 0)
+  AND (c.tutor_id = ? OR ? = 0)
+  AND (? NOT IN (SELECT stud_id FROM students_courses uc WHERE c.id = uc.course_id) OR ? = 0)
+  AND DATEDIFF(CURDATE(), start_date) < 0    %s
+LIMIT ?, ?;
+
+смотреть на WHERE
 
 
 

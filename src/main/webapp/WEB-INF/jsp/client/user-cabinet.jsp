@@ -25,24 +25,32 @@
                             <fmt:message key="user-cabinet_jsp.label.replenish"/>
                         </legend>
                         <input name="replenish"/><br/>
-                    </fieldset><br/>
+                    </fieldset>
+                    <br/>
                     <input type="submit" value='<fmt:message key="user-cabinet_jsp.label.replenish"/>'>
                 </form>
                 <p class="lead text-muted">here is your subscriptions:</p>
             </div>
         </section>
-        <div class="container">
-            <div class="row">
-                <c:forEach var="item" items="${subscriptionList}">
-                    <div class="col">
-                        <img src="<c:url value="/static/images/${item.magazineImage}"/>" width="100%"/>
-                        <p>${item.magazineName}</p>
-                        <p>Price: ${item.magazinePrice}</p>
-                        <p>Theme: ${item.themeName}</p>
+        <c:choose>
+            <c:when test="${fn:length(subscriptionList) == 0}">
+                <div style="text-align:center">No subscriptions yet</div>
+            </c:when>
+            <c:otherwise>
+                <div class="container">
+                    <div class="row">
+                        <c:forEach var="item" items="${subscriptionList}">
+                            <div class="col">
+                                <img src="<c:url value="/static/images/${item.magazineImage}"/>" width="100%"/>
+                                <p>${item.magazineName}</p>
+                                <p>Price: ${item.magazinePrice}</p>
+                                <p>Theme: ${item.themeName}</p>
+                            </div>
+                        </c:forEach>
                     </div>
-                </c:forEach>
-            </div>
-        </div>
+                </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>

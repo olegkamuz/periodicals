@@ -77,21 +77,21 @@ public class CommandAccessFilter implements Filter {
 
 //        // todo Just for DEVELOPMENT purposes, remove on prod
 
-        try {
-            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("admin");
-            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.ADMIN);
-        } catch (DaoException e) {
-            e.printStackTrace();
-        }
-
 //        try {
-//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("admin");
 //            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.ADMIN);
 //        } catch (DaoException e) {
 //            e.printStackTrace();
 //        }
+
+        try {
+            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
 
 //        // todo remove on prod
 

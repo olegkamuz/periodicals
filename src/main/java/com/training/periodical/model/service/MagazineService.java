@@ -44,6 +44,14 @@ public class MagazineService extends AbstractService<Magazine> {
         return 0;
     }
 
+    public int getCount() throws ServiceException {
+        try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.getCount();
+        } catch (DaoException e) {
+            throw createServiceException("getCount", e);
+        }
+    }
+
     public int updateNow(Magazine magazine) throws ServiceException{
         try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.updateNow(magazine);
@@ -55,6 +63,14 @@ public class MagazineService extends AbstractService<Magazine> {
     public List<Magazine> findAll() throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findAll();
+        } catch (DaoException e) {
+            throw createServiceException("findAll", e);
+        }
+    }
+
+    public List<Magazine> findBatch(int limit, int offset) throws ServiceException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findBatch(limit, offset);
         } catch (DaoException e) {
             throw createServiceException("findAll", e);
         }
