@@ -3,6 +3,8 @@ package com.training.periodical.controller.command;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.ThemeService;
+import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 import com.training.periodical.entity.Magazine;
@@ -32,21 +34,86 @@ public class IndexCommand implements Command {
     @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
-
         log.debug("Command starts");
 
-        int pageNum = getNumberOfPages(3);
-        int currentPage = 0;
+        int magazineAmount = getMagazineAmount();
+
+        int pageAmount = getNumberOfPages(3, magazineAmount);
+
         String currentPageParameter = request.getParameter("page");
-        if (currentPageParameter != null && !currentPageParameter.equals("")) {
-            currentPage = Integer.parseInt(currentPageParameter);
-        }
-        if (currentPage < 0 || currentPage > pageNum) {
+
+        if (!validate(currentPageParameter, 0, pageAmount)) {
             return Path.REDIRECT__INDEX + "?page=1";
         }
 
+        paginate(request, Integer.parseInt(currentPageParameter), getNumberOfPages(3, magazineAmount));
+
+        Map<Theme, List<Magazine>> map = getMagazineByThemes();
+        request.getSession().setAttribute("magazinesByThemes", map);
+        log.trace("Set the request attribute: menuByCategoryItems --> " + map);
+
+        List<Magazine> all = getAllMagazines();
+        if (all != null) request.getSession().setAttribute("magazinesList", all);
+        log.trace("Set the request attribute: magazinesList --> " + all);
+
+        log.debug("Command finished");
+        return Path.PAGE_INDEX;
+    }
+
+    private List<Magazine> getAllMagazines() {
+        List<Magazine> all = null;
+        try {
+            return magazineService.findAll();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return all;
+    }
+
+    private Map<Theme, List<Magazine>> getMagazineByThemes() throws CommandException {
+        Map<Theme, List<Magazine>> map = new HashMap<>();
+        try {
+            for (Theme theme : themeService.findAll()) {
+                map.put(theme, magazineService.
+                        findMagazineByThemeName(theme.getName()));
+            }
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
+
+        return map;
+    }
+
+    private boolean validate(String data, int range_from, int range_to)
+            throws CommandException {
+        Validator.range_int_from = range_from;
+        Validator.range_int_to = range_to;
+        try {
+            if (Validator.isValid(data,
+                    Validator.CheckType.NOT_NULL,
+                    Validator.CheckType.NOT_EMPTY,
+                    Validator.CheckType.IS_CAST_TO_INT,
+                    Validator.CheckType.IN_INT_RANGE_INCLUSIVE_INCLUSIVE
+            )) return true;
+        } catch (ValidatorException e) {
+            throw new CommandException(e);
+        }
+        return false;
+    }
+
+    private int getMagazineAmount() throws CommandException {
+        try {
+            return magazineService.getCount();
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
+    }
+
+
+    private void paginate(HttpServletRequest request, int currentPage, int pageAmount) throws CommandException {
+
         List<Integer> firstFourPages = Arrays.asList(1, 2, 3, 4);
-        if (pageNum > 4) {
+        if (pageAmount > 4) {
             boolean pageFirstExists = true;
             boolean pageLastExists = true;
             List<Integer> carriage;
@@ -54,8 +121,8 @@ public class IndexCommand implements Command {
             if (currentPage < 4) {
                 carriage = firstFourPages;
                 pageFirstExists = false;
-            } else if (currentPage >= pageNum - 2) {
-                carriage = Arrays.asList(pageNum - 3, pageNum - 2, pageNum - 1, pageNum);
+            } else if (currentPage >= pageAmount - 2) {
+                carriage = Arrays.asList(pageAmount - 3, pageAmount - 2, pageAmount - 1, pageAmount);
                 pageLastExists = false;
             } else {
                 carriage = Arrays.asList(currentPage - 1, currentPage, currentPage + 1);
@@ -72,46 +139,15 @@ public class IndexCommand implements Command {
             request.getSession().setAttribute("currentPage", currentPage);
         }
         request.getSession().setAttribute("firstPage", 1);
-        request.getSession().setAttribute("lastPage", pageNum);
+        request.getSession().setAttribute("lastPage", pageAmount);
         request.getSession().setAttribute("previousPage", currentPage - 1);
         request.getSession().setAttribute("nextPage", currentPage + 1);
-
-        Map<Theme, List<Magazine>> map = new HashMap<>();
-
-        try {
-            for (Theme theme : themeService.findAll()) {
-                map.put(theme, magazineService.
-                        findMagazineByThemeName(theme.getName()));
-            }
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
-
-        request.getSession().setAttribute("magazinesByThemes", map);
-        log.trace("Set the request attribute: menuByCategoryItems --> " + map);
-
-        try {
-            List<Magazine> all = magazineService.findAll();
-            request.getSession().setAttribute("magazinesList", all);
-        } catch (ServiceException e) {
-            e.printStackTrace();
-        }
-
-        log.debug("Command finished");
-        return Path.PAGE_INDEX;
     }
 
-    private int getNumberOfPages(int pageSize) throws CommandException {
-        try {
-//            int count =
-            magazineService.getCount();
-            int count = 50;
-            int numberOfPages;
-            numberOfPages = count / pageSize;
-            return count % pageSize == 0 ? numberOfPages : ++numberOfPages;
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+    private int getNumberOfPages(int pageSize, int magazineAmount) {
+        int numberOfPages;
+        numberOfPages = magazineAmount / pageSize;
+        return magazineAmount % pageSize == 0 ? numberOfPages : ++numberOfPages;
     }
 
 }
