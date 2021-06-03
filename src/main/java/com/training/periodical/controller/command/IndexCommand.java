@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +43,7 @@ public class IndexCommand implements Command {
 
         int allMagazineAmount = getAllMagazineAmount();
 
-        if (!validate(request.getParameter("page"), 0, getNumberOfPages(PAGE_SIZE, allMagazineAmount))) {
+        if (!validatePage(request.getParameter("page"), 0, getNumberOfPages(PAGE_SIZE, allMagazineAmount))) {
             return Path.REDIRECT__INDEX + "?page=1";
         }
         int currentPage = Integer.parseInt(request.getParameter("page"));
@@ -52,7 +51,7 @@ public class IndexCommand implements Command {
         String sort = request.getParameter("sort");
         String filter = request.getParameter("filter");
 
-        if (validateSort(sort) && validateFilter(filter)) {
+        if (validateFilterOrSort(sort) && validateFilterOrSort(filter)) {
             String sortSubQuery = getFilterSortSubQuery(sort);
             String filterName = getFilterName(filter);
 
@@ -69,7 +68,7 @@ public class IndexCommand implements Command {
                 setToJspMagazinesPage(request, Collections.emptyList());
                 log.trace("No magazines in filter theme " + filterName);
             }
-        } else if (validateFilter(filter)) {
+        } else if (validateFilterOrSort(filter)) {
             String filterName = getFilterName(filter);
 
             int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
@@ -84,7 +83,7 @@ public class IndexCommand implements Command {
                 setToJspMagazinesPage(request, Collections.emptyList());
                 log.trace("No magazines in filter theme -->" + filterName);
             }
-        } else if (validateSort(sort) && !sort.equals("all")) {
+        } else if (validateFilterOrSort(sort)) {
             String sortSubQuery = getSortSubQuery(sort);
 
             request.getSession().setAttribute("fieldToSort", sort);
@@ -94,6 +93,7 @@ public class IndexCommand implements Command {
             setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
         } else {
             request.getSession().setAttribute("fieldToSort", "all");
+            request.getSession().setAttribute("fieldToFilter", "all");
             setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
             setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
         }
@@ -273,12 +273,13 @@ public class IndexCommand implements Command {
         return map;
     }
 
-    private boolean validateFilter(String data) throws CommandException {
+    private boolean validateFilterOrSort(String data) throws CommandException {
         try {
             if (Validator.isValid(data,
                     Validator.CheckType.NOT_NULL,
                     Validator.CheckType.NOT_EMPTY,
-                    Validator.CheckType.URL_DECODE
+                    Validator.CheckType.URL_DECODE,
+                    Validator.CheckType.ALL
             )) return true;
         } catch (ValidatorException e) {
             throw new CommandException(e);
@@ -286,19 +287,7 @@ public class IndexCommand implements Command {
         return false;
     }
 
-    private boolean validateSort(String data) throws CommandException {
-        try {
-            if (Validator.isValid(data,
-                    Validator.CheckType.NOT_NULL,
-                    Validator.CheckType.NOT_EMPTY
-            )) return true;
-        } catch (ValidatorException e) {
-            throw new CommandException(e);
-        }
-        return false;
-    }
-
-    private boolean validate(String data, int range_from, int range_to)
+    private boolean validatePage(String data, int range_from, int range_to)
             throws CommandException {
         Validator.range_int_from = range_from;
         Validator.range_int_to = range_to;

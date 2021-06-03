@@ -105,8 +105,6 @@ VALUES (DEFAULT, 'Maximum PC', 160, 'maximum-pc.jpg', 3);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Linux Format', 260, 'linux-format.jpg', 3);
 INSERT INTO `magazine`
-VALUES (DEFAULT, 'Bow International', 120, 'bow-international.jpg', 3);
-INSERT INTO `magazine`
 VALUES (DEFAULT, 'Computer Music', 220, 'computer-music.jpg', 3);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Digital Camera', 170, 'digital-camera.jpg', 3);
@@ -118,6 +116,8 @@ INSERT INTO `magazine`
 VALUES (DEFAULT, 'PC Gamer', 200, 'pc-gamer.jpg', 3);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Play', 210, 'play.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Bow International', 120, 'bow-international.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'FourFourTwo', 90, 'fourfourtwo.jpg', 2);
 INSERT INTO `magazine`

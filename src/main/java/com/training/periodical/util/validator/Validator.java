@@ -14,7 +14,7 @@ public class Validator {
     public static Integer range_int_to;
 
     public enum CheckType {
-        NOT_NULL, NOT_EMPTY, IS_CAST_TO_INT, IN_INT_RANGE_INCLUSIVE_INCLUSIVE, URL_DECODE
+        NOT_NULL, NOT_EMPTY, IS_CAST_TO_INT, IN_INT_RANGE_INCLUSIVE_INCLUSIVE, URL_DECODE, ALL
     }
 
     public static boolean isValid(String data, CheckType... parameters) throws ValidatorException {
@@ -47,6 +47,9 @@ public class Validator {
                     } catch (UnsupportedEncodingException e) {
                         return false;
                     }
+                    break;
+                case ALL:
+                    if(data.equals("all")) return false;
                     break;
             }
         }
