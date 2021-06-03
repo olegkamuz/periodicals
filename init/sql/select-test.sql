@@ -40,6 +40,8 @@ LIMIT ?, ?;
 смотреть на WHERE
 
 
+SELECT * FROM `magazine` LIMIT 3 OFFSET 3
+
 
 
 

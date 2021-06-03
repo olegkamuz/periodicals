@@ -80,7 +80,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
         }
     }
 
-    public List<Magazine> findBatch(int limit, int offset) throws DaoException {
+    public List<Magazine> findPage(int limit, int offset) throws DaoException {
         return findAll(connection, builder, limit, offset);
     }
 

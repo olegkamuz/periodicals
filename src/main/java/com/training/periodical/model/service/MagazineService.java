@@ -60,6 +60,7 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
+    @Override
     public List<Magazine> findAll() throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findAll();
@@ -68,11 +69,11 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
-    public List<Magazine> findBatch(int limit, int offset) throws ServiceException {
+    public List<Magazine> findPage(int limit, int offset) throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
-            return magazineDao.findBatch(limit, offset);
+            return magazineDao.findPage(limit, offset);
         } catch (DaoException e) {
-            throw createServiceException("findAll", e);
+            throw createServiceException("findPage", e);
         }
     }
 

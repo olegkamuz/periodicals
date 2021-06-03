@@ -28,6 +28,9 @@ public class MagazineQuery {
     public static final String SQL__DELETE_MAGAZINE =
             "DELETE FROM `magazine` WHERE id=?";
 
+    public static final String SQL__FIND_MAGAZINE_PAGE =
+            "SELECT * FROM `magazine` LIMIT ? OFFSET ?";
+
     public static String getQueryFindSumPriceByIds(int amount){
         StringBuilder sb = new StringBuilder("SELECT sum(price) AS total FROM magazine WHERE id IN (");
         for (int i = 0; i < amount; i++) {

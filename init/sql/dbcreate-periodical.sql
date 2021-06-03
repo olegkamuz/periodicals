@@ -104,6 +104,65 @@ INSERT INTO `magazine`
 VALUES (DEFAULT, 'Maximum PC', 160, 'maximum-pc.jpg', 3);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Linux Format', 260, 'linux-format.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Bow International', 120, 'bow-international.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Computer Music', 220, 'computer-music.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Digital Camera', 170, 'digital-camera.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Mac Format', 80, 'mac-format.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Mac Life', 190, 'mac-life.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'PC Gamer', 200, 'pc-gamer.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Play', 210, 'play.jpg', 3);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'FourFourTwo', 90, 'fourfourtwo.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Motor Boat And Yachting', 165, 'motor-boat-and-yachting.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Mountain Bike Rider', 100, 'mountain-bike-rider.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Practical Boat Owner', 140, 'practical-boat-owner.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Yachting Monthly', 130, 'yachting-monthly.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Horses And Hound', 185, 'horses-and-hound.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Sail The British Isles', 170, 'sail-the-british-isles.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Legends Of The Nfl', 115, 'legends-of-the-nfl.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Ultimate Guide To The Masters', 125, 'ultimate-guide-to-the-masters.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Legend Of Tho Nfl', 205, 'legend-of-tho-nfl.jpg', 2);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'The Modern Home', 295, 'the-modern-home.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'You Perfect Garden', 125, 'you-perfect-garden.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'The Home Scandi Bible', 200, 'the-home-scandi-bible.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Victorian Houses', 205, 'victorian-houses.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Declutter Your Home', 275, 'declutter-your-home.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Home Building And Renovating', 250, 'home-building-and-renovating2.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'The Ultimate Guide To Building Your Own Home', 260, 'the-ultimate-guide-to-building-your-own-home.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Homebuilding And Renovating', 265, 'homebuilding-and-renovating.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Homes And Gardens', 295, 'homes-and-gardens.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Real Homes', 225, 'real-homes.jpg', 1);
+INSERT INTO `magazine`
+VALUES (DEFAULT, '25 Beautiful Homes', 255, '25-beautiful-homes.jpg', 1);
+
+
+
 
 CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
 (

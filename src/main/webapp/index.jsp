@@ -26,7 +26,7 @@
         <div class="container">
             <div class="row">
                 <div class="theme-name"><h3>All</h3></div>
-                <c:forEach var="magazine" items="${magazinesList}">
+                <c:forEach var="magazine" items="${magazinesPage}">
                     <div class="col">
                         <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
                         <p>${magazine.name}</p>

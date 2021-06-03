@@ -26,6 +26,7 @@ public class IndexCommand implements Command {
     private static final Logger log = Logger.getLogger(IndexCommand.class);
     private final ThemeService themeService;
     private final MagazineService magazineService;
+    private final int PAGE_SIZE = 5;
 
     public IndexCommand(ThemeService themeService, MagazineService magazineService) {
         this.themeService = themeService;
@@ -39,27 +40,46 @@ public class IndexCommand implements Command {
 
         int magazineAmount = getMagazineAmount();
 
-        int pageAmount = getNumberOfPages(3, magazineAmount);
-        pageAmount = 7;
-
-        String currentPageParameter = request.getParameter("page");
-
-        if (!validate(currentPageParameter, 0, pageAmount)) {
+        if (!validate(request.getParameter("page"), 0, getNumberOfPages(PAGE_SIZE, magazineAmount))) {
             return Path.REDIRECT__INDEX + "?page=1";
         }
 
-        paginate(request, Integer.parseInt(currentPageParameter), pageAmount);
+        int currentPage = Integer.parseInt(request.getParameter("page"));
 
-        Map<Theme, List<Magazine>> map = getMagazineByThemes();
-        request.getSession().setAttribute("magazinesByThemes", map);
-        log.trace("Set the request attribute: menuByCategoryItems --> " + map);
-
-        List<Magazine> all = getAllMagazines();
-        if (all != null) request.getSession().setAttribute("magazinesList", all);
-        log.trace("Set the request attribute: magazinesList --> " + all);
+        setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, magazineAmount));
+        setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
+//        setToJspAllMagazines(request, getAllMagazines());
+//        setMagazinesByThemes(request, getMagazineByThemes());
 
         log.debug("Command finished");
         return Path.PAGE_INDEX;
+    }
+
+    private void setToJspAllMagazines(HttpServletRequest request, List<Magazine> allMagazines) {
+        if (allMagazines != null) request.getSession().setAttribute("magazinesList", allMagazines);
+        log.trace("Set the request attribute: magazinesList --> " + allMagazines);
+    }
+
+    private void setMagazinesByThemes(HttpServletRequest request, Map<Theme, List<Magazine>> map) throws CommandException {
+        request.getSession().setAttribute("magazinesByThemes", map);
+        log.trace("Set the request attribute: menuByCategoryItems --> " + map);
+    }
+
+    private void setToJspMagazinesPage(HttpServletRequest request, List<Magazine> magazinesPage) {
+        request.getSession().setAttribute("magazinesPage", magazinesPage);
+        log.trace("Set the request attribute: magazinesPage --> " + magazinesPage);
+    }
+
+    private List<Magazine> getMagazinesPage(int currentPage, int pageSize) {
+        List<Magazine> page = null;
+        try {
+            int limit = pageSize;
+            int offset = pageSize * (currentPage - 1);
+            return magazineService.findPage(limit, offset);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return page;
     }
 
     private List<Magazine> getAllMagazines() {
@@ -123,7 +143,7 @@ public class IndexCommand implements Command {
         }
     }
 
-    private void paginate(HttpServletRequest request, int currentPage, int pageAmount) throws CommandException {
+    private void setToJspPaginationBar(HttpServletRequest request, int currentPage, int pageAmount) throws CommandException {
         List<Integer> baseList = getBaseList(pageAmount);
 
         if (pageAmount > 6) {

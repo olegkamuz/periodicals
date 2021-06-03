@@ -2,6 +2,7 @@ package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.Builder;
+import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.Query;
 import com.training.periodical.model.dao.query.ThemeQuery;
 
@@ -31,22 +32,6 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    public List<T> findAll(Connection connection, Builder<T> builder, int limit, int offset) throws DaoException {
-        try {
-            Object[] parameters = {};
-            return executeQuery(connection, Query.getFindAllFromTable(tableName, limit, offset), builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException();
-        }
-    }
-
-    public Optional<Integer> getCount(Connection connection, int limit, int offset, Builder builder, Object[] parameters) throws DaoException {
-        try {
-            return executeSingleResponseQuery(connection, Query.getFindAllFromTable(tableName, limit, offset), builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException();
-        }
-    }
 
     /**
      * Commits given connection.
@@ -67,6 +52,15 @@ public abstract class AbstractDao<T> implements IDao<T> {
             connection.rollback();
         } catch (SQLException ex) {
             throw new DaoException(ex);
+        }
+    }
+
+    public List<T> findAll(Connection connection, Builder<T> builder, int limit, int offset) throws DaoException {
+        try {
+            Object[] parameters = {limit, offset};
+            return executeQuery(connection, MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException();
         }
     }
 
