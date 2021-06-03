@@ -160,9 +160,34 @@ INSERT INTO `magazine`
 VALUES (DEFAULT, 'Real Homes', 225, 'real-homes.jpg', 1);
 INSERT INTO `magazine`
 VALUES (DEFAULT, '25 Beautiful Homes', 255, '25-beautiful-homes.jpg', 1);
-
-
-
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Classic Rock Special AC/DC', 110, 'classic-rock-special-ac-dc.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Classic Rock Special Jimi Hendrix', 220, 'classic-rock-special-jimi-hendrix.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, '100 Greatest Rock Songs Of All Time', 105, '100-greatest-rock-songs-of-all-time.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Classic Rock Special Queen', 120, 'classic-rock-special-queen.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'The Producers Music Theory Handbook', 130, 'the-producers-music-theory-handbook.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Classic Rock Special Iron Maiden', 185, 'classic-rock-special-iron-maiden.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Classic Rock Special Metallica', 110, 'classic-rock-special-metallica.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Abbey Road', 180, 'abbey-road.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Fender Stratocaster Handbook', 205, 'fender-stratocaster-handbook.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'The Story Of Burice Springsteen', 110, 'the-story-of-burice-springsteen.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Guitar World', 200, 'guitar-world.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Guitarist', 150, 'guitarist.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Total Guitar', 180, 'total-guitar.jpg', 4);
+INSERT INTO `magazine`
+VALUES (DEFAULT, 'Metal Hammer', 120, 'metal-hammer.jpg', 4);
 
 CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
 (

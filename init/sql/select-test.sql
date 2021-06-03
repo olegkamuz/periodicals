@@ -40,7 +40,16 @@ LIMIT ?, ?;
 смотреть на WHERE
 
 
-SELECT * FROM `magazine` LIMIT 3 OFFSET 3
+SELECT * FROM `magazine` ORDER BY price DESC LIMIT 3 OFFSET 3
+
+SELECT * FROM `magazine` ORDER BY price DESC
+
+
+
+SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' order by price desc limit 3 offset 3
+
+
+SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' LIMIT 5 OFFSET 10
 
 
 

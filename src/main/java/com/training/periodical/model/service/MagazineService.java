@@ -23,6 +23,44 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
+    public List<Magazine> findSorted(String sortSubQuery) throws ServiceException{
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSorted(sortSubQuery);
+        } catch (DaoException e) {
+            throw createServiceException("findSorted", e);
+        }
+    }
+    public List<Magazine> findSortedPaginated(String sortSubQuery, int limit, int offset) throws ServiceException{
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSortedPaginated(sortSubQuery, limit, offset);
+        } catch (DaoException e) {
+            throw createServiceException("findSorted", e);
+        }
+    }
+
+    public List<Magazine> findFiltered(String filterName) throws ServiceException{
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findFiltered(filterName);
+        } catch (DaoException e) {
+            throw createServiceException("findSorted", e);
+        }
+    }
+    public List<Magazine> findFilteredPaginated(String filterName, int limit, int offset) throws ServiceException{
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findFilteredPaginated(filterName, limit, offset);
+        } catch (DaoException e) {
+            throw createServiceException("findSorted", e);
+        }
+    }
+    public List<Magazine> findPage(int limit, int offset) throws ServiceException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findPage(limit, offset);
+        } catch (DaoException e) {
+            throw createServiceException("findPage", e);
+        }
+    }
+
+
     public int deleteNow(Long magazineId) throws ServiceException{
         try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.deleteNow(magazineId);
@@ -51,6 +89,14 @@ public class MagazineService extends AbstractService<Magazine> {
             throw createServiceException("getCount", e);
         }
     }
+    public int getCountFiltered(String filterName) throws ServiceException {
+        try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.getCountFiltered(filterName);
+        } catch (DaoException e) {
+            throw createServiceException("getCount", e);
+        }
+    }
+
 
     public int updateNow(Magazine magazine) throws ServiceException{
         try(MagazineDao magazineDao = daoFactory.createMagazineDao()) {
@@ -69,13 +115,6 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
-    public List<Magazine> findPage(int limit, int offset) throws ServiceException {
-        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
-            return magazineDao.findPage(limit, offset);
-        } catch (DaoException e) {
-            throw createServiceException("findPage", e);
-        }
-    }
 
     @Override
     public int create(Magazine magazine) throws ServiceException {

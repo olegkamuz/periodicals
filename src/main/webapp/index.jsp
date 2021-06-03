@@ -26,109 +26,172 @@
         <div class="container">
             <div class="row">
                 <div class="theme-name"><h3>All</h3></div>
-                <c:forEach var="magazine" items="${magazinesPage}">
-                    <div class="col">
-                        <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
-                        <p>${magazine.name}</p>
-                        <p>${magazine.price}</p>
+
+                <div class="sorting">
+
+                    <div class="dropdown show dropdown-filtering">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLinkFilter"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <c:if test="${isSortName}">
+                                Filter${nameToSort}
+                            </c:if>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkFilter">
+                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.name_asc"/></a>
+                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.name_desc"/></a>
+                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.price_asc"/></a>
+                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.price_desc"/></a>
+                        </div>
                     </div>
-                </c:forEach>
 
-                <div class="page_bar">
-                    <c:if test="${firstPage != null}">
-                        <c:url var="first_url" value="/index?page=${firstPage}"/>
-                        <a style="padding: 0 3px"
-                           <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
-                           <c:if test="${currentPage != firstPage}">href="<c:out value='${first_url}'/>"</c:if>
-                        ><<</a>
-                    </c:if>
-                    <c:if test="${previousPage != null}">
-                        <c:url var="prev_url" value="/index?page=${previousPage}"/>
-                        <a style="padding: 0 3px"
-                           <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
-                           <c:if test="${currentPage != firstPage}">href="<c:out value='${prev_url}'/>"
-                        </c:if>
-                        ><</a>
-                    </c:if>
-
-                    <c:choose>
-                        <c:when test="${areDots}">
-
-                            <c:if test="${pageFirst}">
-                                <c:url var="url" value="/index?page=1"/>
-                                <a style="padding: 0 3px"
-                                   href="<c:out value='${url}'/>">1</a>
-                                <span>...</span>
-                            </c:if>
-
-                            <c:forEach var="page" items="${carriage}">
-                                <c:url var="url" value="/index?page=${page}"/>
-                                <a style="padding: 0 3px"
-                                   <c:if test="${currentPage == page}">class="active"</c:if>
-                                   href="<c:out value='${url}'/>">${page}</a>
-                            </c:forEach>
-
-                            <c:if test="${pageLast}">
-                                <span>...</span>
-                                <c:url var="url" value="/index?page=${lastPage}"/>
-                                <a style="padding: 0 3px"
-                                   href="<c:out value='${url}'/>">${lastPage}</a>
-                            </c:if>
-
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="page" items="${baseList}">
-                                <c:url var="url" value="/index?page=${page}"/>
-                                <a style="padding: 0 3px"
-                                   <c:if test="${currentPage == page}">class="active"</c:if>
-                                   href="<c:out value='${url}'/>">${page}</a>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <c:if test="${nextPage != null}">
-                        <c:url var="next_url" value="/index?page=${nextPage}"/>
-                        <a style="padding: 0 3px"
-                           <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
-                           <c:if test="${currentPage != lastPage}">href="<c:out value='${next_url}'/>"
-                        </c:if>
-                        >></a>
-                    </c:if>
-                    <c:if test="${lastPage != null}">
-                        <c:url var="last_url" value="/index?page=${lastPage}"/>
-                        <a style="padding: 0 3px"
-                           <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
-                           <c:if test="${currentPage != lastPage}">href="<c:out value='${last_url}'/>"
-                        </c:if>
-                        >>></a>
-                    </c:if>
+                    <div class="dropdown show dropdown-custom">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <c:choose>
+                                <c:when test="${fieldToSort != null}">
+                                    ${fieldToSort}
+                                </c:when>
+                                <c:otherwise>
+                                    Sort
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <c:set var="urlp" value="${fn:replace(
+                            pageContext.request.requestURL,
+                             pageContext.request.requestURI,
+                            pageContext.request.contextPath)}/index?page=1"/>
+                            <%--                              pageContext.request.contextPath)}/index?page=${param['page']}" />--%>
+                            <a class="dropdown-item"
+                               href="${urlp}">
+                                <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=name_asc">
+                                <fmt:message key="index_jsp.label.sort.name_asc"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=name_desc">
+                                <fmt:message key="index_jsp.label.sort.name_desc"/></a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=price_asc">
+                                <fmt:message key="index_jsp.label.sort.price_asc"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=price_desc">
+                                <fmt:message key="index_jsp.label.sort.price_desc"/>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-
-        <div class="container">
-            <c:forEach var="theme" items="${magazinesByThemes}">
-                <c:url value="/one-theme-magazines" var="url">
-                    <c:param name="theme" value="${theme.key.name}"/>
-                </c:url>
-                <a href="<c:out value='${url}'/>">
-                    <div class="row">
-                        <div class="theme-name"><h3>${theme.key.name}</h3></div>
-                        <c:forEach var="magazine" items="${theme.value}" end="2">
+                <c:choose>
+                    <c:when test="${fn:length(magazinesPage) == 0}">No magazines in filtered theme</c:when>
+                    <c:otherwise>
+                        <c:forEach var="magazine" items="${magazinesPage}">
                             <div class="col">
                                 <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
                                 <p>${magazine.name}</p>
                                 <p>${magazine.price}</p>
                             </div>
                         </c:forEach>
-                    </div>
-                </a>
-            </c:forEach>
+                        <div class="page_bar">
+                            <c:if test="${firstPage != null}">
+                                <c:url var="first_url" value="/index?page=${firstPage}"/>
+                                <a style="padding: 0 3px"
+                                   <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
+                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${first_url}'/>"
+                                </c:if>
+                                ><<</a>
+                            </c:if>
+                            <c:if test="${previousPage != null}">
+                                <c:url var="prev_url" value="/index?page=${previousPage}"/>
+                                <a style="padding: 0 3px"
+                                   <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
+                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${prev_url}'/>"
+                                </c:if>
+                                ><</a>
+                            </c:if>
+
+                            <c:choose>
+                                <c:when test="${areDots}">
+
+                                    <c:if test="${pageFirst}">
+                                        <c:url var="url" value="/index?page=1"/>
+                                        <a style="padding: 0 3px"
+                                           href="<c:out value='${url}'/>">1</a>
+                                        <span>...</span>
+                                    </c:if>
+
+                                    <c:forEach var="page" items="${carriage}">
+                                        <c:url var="url" value="/index?page=${page}"/>
+                                        <a style="padding: 0 3px"
+                                           <c:if test="${currentPage == page}">class="active"</c:if>
+                                           href="<c:out value='${url}'/>">${page}</a>
+                                    </c:forEach>
+
+                                    <c:if test="${pageLast}">
+                                        <span>...</span>
+                                        <c:url var="url" value="/index?page=${lastPage}"/>
+                                        <a style="padding: 0 3px"
+                                           href="<c:out value='${url}'/>">${lastPage}</a>
+                                    </c:if>
+
+                                </c:when>
+                                <c:otherwise>
+                                    <c:forEach var="page" items="${baseList}">
+                                        <c:url var="url" value="/index?page=${page}"/>
+                                        <a style="padding: 0 3px"
+                                           <c:if test="${currentPage == page}">class="active"</c:if>
+                                           href="<c:out value='${url}'/>">${page}</a>
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <c:if test="${nextPage != null}">
+                                <c:url var="next_url" value="/index?page=${nextPage}"/>
+                                <a style="padding: 0 3px"
+                                   <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
+                                   <c:if test="${currentPage != lastPage}">href="<c:out value='${next_url}'/>"
+                                </c:if>
+                                >></a>
+                            </c:if>
+                            <c:if test="${lastPage != null}">
+                                <c:url var="last_url" value="/index?page=${lastPage}"/>
+                                <a style="padding: 0 3px"
+                                   <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
+                                   <c:if test="${currentPage != lastPage}">href="<c:out value='${last_url}'/>"
+                                </c:if>
+                                >>></a>
+                            </c:if>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+
+
+            <div class="container">
+                <c:forEach var="theme" items="${magazinesByThemes}">
+                    <c:url value="/one-theme-magazines" var="url">
+                        <c:param name="theme" value="${theme.key.name}"/>
+                    </c:url>
+                    <a href="<c:out value='${url}'/>">
+                        <div class="row">
+                            <div class="theme-name"><h3>${theme.key.name}</h3></div>
+                            <c:forEach var="magazine" items="${theme.value}" end="2">
+                                <div class="col">
+                                    <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
+                                    <p>${magazine.name}</p>
+                                    <p>${magazine.price}</p>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </a>
+                </c:forEach>
+            </div>
+
         </div>
 
     </div>
-
-</div>
-<%@ include file="/WEB-INF/jspf/footer.jspf" %>
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

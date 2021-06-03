@@ -64,6 +64,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
+
     protected List<T> executeQuery(Connection connection, String query, Builder<T> builder, Object... parameters) throws SQLException {
         ResultSet resultSet;
         List<T> entity = new ArrayList<>();

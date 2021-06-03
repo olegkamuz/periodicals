@@ -50,6 +50,23 @@ public class MagazineDao extends AbstractDao<Magazine> {
         }
         return 0;
     }
+    public int getCountFiltered(String filterName) throws DaoException {
+        ResultSet rs = null;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(MagazineQuery.SQL__COUNT_FILTERED)) {
+            Object[] parameters = {filterName};
+            prepareStatement(preparedStatement, parameters);
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("COUNT(*)");
+            }
+        } catch (SQLException e) {
+            throw new DaoException();
+        } finally {
+            close(rs);
+        }
+        return 0;
+    }
 
     protected static void close(ResultSet rs) throws DaoException {
         if (rs == null) return;
@@ -80,9 +97,6 @@ public class MagazineDao extends AbstractDao<Magazine> {
         }
     }
 
-    public List<Magazine> findPage(int limit, int offset) throws DaoException {
-        return findAll(connection, builder, limit, offset);
-    }
 
     @Override
     public int create(Magazine magazine) throws DaoException {
@@ -130,6 +144,50 @@ public class MagazineDao extends AbstractDao<Magazine> {
         } finally {
             commit(connection);
         }
+    }
+
+    public List<Magazine> findSorted(String sortSubQuery) throws DaoException {
+        Object[] parameters = {};
+        try {
+            return executeQuery(connection, MagazineQuery.SQL_FIND_SORT + sortSubQuery, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+    public List<Magazine> findSortedPaginated(String sortSubQuery, int limit, int offset) throws DaoException {
+        Object[] parameters = {limit, offset};
+        try {
+            return executeQuery(connection, MagazineQuery.SQL_FIND_SORT +
+                    sortSubQuery +
+                    MagazineQuery.SQL__FIND_SUB_PAGINATED
+                    , builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Magazine> findFiltered(String filterName) throws DaoException {
+        Object[] parameters = {filterName};
+        try {
+            return executeQuery(connection, MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Magazine> findFilteredPaginated(String filterName, int limit, int offset) throws DaoException{
+        Object[] parameters = {filterName, limit, offset};
+        try {
+            return executeQuery(connection,
+                    MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
+                            MagazineQuery.SQL__FIND_SUB_PAGINATED, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Magazine> findPage(int limit, int offset) throws DaoException {
+        return findAll(connection, builder, limit, offset);
     }
 
 

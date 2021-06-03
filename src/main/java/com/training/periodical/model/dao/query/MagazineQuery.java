@@ -19,6 +19,9 @@ public class MagazineQuery {
     public static final String SQL__COUNT_ALL =
             "SELECT COUNT(*) FROM `magazine`";
 
+    public static final String SQL__COUNT_FILTERED =
+            "SELECT COUNT(*) FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";
+
     public static final String SQL__FIND_MAGAZINE_BY_ID =
             "SELECT * FROM magazine WHERE id=?";
 
@@ -30,6 +33,21 @@ public class MagazineQuery {
 
     public static final String SQL__FIND_MAGAZINE_PAGE =
             "SELECT * FROM `magazine` LIMIT ? OFFSET ?";
+
+    public static final String SQL__FIND_SUB_PAGINATED =
+            " LIMIT ? OFFSET ?";
+
+    public static final String SQL__SUB_SORT_NAME_ASC =
+            " ORDER BY name ASC ";
+    public static final String SQL__SUB_SORT_NAME_DESC =
+            " ORDER BY name DESC ";
+    public static final String SQL__SUB_SORT_PRICE_ASC =
+            " ORDER BY price ASC ";
+    public static final String SQL__SUB_SORT_PRICE_DESC =
+            " ORDER BY price DESC ";
+    public static final String SQL_FIND_SORT =
+            "SELECT * FROM `magazine` ";
+
 
     public static String getQueryFindSumPriceByIds(int amount){
         StringBuilder sb = new StringBuilder("SELECT sum(price) AS total FROM magazine WHERE id IN (");

@@ -86,3 +86,17 @@ a {
 a.disabled {
     pointer-events: none;
 }
+.sorting {
+    width: 100%;
+    margin: 5px;
+}
+.theme-name h3 {
+    padding: 0px;
+    margin: 0px;
+}
+.dropdown-custom {
+    float: right;
+}
+.dropdown-filtering{
+    float: left;
+}
