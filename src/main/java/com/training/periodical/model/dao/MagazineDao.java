@@ -185,6 +185,18 @@ public class MagazineDao extends AbstractDao<Magazine> {
             throw new DaoException(e);
         }
     }
+    public List<Magazine> findFilteredSortedPaginated(String filterName, String sortSubQuery, int limit, int offset) throws DaoException{
+        Object[] parameters = {filterName, limit, offset};
+        try {
+            return executeQuery(connection,
+                    MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
+                            sortSubQuery +
+                            MagazineQuery.SQL__FIND_SUB_PAGINATED, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
 
     public List<Magazine> findPage(int limit, int offset) throws DaoException {
         return findAll(connection, builder, limit, offset);

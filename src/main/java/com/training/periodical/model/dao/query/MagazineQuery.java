@@ -48,6 +48,14 @@ public class MagazineQuery {
     public static final String SQL_FIND_SORT =
             "SELECT * FROM `magazine` ";
 
+    public static final String SQL__SUB_FILTER_SORT_NAME_ASC =
+            " ORDER BY m.name ASC ";
+    public static final String SQL__SUB_FILTER_SORT_NAME_DESC =
+            " ORDER BY m.name DESC ";
+    public static final String SQL__SUB_FILTER_SORT_PRICE_ASC =
+            " ORDER BY m.price ASC ";
+    public static final String SQL__SUB_FILTER_SORT_PRICE_DESC =
+            " ORDER BY m.price DESC ";
 
     public static String getQueryFindSumPriceByIds(int amount){
         StringBuilder sb = new StringBuilder("SELECT sum(price) AS total FROM magazine WHERE id IN (");

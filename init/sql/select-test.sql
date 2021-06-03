@@ -53,6 +53,10 @@ SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' LI
 
 
 
+SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' ORDER BY m.name ASC  LIMIT 5 OFFSET 0
+
+SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' ORDER BY m.price DESC  LIMIT 5 OFFSET 0
+
 
 
 

@@ -28,42 +28,106 @@
                 <div class="theme-name"><h3>All</h3></div>
 
                 <div class="sorting">
+                    <c:url var="nextUrl" value="">
+                        <c:forEach items="${param}" var="entry">
+                            <c:if test="${entry.key != 'page'}">
+                                <c:param name="${entry.key}" value="${entry.value}"/>
+                            </c:if>
+                        </c:forEach>
+<%--                        <c:param name="page" value="${some calculation}" />--%>
+                    </c:url>
+                    <h3>${nextUrl}</h3>
+                    <h3>${param}</h3>
 
+                    <c:set var="urlp" value="${fn:replace(
+                            pageContext.request.requestURL,
+                             pageContext.request.requestURI,
+                            pageContext.request.contextPath)}/index?page=1"/>
+
+                    <h3>${urlp}</h3>
+                    <c:if test="${param['page'] != null}"/>
+                    <%--                              pageContext.request.contextPath)}/index?page=${param['page']}" />--%>
                     <div class="dropdown show dropdown-filtering">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLinkFilter"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <c:if test="${isSortName}">
-                                Filter${nameToSort}
-                            </c:if>
+                            <c:set var="interior" value="interior"/>
+                            <c:set var="sport" value="sport"/>
+                            <c:set var="it_world" value="it_world"/>
+                            <c:set var="music" value="music"/>
+                            <c:choose>
+                                <c:when test="${fieldToSort eq interior}">
+                                    <fmt:message key="index_jsp.label.filter.interior"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq sport}">
+                                    <fmt:message key="index_jsp.label.filter.sport"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq it_world}">
+                                    <fmt:message key="index_jsp.label.filter.it_world"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq music}">
+                                    <fmt:message key="index_jsp.label.filter.music"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:message key="index_jsp.label.filter.all_wo_filter"/>
+                                </c:otherwise>
+                            </c:choose>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkFilter">
-                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.name_asc"/></a>
-                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.name_desc"/></a>
-                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.price_asc"/></a>
-                            <a class="dropdown-item" href="#"><fmt:message key="index_jsp.label.sort.price_desc"/></a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=all">
+                                <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=all">
+                                <fmt:message key="index_jsp.label.filter.all_wo_filter"/></a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=interior">
+                                <fmt:message key="index_jsp.label.filter.interior"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=sport">
+                                <fmt:message key="index_jsp.label.filter.sport"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=id_world">
+                                <fmt:message key="index_jsp.label.filter.it_world"/>
+                            </a>
+                            <a class="dropdown-item"
+                               href="${urlp}&sort=music">
+                                <fmt:message key="index_jsp.label.filter.music"/>
+                            </a>
                         </div>
                     </div>
 
                     <div class="dropdown show dropdown-custom">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <c:set var="name_asc" value="name_asc"/>
+                            <c:set var="name_desc" value="name_desc"/>
+                            <c:set var="price_asc" value="price_asc"/>
+                            <c:set var="price_desc" value="price_desc"/>
                             <c:choose>
-                                <c:when test="${fieldToSort != null}">
-                                    ${fieldToSort}
+                                <c:when test="${fieldToSort eq name_asc}">
+                                    <fmt:message key="index_jsp.label.sort.name_asc"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq name_desc}">
+                                    <fmt:message key="index_jsp.label.sort.name_desc"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq price_asc}">
+                                    <fmt:message key="index_jsp.label.sort.price_asc"/>
+                                </c:when>
+                                <c:when test="${fieldToSort eq price_desc}">
+                                    <fmt:message key="index_jsp.label.sort.price_desc"/>
                                 </c:when>
                                 <c:otherwise>
-                                    Sort
+                                    <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
                                 </c:otherwise>
                             </c:choose>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <c:set var="urlp" value="${fn:replace(
-                            pageContext.request.requestURL,
-                             pageContext.request.requestURI,
-                            pageContext.request.contextPath)}/index?page=1"/>
                             <%--                              pageContext.request.contextPath)}/index?page=${param['page']}" />--%>
                             <a class="dropdown-item"
-                               href="${urlp}">
+                               href="${urlp}&sort=all">
                                 <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
                             </a>
                             <a class="dropdown-item"
@@ -72,7 +136,8 @@
                             </a>
                             <a class="dropdown-item"
                                href="${urlp}&sort=name_desc">
-                                <fmt:message key="index_jsp.label.sort.name_desc"/></a>
+                                <fmt:message key="index_jsp.label.sort.name_desc"/>
+                            </a>
                             <a class="dropdown-item"
                                href="${urlp}&sort=price_asc">
                                 <fmt:message key="index_jsp.label.sort.price_asc"/>
@@ -97,18 +162,42 @@
                         </c:forEach>
                         <div class="page_bar">
                             <c:if test="${firstPage != null}">
-                                <c:url var="first_url" value="/index?page=${firstPage}"/>
+                                <c:url var="first_url" value="/index${nextUrl}&page=${firstPage}"/>
                                 <a style="padding: 0 3px"
+
+
+                                        <c:url var="nextUrl" value="">
+                                            <c:forEach items="${param}" var="entry">
+                                                <c:if test="${entry.key != 'page'}">
+                                                    <c:param name="${entry.key}" value="${entry.value}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:param name="page" value="${firstPage}" />
+                                        </c:url>
+
                                    <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
-                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${first_url}'/>"
+<%--                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${firstUrl}'/>"--%>
+                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${nextUrl}'/>"
                                 </c:if>
                                 ><<</a>
                             </c:if>
                             <c:if test="${previousPage != null}">
                                 <c:url var="prev_url" value="/index?page=${previousPage}"/>
+
+
+                                <c:url var="nextUrl" value="">
+                                    <c:forEach items="${param}" var="entry">
+                                        <c:if test="${entry.key != 'page'}">
+                                            <c:param name="${entry.key}" value="${entry.value}"/>
+                                        </c:if>
+                                    </c:forEach>
+                                    <c:param name="page" value="${previousPage}" />
+                                </c:url>
+
                                 <a style="padding: 0 3px"
                                    <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
-                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${prev_url}'/>"
+<%--                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${prev_url}'/>"--%>
+                                   <c:if test="${currentPage != firstPage}">href="<c:out value='${nextUrl}'/>"
                                 </c:if>
                                 ><</a>
                             </c:if>

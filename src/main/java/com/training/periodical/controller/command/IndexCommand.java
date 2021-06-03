@@ -53,18 +53,22 @@ public class IndexCommand implements Command {
         String filter = request.getParameter("filter");
 
         if (validateSort(sort) && validateFilter(filter)) {
-            String sortSubQuery = getSortSubQuery(sort);
+            String sortSubQuery = getFilterSortSubQuery(sort);
             String filterName = getFilterName(filter);
 
             request.getSession().setAttribute("fieldToSort", sort);
-
-//            setToJspMagazinesPage(request, getMagazinesSorted(sortSubQuery));
-            setToJspMagazinesPage(request, getMagazinesFiltered(filter));
+            request.getSession().setAttribute("fieldToFilter", filter);
 
             int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
 
-            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
-//        setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
+            if (filteredMagazineAmount > 0) {
+                setToJspMagazinesPage(request, getMagazinesFilteredSortedPaginates(filterName, sortSubQuery, currentPage, PAGE_SIZE));
+
+                setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
+            } else {
+                setToJspMagazinesPage(request, Collections.emptyList());
+                log.trace("No magazines in filter theme " + filterName);
+            }
         } else if (validateFilter(filter)) {
             String filterName = getFilterName(filter);
 
@@ -73,7 +77,6 @@ public class IndexCommand implements Command {
             request.getSession().setAttribute("fieldToFilter", filter);
 
             if (filteredMagazineAmount > 0) {
-//            setToJspMagazinesPage(request, getMagazinesFiltered(filter));
                 setToJspMagazinesPage(request, getMagazinesFilteredPaginated(filterName, currentPage, PAGE_SIZE));
 
                 setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
@@ -81,7 +84,7 @@ public class IndexCommand implements Command {
                 setToJspMagazinesPage(request, Collections.emptyList());
                 log.trace("No magazines in filter theme -->" + filterName);
             }
-        } else if (validateSort(sort)) {
+        } else if (validateSort(sort) && !sort.equals("all")) {
             String sortSubQuery = getSortSubQuery(sort);
 
             request.getSession().setAttribute("fieldToSort", sort);
@@ -90,6 +93,7 @@ public class IndexCommand implements Command {
 
             setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
         } else {
+            request.getSession().setAttribute("fieldToSort", "all");
             setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
             setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
         }
@@ -101,7 +105,7 @@ public class IndexCommand implements Command {
     }
 
     private List<Magazine> getMagazinesPage(int currentPage, int pageSize) {
-        List<Magazine> page = null;
+        List<Magazine> page = new ArrayList<>();
         try {
             int limit = pageSize;
             int offset = pageSize * (currentPage - 1);
@@ -113,7 +117,7 @@ public class IndexCommand implements Command {
     }
 
     private List<Magazine> getMagazinesFilteredPaginated(String filterName, int currentPage, int pageSize) {
-        List<Magazine> filteredPaginated = null;
+        List<Magazine> filteredPaginated = new ArrayList<>();
         try {
             int limit = pageSize;
             int offset = pageSize * (currentPage - 1);
@@ -124,8 +128,21 @@ public class IndexCommand implements Command {
         return filteredPaginated;
     }
 
+    private List<Magazine> getMagazinesFilteredSortedPaginates(String filterName, String sortSubQuery, int currentPage, int pageSize) {
+        List<Magazine> filteredSortedPaginated = new ArrayList<>();
+        try {
+            int limit = pageSize;
+            int offset = pageSize * (currentPage - 1);
+            return magazineService.findFilteredSortedPaginated(filterName, sortSubQuery, limit, offset);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return filteredSortedPaginated;
+    }
+
+
     private List<Magazine> getMagazinesFiltered(String filterName) {
-        List<Magazine> filtered = null;
+        List<Magazine> filtered = new ArrayList<>();
         try {
             return magazineService.findFiltered(filterName);
         } catch (ServiceException e) {
@@ -153,19 +170,38 @@ public class IndexCommand implements Command {
         return sortSubQuery;
     }
 
+    private String getFilterSortSubQuery(String sort) {
+        String sortSubQuery = "";
+        switch (sort) {
+            case "name_asc":
+                sortSubQuery = MagazineQuery.SQL__SUB_FILTER_SORT_PRICE_DESC;
+                break;
+            case "name_desc":
+                sortSubQuery = MagazineQuery.SQL__SUB_FILTER_SORT_NAME_DESC;
+                break;
+            case "price_asc":
+                sortSubQuery = MagazineQuery.SQL__SUB_FILTER_SORT_PRICE_ASC;
+                break;
+            case "price_desc":
+                sortSubQuery = MagazineQuery.SQL__SUB_FILTER_SORT_PRICE_DESC;
+                break;
+        }
+        return sortSubQuery;
+    }
+
     private String getFilterName(String filter) {
         String filterName = "";
         switch (filter) {
-            case "Interior":
+            case "interior":
                 filterName = ThemeConstants.INTERIOR;
                 break;
-            case "Sport":
+            case "sport":
                 filterName = ThemeConstants.SPORT;
                 break;
-            case "IT world":
+            case "it_world":
                 filterName = ThemeConstants.IT_WORLD;
                 break;
-            case "Music":
+            case "music":
                 filterName = ThemeConstants.MUSIC;
                 break;
         }
@@ -173,7 +209,7 @@ public class IndexCommand implements Command {
     }
 
     private List<Magazine> getMagazinesSorted(String sortSubQuery) {
-        List<Magazine> sorted = null;
+        List<Magazine> sorted = new ArrayList<>();
         try {
             return magazineService.findSorted(sortSubQuery);
         } catch (ServiceException e) {
@@ -182,7 +218,7 @@ public class IndexCommand implements Command {
         return sorted;
     }
     private List<Magazine> getMagazinesSortedPaginated(String sortSubQuery, int currentPage, int pageSize) {
-        List<Magazine> sorted = null;
+        List<Magazine> sorted = new ArrayList<>();
         try {
             int limit = pageSize;
             int offset = pageSize * (currentPage - 1);

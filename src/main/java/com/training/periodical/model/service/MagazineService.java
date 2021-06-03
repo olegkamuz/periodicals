@@ -52,6 +52,14 @@ public class MagazineService extends AbstractService<Magazine> {
             throw createServiceException("findSorted", e);
         }
     }
+    public List<Magazine> findFilteredSortedPaginated(String filterName, String sortSubQuery, int limit, int offset) throws ServiceException{
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findFilteredSortedPaginated(filterName, sortSubQuery, limit, offset);
+        } catch (DaoException e) {
+            throw createServiceException("findSorted", e);
+        }
+    }
+
     public List<Magazine> findPage(int limit, int offset) throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findPage(limit, offset);
