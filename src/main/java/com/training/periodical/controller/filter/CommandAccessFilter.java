@@ -49,26 +49,50 @@ public class CommandAccessFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.debug("Filter starts");
 
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponce = (HttpServletResponse) response;
+
         if (accessAllowed(request)) {
             log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
-            if (response instanceof HttpServletResponse) {
-                if (request instanceof HttpServletRequest) {
-                    ((HttpServletRequest) request).getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
-                    ((HttpServletRequest) request).getSession().setAttribute("theme", request.getParameter("theme"));
-                }
-                ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
-            } else {
+            setPreviousParameters(httpRequest);
+            httpResponce.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
 
-                String errorMessage = "You do not have permission to access the requested resource";
+//            if (response instanceof HttpServletResponse) {
+//                if (request instanceof HttpServletRequest) {
+//                    ((HttpServletRequest) request).getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
+//                    ((HttpServletRequest) request).getSession().setAttribute("theme", request.getParameter("theme"));
+//                }
+//                ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
+//            } else {
+//
+//                String errorMessage = "You do not have permission to access the requested resource";
+//
+//                request.setAttribute("errorMessage", errorMessage);
+//                log.trace("Set the request attribute: errorMessage --> " + errorMessage);
+//
+//                request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
+//                        .forward(request, response);
+//            }
+        }
+    }
 
-                request.setAttribute("errorMessage", errorMessage);
-                log.trace("Set the request attribute: errorMessage --> " + errorMessage);
-
-                request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
-                        .forward(request, response);
-            }
+    private void setPreviousParameters(HttpServletRequest request){
+        if(request.getParameterValues("magazineId") != null){
+            request.getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
+        }
+        if(request.getParameter("theme") != null){
+            request.getSession().setAttribute("theme", request.getParameter("theme"));
+        }
+        if(request.getParameter("pre_sort") != null){
+            request.getSession().setAttribute("pre_sort", request.getParameter("pre_sort"));
+        }
+        if(request.getParameter("pre_filter") != null){
+            request.getSession().setAttribute("pre_filter", request.getParameter("pre_filter"));
+        }
+        if(request.getParameter("pre_page") != null){
+            request.getSession().setAttribute("pre_page", request.getParameter("pre_page"));
         }
     }
 
@@ -77,13 +101,13 @@ public class CommandAccessFilter implements Filter {
 
 //        // todo Just for DEVELOPMENT purposes, remove on prod
 
-        try {
-            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("admin");
-            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.ADMIN);
-        } catch (DaoException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("admin");
+//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.ADMIN);
+//        } catch (DaoException e) {
+//            e.printStackTrace();
+//        }
 
 //        try {
 //            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
