@@ -57,7 +57,10 @@ SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' OR
 
 SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='Sport' ORDER BY m.price DESC  LIMIT 5 OFFSET 0
 
+UPDATE `user` SET balance=9385 WHERE id=3
 
+
+UPDATE `user` SET balance=9785.00 WHERE id=3
 
 
 

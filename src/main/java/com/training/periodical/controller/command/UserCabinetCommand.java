@@ -12,14 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class UserCabinetCommand implements Command {
     private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
-    private final UserSubscriptionService USService;
+    private final UserSubscriptionService UserSubService;
     private final UserService userService;
 
     public UserCabinetCommand(UserSubscriptionService usService, UserService userService) {
-        this.USService = usService;
+        this.UserSubService = usService;
         this.userService = userService;
     }
 
@@ -27,15 +28,26 @@ public class UserCabinetCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("User cabinet command starts");
 
-        String replenish = request.getParameter("replenish");
-        String userId = request.getParameter("user-id");
+        User user;
+        Long userId = ((User) request.getSession().getAttribute("user")).getId();
+        try {
+            Optional<User> optionalUser = userService.findById(userId);
+            if(optionalUser.isPresent()){
+                user = optionalUser.get();
+            } else {
+                return Path.REDIRECT__INDEX;
+            }
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
 
-        if (replenish != null && !replenish.equals("") &&
-                userId != null && !userId.equals("")) {
+        String replenish = request.getParameter("replenish");
+
+        if (replenish != null && !replenish.equals("")) {
             try {
                 BigDecimal newBalance = (new BigDecimal(replenish))
-                        .add(((User) request.getSession().getAttribute("user")).getBalance());
-                userService.updateBalance(userId, String.valueOf(newBalance));
+                        .add(user.getBalance());
+                userService.updateBalance(newBalance, user.getId());
                 ((User) request.getSession().getAttribute("user")).setBalance(newBalance);
             } catch (ServiceException e) {
                 throw new CommandException(e);
@@ -53,7 +65,7 @@ public class UserCabinetCommand implements Command {
     private void setSessionSubscriptionList(HttpServletRequest request) throws CommandException {
         List<UserSubscriptionBean> subscriptionList = null;
         try {
-            subscriptionList = USService.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
+            subscriptionList = UserSubService.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

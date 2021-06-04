@@ -15,9 +15,9 @@ public class UserService extends AbstractService<User> {
     private static final Logger log = Logger.getLogger(UserService.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    public void updateBalance(String userId, String userBalance) throws ServiceException {
+    public void updateBalance(BigDecimal userBalance, long userId) throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
-            userDao.updateBalance(userId, userBalance);
+            userDao.updateBalance(userBalance, userId);
         } catch (DaoException e) {
             throw createServiceException("updateBalance", e);
         }

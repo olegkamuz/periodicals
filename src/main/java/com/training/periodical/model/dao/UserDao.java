@@ -208,9 +208,9 @@ public class UserDao extends AbstractDao<User> {
 //    }
 
 
-    public void updateBalance(String userId, String balance) throws DaoException {
+    public void updateBalance(BigDecimal balance, long userId) throws DaoException {
         Object[] parameters = {balance, userId};
-        executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
+        executeUpdateNow(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 
 
