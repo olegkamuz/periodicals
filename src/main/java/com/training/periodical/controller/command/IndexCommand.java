@@ -41,67 +41,130 @@ public class IndexCommand implements Command {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
 
-        int allMagazineAmount = getAllMagazineAmount();
-
-        if (!validatePage(request.getParameter("page"), 0, getNumberOfPages(PAGE_SIZE, allMagazineAmount))) {
-            return Path.REDIRECT__INDEX + "?page=1";
-        }
-        int currentPage = Integer.parseInt(request.getParameter("page"));
-
         String sort = request.getParameter("sort");
         String filter = request.getParameter("filter");
 
         if (validateFilterOrSort(sort) && validateFilterOrSort(filter)) {
-            String sortSubQuery = getFilterSortSubQuery(sort);
-            String filterName = getFilterName(filter);
-
-            request.getSession().setAttribute("fieldToSort", sort);
-            request.getSession().setAttribute("fieldToFilter", filter);
-
-            int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
-
-            if (filteredMagazineAmount > 0) {
-                setToJspMagazinesPage(request, getMagazinesFilteredSortedPaginates(filterName, sortSubQuery, currentPage, PAGE_SIZE));
-
-                setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
-            } else {
-                setToJspMagazinesPage(request, Collections.emptyList());
-                log.trace("No magazines in filter theme " + filterName);
-            }
+            log.debug("Command finished");
+            return showFilteredSorted(request, sort, filter);
         } else if (validateFilterOrSort(filter)) {
-            String filterName = getFilterName(filter);
-
-            int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
-
-            request.getSession().setAttribute("fieldToFilter", filter);
-
-            if (filteredMagazineAmount > 0) {
-                setToJspMagazinesPage(request, getMagazinesFilteredPaginated(filterName, currentPage, PAGE_SIZE));
-
-                setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
-            } else {
-                setToJspMagazinesPage(request, Collections.emptyList());
-                log.trace("No magazines in filter theme -->" + filterName);
-            }
+            log.debug("Command finished");
+            return showFiltered(request, filter);
         } else if (validateFilterOrSort(sort)) {
-            String sortSubQuery = getSortSubQuery(sort);
-
-            request.getSession().setAttribute("fieldToSort", sort);
-
-            setToJspMagazinesPage(request, getMagazinesSortedPaginated(sortSubQuery, currentPage, PAGE_SIZE));
-
-            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
+            log.debug("Command finished");
+            return showSorted(request, sort);
         } else {
-            request.getSession().setAttribute("fieldToSort", "all");
-            request.getSession().setAttribute("fieldToFilter", "all");
-            setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
-            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
+            return showAll(request);
+        }
+    }
+
+    private String showAll(HttpServletRequest request) throws CommandException {
+
+        int allMagazineAmount = getAllMagazineAmount();
+
+        if(isPageOutOfRange(request, allMagazineAmount)){
+            log.debug("Page out of range");
+            return Path.REDIRECT__INDEX + "?page=1";
         }
 
-//            setMagazinesByThemes(request, getMagazineByThemes());
+        int currentPage = Integer.parseInt(request.getParameter("page"));
+
+        request.getSession().setAttribute("fieldToSort", "all");
+        request.getSession().setAttribute("fieldToFilter", "all");
+
+        if (allMagazineAmount > 0) {
+            setToJspMagazinesPage(request, getMagazinesPage(currentPage, PAGE_SIZE));
+            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
+            log.debug("Show all magazines");
+        } else {
+            setToJspMagazinesPage(request, Collections.emptyList());
+            log.trace("No magazines");
+        }
 
         log.debug("Command finished");
         return Path.PAGE_INDEX;
+    }
+
+    private String showSorted(HttpServletRequest request, String sort) throws CommandException {
+        String sortSubQuery = getSortSubQuery(sort);
+        request.getSession().setAttribute("fieldToSort", sort);
+        request.getSession().setAttribute("fieldToFilter", "all");
+
+        int allMagazineAmount = getAllMagazineAmount();
+        if(isPageOutOfRange(request, allMagazineAmount)){
+            log.debug("Page out of range");
+            return Path.REDIRECT__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(request.getParameter("page"));
+
+        if (allMagazineAmount > 0) {
+            setToJspMagazinesPage(request, getMagazinesSortedPaginated(sortSubQuery, currentPage, PAGE_SIZE));
+            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, allMagazineAmount));
+            log.debug("Show filtered magazines");
+        } else {
+            setToJspMagazinesPage(request, Collections.emptyList());
+            log.trace("No magazines");
+        }
+
+        log.debug("Command finished");
+        return Path.PAGE_INDEX;
+    }
+
+    private String showFiltered(HttpServletRequest request, String filter) throws CommandException {
+        String filterName = getFilterName(filter);
+        request.getSession().setAttribute("fieldToFilter", filter);
+        request.getSession().setAttribute("fieldToSort", "all");
+
+        int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
+        if(isPageOutOfRange(request, filteredMagazineAmount)){
+            log.debug("Page out of range");
+            return Path.REDIRECT__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(request.getParameter("page"));
+
+        request.getSession().setAttribute("fieldToFilter", filter);
+
+        if (filteredMagazineAmount > 0) {
+            setToJspMagazinesPage(request, getMagazinesFilteredPaginated(filterName, currentPage, PAGE_SIZE));
+            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
+            log.debug("Show sorted magazines");
+        } else {
+            setToJspMagazinesPage(request, Collections.emptyList());
+            log.trace("No magazines in filter theme -->" + filterName);
+        }
+        log.debug("Command finished");
+        return Path.PAGE_INDEX;
+    }
+
+    private String showFilteredSorted(HttpServletRequest request, String sort, String filter) throws CommandException {
+        String sortSubQuery = getFilterSortSubQuery(sort);
+        String filterName = getFilterName(filter);
+
+        request.getSession().setAttribute("fieldToSort", sort);
+        request.getSession().setAttribute("fieldToFilter", filter);
+
+        int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
+        if(isPageOutOfRange(request, filteredMagazineAmount)){
+            log.debug("Page out of range");
+            return Path.REDIRECT__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(request.getParameter("page"));
+
+        if (filteredMagazineAmount > 0) {
+            setToJspMagazinesPage(request, getMagazinesFilteredSortedPaginates(filterName, sortSubQuery, currentPage, PAGE_SIZE));
+            setToJspPaginationBar(request, currentPage, getNumberOfPages(PAGE_SIZE, filteredMagazineAmount));
+            log.debug("Show filtered and sorted magazines");
+        } else {
+            setToJspMagazinesPage(request, Collections.emptyList());
+            log.trace("No magazines in filter theme " + filterName);
+        }
+
+        log.debug("Command finished");
+        return Path.PAGE_INDEX;
+    }
+
+    private boolean isPageOutOfRange(HttpServletRequest request, int allMagazinesAmount) throws CommandException{
+        return !validatePage(request.getParameter("page"), 0, getNumberOfPages(PAGE_SIZE, allMagazinesAmount));
     }
 
     private List<Magazine> getMagazinesPage(int currentPage, int pageSize) {

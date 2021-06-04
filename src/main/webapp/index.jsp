@@ -54,9 +54,6 @@
                                 <c:when test="${fieldToFilter eq music}">
                                     <fmt:message key="index_jsp.label.filter.music"/>
                                 </c:when>
-                                <c:when test="${fieldToFilter eq all}">
-                                    <fmt:message key="index_jsp.label.filter.all_wo_filter"/>
-                                </c:when>
                                 <c:otherwise>
                                     <fmt:message key="index_jsp.label.filter.all_wo_filter"/>
                                 </c:otherwise>
@@ -156,9 +153,6 @@
                                 </c:when>
                                 <c:when test="${fieldToSort eq price_desc}">
                                     <fmt:message key="index_jsp.label.sort.price_desc"/>
-                                </c:when>
-                                <c:when test="${fieldToSort eq all}">
-                                    <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
                                 </c:when>
                                 <c:otherwise>
                                     <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
