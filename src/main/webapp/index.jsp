@@ -36,7 +36,11 @@
                                value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
                         <c:url var="reset_url" value="">
                             <c:forEach items="${param}" var="entry">
+                                <c:if test="${entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
+                                </c:if>
                             </c:forEach>
                             <c:param name="reset_checked" value="all"/>
                         </c:url>
@@ -77,7 +81,11 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkFilter">
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'filter' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'filter' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -91,7 +99,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'filter' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'filter' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -105,7 +117,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'filter' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'filter' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -119,7 +135,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'filter' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'filter' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -134,7 +154,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'filter' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'filter' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -179,7 +203,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'sort' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -193,7 +221,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'sort' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -208,7 +240,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'sort' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -223,7 +259,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'sort' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -238,7 +278,11 @@
 
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' && entry.key != 'page'}">
+                                        <c:if test="${entry.key != 'sort' &&
+                                         entry.key != 'page' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
                                         </c:if>
                                     </c:forEach>
@@ -283,7 +327,10 @@
                                     <a style="padding: 0 3px"
                                             <c:url var="first_url" value="">
                                                 <c:forEach items="${param}" var="entry">
-                                                    <c:if test="${entry.key != 'page'}">
+                                                    <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
                                                     </c:if>
                                                 </c:forEach>
@@ -297,7 +344,10 @@
                                 <c:if test="${previousPage != null}">
                                     <c:url var="prev_url" value="">
                                         <c:forEach items="${param}" var="entry">
-                                            <c:if test="${entry.key != 'page'}">
+                                            <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>
                                             </c:if>
                                         </c:forEach>
@@ -318,7 +368,10 @@
                                             <a style="padding: 0 3px"
                                                     <c:url var="first_url" value="">
                                                         <c:forEach items="${param}" var="entry">
-                                                            <c:if test="${entry.key != 'page'}">
+                                                            <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                                 <c:param name="${entry.key}"
                                                                          value="${entry.value}"/>
                                                             </c:if>
@@ -332,7 +385,10 @@
                                         <c:forEach var="page" items="${carriage}">
                                             <c:url var="url" value="">
                                                 <c:forEach items="${param}" var="entry">
-                                                    <c:if test="${entry.key != 'page'}">
+                                                    <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
                                                     </c:if>
                                                 </c:forEach>
@@ -362,7 +418,10 @@
                                         <c:forEach var="page" items="${baseList}">
                                             <c:url var="url" value="">
                                                 <c:forEach items="${param}" var="entry">
-                                                    <c:if test="${entry.key != 'page'}">
+                                                    <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
                                                     </c:if>
                                                 </c:forEach>
@@ -378,7 +437,10 @@
                                 <c:if test="${nextPage != null}">
                                     <c:url var="next_url" value="">
                                         <c:forEach items="${param}" var="entry">
-                                            <c:if test="${entry.key != 'page'}">
+                                            <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>
                                             </c:if>
                                         </c:forEach>
@@ -393,7 +455,10 @@
                                 <c:if test="${lastPage != null}">
                                     <c:url var="last_url" value="">
                                         <c:forEach items="${param}" var="entry">
-                                            <c:if test="${entry.key != 'page'}">
+                                            <c:if test="${entry.key != 'page' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                              }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>
                                             </c:if>
                                         </c:forEach>

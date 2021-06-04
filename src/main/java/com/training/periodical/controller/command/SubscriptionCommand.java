@@ -38,7 +38,7 @@ public class SubscriptionCommand implements Command {
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
         String[] magazineIds = request.getParameterMap().get("magazineId");
 
-        if (magazineIds == null || magazineIds.length == 0) { // todo Validation
+        if (magazineIds == null || magazineIds.length == 0) {
             log.debug("Command finished");
             return Path.REDIRECT__INDEX;
         }
@@ -54,7 +54,7 @@ public class SubscriptionCommand implements Command {
         cleanSessionSubscriptionList(request);
 
         log.debug("Command finished");
-        return Path.REDIRECT__INDEX; // todo user cabinet
+        return Path.REDIRECT__USER_CABINET;
     }
 
     private void cleanSessionSubscriptionList(HttpServletRequest request) {

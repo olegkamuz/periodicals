@@ -12,7 +12,6 @@
     <%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
 </div>
 <div class="main-container">
-    <div>${subscriptionList}</div>
     <div class="wrapper">
         <section class="jumbotron text-center">
             <div class="container">
