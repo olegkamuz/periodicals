@@ -5,6 +5,8 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
+import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public class RegistrationSaveCommand implements Command {
+    private static final long serialVersionUID = 584824241835000931L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final UserService userService;
     private final UserBuilder userBuilder;
@@ -24,53 +27,69 @@ public class RegistrationSaveCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Executing Registration command");
 
-        String result = "";
-        if (
-                request.getParameter("login") == null ||
-                        request.getParameter("login").equals("") ||
-                        request.getParameter("password") == null ||
-                        request.getParameter("password").equals("") ||
-                        request.getParameter("first-name") == null ||
-                        request.getParameter("first-name").equals("") ||
-                        request.getParameter("last-name") == null ||
-                        request.getParameter("last-name").equals("")
-        ) {
-            request.setAttribute("msg", "Please fill in all the fields of the form"); //TODO in18ze
-            return result;
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String firstName = request.getParameter("first-name");
+        String lastName = request.getParameter("last-name");
+
+        try {
+            if (!Validator.isValid(login, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
+                    !Validator.isValid(password, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
+                    !Validator.isValid(firstName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
+                    !Validator.isValid(lastName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)
+            ) {
+                return Path.REDIRECT__INDEX;
+            }
+        } catch (ValidatorException e) {
+            throw new CommandException("Not valid data at RegistrationSameCommand in execution method");
         }
 
         if (isExistedUser(request)) {
-            request.setAttribute("msg", "User already exists"); //TODO in18ze
-            return result;
+            throw new CommandException("Such user already registered");
+//            return Path.REDIRECT__INDEX;
         }
 
+        User user = buildUser(login, password, firstName, lastName);
         try {
-            userService.create(buildUser(request));
+            userService.create(user);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
 
         log.info("User registered successfully");
-        request.setAttribute("msgSuccess", "You have been registered successfully");
         return Path.REDIRECT__LOGIN;
     }
 
-    private User buildUser(HttpServletRequest request) {
+    private User buildUser(String login, String password, String firstName, String lastName) {
         return userBuilder
-                .setLogin(request.getParameter("login"))
-                .setPassword(request.getParameter("password"))
-                .setFirstName(request.getParameter("first-name"))
-                .setLastName(request.getParameter("last-name"))
+                .setLogin(login)
+                .setPassword(password)
+                .setFirstName(firstName)
+                .setLastName(lastName)
                 .build();
     }
 
     private boolean isExistedUser(HttpServletRequest request) throws CommandException {
-        Optional<User> optionalUser = null;
         try {
-            optionalUser = userService.findUserByLogin(request.getParameter("login"));
+            Optional<User> optionalUser = userService.findUserByLogin(request.getParameter("login"));
             return optionalUser.isPresent();
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    public CommandException createCommandException(String methodName, ValidatorException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 }

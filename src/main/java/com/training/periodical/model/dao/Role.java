@@ -5,8 +5,6 @@ import com.training.periodical.entity.User;
 /**
  * Role entity.
  * 
- * @author D.Kolesnikov
- * 
  */
 
 public enum Role {

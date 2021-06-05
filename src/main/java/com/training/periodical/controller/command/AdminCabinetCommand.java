@@ -189,4 +189,12 @@ public class AdminCabinetCommand implements Command {
         }
         return null;
     }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

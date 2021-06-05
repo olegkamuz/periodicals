@@ -16,7 +16,6 @@ import org.apache.log4j.Logger;
  * Main servlet controller.
  */
 public class Servlet extends HttpServlet {
-
     private static final long serialVersionUID = 2423353715955164816L;
 
     private static final Logger log = Logger.getLogger(Servlet.class);
@@ -45,7 +44,9 @@ public class Servlet extends HttpServlet {
         try {
             result = CommandContainer.get(commandName).execute(request, response);
         } catch (CommandException e) {
-            result = Path.PAGE__ERROR_PAGE;
+            log.error(e);
+//            result = Path.PAGE__ERROR_PAGE;
+            result = Path.REDIRECT__INDEX;
         }
         log.trace("Forward address --> " + result);
 

@@ -1,6 +1,7 @@
 package com.training.periodical.controller.filter;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,14 +16,12 @@ import org.apache.log4j.Logger;
 /**
  * Encoding filter.
  * 
- * @author D.Kolesnikov
- * 
  */
-public class EncodingFilter implements Filter {
+public class EncodingFilter implements Filter, Serializable {
+    private static final long serialVersionUID = -6488303374915793278L;
 
 	private static final Logger log = Logger.getLogger(EncodingFilter.class);
-
-	private String encoding;
+    private String encoding;
 
 	public void destroy() {
 		log.debug("Filter destruction starts");

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserService extends AbstractService<User> {
+    private static final long serialVersionUID = 8200073681069516742L;
     private static final Logger log = Logger.getLogger(UserService.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 

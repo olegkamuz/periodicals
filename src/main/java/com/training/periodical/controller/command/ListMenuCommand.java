@@ -1,6 +1,7 @@
 package com.training.periodical.controller.command;
 
 import com.training.periodical.Path;
+import com.training.periodical.model.service.ServiceException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -41,4 +42,11 @@ public class ListMenuCommand implements Command {
         return Path.PAGE__LIST_MENU;
     }
 
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

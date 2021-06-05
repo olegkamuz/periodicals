@@ -5,11 +5,11 @@
 <html>
 
 <c:set var="title" value="Menu" scope="page"/>
-<%@ include file="/WEB-INF/jspf/headOLEG.jspf" %>
+<%@ include file="/WEB-INF/jspf/head.jspf" %>
 
 <body>
 <div>
-    <%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
+    <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
     <div class="wrapper">

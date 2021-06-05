@@ -14,7 +14,6 @@ import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.builder.UserSubscriptionsBuilder;
-import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.UserQuery;
 import org.apache.log4j.Logger;
 
@@ -22,6 +21,7 @@ import org.apache.log4j.Logger;
  * Data access object for User entity.
  */
 public class UserDao extends AbstractDao<User> {
+    private static final long serialVersionUID = 8896652975777115207L;
     private static final Logger log = Logger.getLogger(UserDao.class);
     private UserBuilder userBuilder;
     private UserSubscriptionsBuilder USBuilder;
@@ -47,7 +47,6 @@ public class UserDao extends AbstractDao<User> {
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
         Object[] parameters = {String.valueOf(userId)};
         try {
-//            return executeBeanQuery(connection, UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID, new UserBuilder(), parameters);
             return executeBeanQuery(parameters);
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -109,36 +108,6 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
-//    /**
-//     * Returns a user with the given identifier.
-//     *
-//     * @param id User identifier.
-//     * @return User entity.
-//     */
-//    public User findUserById(Long id) {
-//        User user = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rs = null;
-//        Connection con = null;
-//        try {
-//            con = DBManager.getInstance().getConnection();
-//            UserMapper mapper = new UserMapper();
-//            pstmt = con.prepareStatement(UserQuery.SQL__FIND_USER_BY_ID);
-//            pstmt.setLong(1, id);
-//            rs = pstmt.executeQuery();
-//            if (rs.next())
-//                user = mapper.mapRow(rs);
-//            rs.close();
-//            pstmt.close();
-//        } catch (SQLException ex) {
-//            DBManager.getInstance().rollbackAndClose(con);
-//            ex.printStackTrace();
-//        } finally {
-//            DBManager.getInstance().commitAndClose(con);
-//        }
-//        return user;
-//    }
-
     /**
      * Returns a user with the given login.
      *
@@ -167,52 +136,10 @@ public class UserDao extends AbstractDao<User> {
         executeUpdate(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
 
-//    /**
-//     * Update user.
-//     *
-//     * @param user user to update.
-//     */
-//    public void updateUser(User user) throws DaoException {
-//        Connection con = null;
-//        try {
-//            con = DBManager.getInstance().getConnection();
-//            updateUser(user);
-//        } catch (SQLException ex) {
-//            rollbackAndClose();
-//            ex.printStackTrace();
-//        } finally {
-//            DBManager.getInstance().commitAndClose(con);
-//        }
-//    }
-
-    // //////////////////////////////////////////////////////////
-    // Entity access methods (for transactions)
-    // //////////////////////////////////////////////////////////
-
-//    /**
-//     * Update user.
-//     *
-//     * @param user to update.
-//     * @throws SQLException
-//     */
-//    public void updateUser(Connection con, User user) throws SQLException {
-//        PreparedStatement pstmt = con.prepareStatement(UserQuery.SQL_UPDATE_USER);
-//        int k = 1;
-//        pstmt.setString(k++, user.getPassword());
-//        pstmt.setString(k++, user.getFirstName());
-//        pstmt.setString(k++, user.getLastName());
-//        pstmt.setString(k++, user.getLocaleName());
-//        pstmt.setLong(k, user.getId());
-//        pstmt.executeUpdate();
-//        pstmt.close();
-//    }
-
-
     public void updateBalance(BigDecimal balance, long userId) throws DaoException {
         Object[] parameters = {balance, userId};
         executeUpdateNow(connection, UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
-
 
     @Override
     public void close() {
@@ -221,6 +148,14 @@ public class UserDao extends AbstractDao<User> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    protected DaoException createDaoException(String methodName, Exception e) {
+        return new DaoException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 }
 

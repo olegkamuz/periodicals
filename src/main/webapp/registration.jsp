@@ -3,10 +3,11 @@
 
 <html>
 
-<c:set var="title" value="Login" />
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
-	
+<c:set var="title" value="Registration" />
+<%@ include file="/WEB-INF/jspf/headLoginRegistration.jspf" %>
+
 <body>
+<div class="login_form">
 	<table id="main-container">
 
 		<tr >
@@ -43,6 +44,7 @@
 			</td>
 		</tr>
 	</table>
+</div>
     <%@ include file="/WEB-INF/jspf/footer.jspf"%>
 </body>
 </html>

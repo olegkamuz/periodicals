@@ -1,5 +1,6 @@
 package com.training.periodical.controller.command;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,21 +17,19 @@ import org.apache.log4j.Logger;
  * Holder for all commands.
  * 
  */
-public class CommandContainer {
-	
+public class CommandContainer implements Serializable {
+    private static final long serialVersionUID = -5930883484357537731L;
 	private static final Logger log = Logger.getLogger(CommandContainer.class);
-	
 	private static final Map<String, Command> commands = new TreeMap<String, Command>();
-	
-	static {
+
+    static {
 		// common commands
 		commands.put("login", new LoginCommand());
         commands.put("login-check", new LoginCheckCommand(new UserService()));
-//        commands.put("login_session", new LoginSessionCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("noCommand", new NoCommand());
-		commands.put("viewSettings", new ViewSettingsCommand());
-		commands.put("updateSettings", new UpdateSettingsCommand());
+		commands.put("view-settings", new ViewSettingsCommand());
+		commands.put("update-settings", new UpdateSettingsCommand(new UserService()));
 
 		// out of control
         commands.put("index", new IndexCommand(new ThemeService(), new MagazineService()));
@@ -39,7 +38,6 @@ public class CommandContainer {
 
 		// client commands
 		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionService(),new UserService()));
-        commands.put("one-theme-magazines", new ListByOneCategoryMenuCommand(new MagazineService()));
         commands.put("create-subscription",
                 new SubscriptionCommand(
                         new SubscriptionService(),

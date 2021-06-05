@@ -12,6 +12,7 @@ import java.sql.SQLException;
  * Extracts a user from the result set row.
  */
 public class UserBuilder implements Builder<User> {
+    private static final long serialVersionUID = 1955202766270229852L;
     private Long id;
     private String login;
     private String password;
@@ -92,9 +93,7 @@ public class UserBuilder implements Builder<User> {
                 user.getLogin(),
                 user.getPassword(),
                 user.getFirstName(),
-                user.getLastName(),
-                "1",
-                "0"
+                user.getLastName()
         };
     }
     public Object[] unBuild(User user) {

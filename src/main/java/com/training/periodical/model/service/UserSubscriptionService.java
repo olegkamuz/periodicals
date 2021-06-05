@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserSubscriptionService extends AbstractService<UserSubscriptionBean> {
+    private static final long serialVersionUID = 3297539402663043130L;
     private static final Logger log = Logger.getLogger(UserService.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 

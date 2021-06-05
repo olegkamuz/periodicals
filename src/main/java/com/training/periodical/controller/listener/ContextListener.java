@@ -1,5 +1,6 @@
 package com.training.periodical.controller.listener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -15,11 +16,11 @@ import org.apache.log4j.PropertyConfigurator;
  * Context listener.
  * 
  */
-public class ContextListener implements ServletContextListener {
-
+public class ContextListener implements ServletContextListener, Serializable {
+    private static final long serialVersionUID = -4563607503381613831L;
 	private static final Logger log = Logger.getLogger(ContextListener.class);
 
-	public void contextDestroyed(ServletContextEvent event) {
+    public void contextDestroyed(ServletContextEvent event) {
 		log("Servlet context destruction starts");
 		// do nothing
 		log("Servlet context destruction finished");

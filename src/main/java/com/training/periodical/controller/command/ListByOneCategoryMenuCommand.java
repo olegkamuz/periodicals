@@ -75,4 +75,12 @@ public class ListByOneCategoryMenuCommand implements Command {
         log.debug("Command finished");
         return Path.PAGE__LIST_MAGAZINES_BY_ONE_THEME;
     }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

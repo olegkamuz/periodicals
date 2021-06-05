@@ -6,7 +6,8 @@ import java.math.BigDecimal;
  * User entity.
  *
  */
-public class User extends Entity { // add serialization
+public class User extends Entity {
+    private static final long serialVersionUID = -412576603674638082L;
     private String login;
     private String password;
     private BigDecimal balance;

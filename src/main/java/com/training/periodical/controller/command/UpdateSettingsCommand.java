@@ -1,5 +1,9 @@
 package com.training.periodical.controller.command;
 
+import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.model.service.UserService;
+import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 import com.training.periodical.entity.User;
@@ -13,50 +17,93 @@ import javax.servlet.jsp.jstl.core.Config;
  * Update settings items.
  */
 public class UpdateSettingsCommand implements Command {
+    private static final long serialVersionUID = 3553552307337644253L;
+    private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
+    private final UserService userService;
 
-
-    private static final Logger log = Logger.getLogger(UpdateSettingsCommand.class);
+    public UpdateSettingsCommand(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
-
         log.debug("Command starts");
 
-        // UPDATE USER ////////////////////////////////////////////////////////
-
         User user = (User) request.getSession().getAttribute("user");
-        boolean updateUser = false;
+        boolean updateUser;
 
-        // update first name
         String firstName = request.getParameter("firstName");
-        if (firstName != null && !firstName.isEmpty()) {
-            user.setFirstName(firstName);
-            updateUser = true;
-        }
+        updateUser = isUpdateFirstName(firstName, user);
 
-        // update last name
         String lastName = request.getParameter("lastName");
-        if (lastName != null && !lastName.isEmpty()) {
-            user.setLastName(lastName);
-            updateUser = true;
-        }
+        updateUser = isUpdateLastName(lastName, user);
 
         String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            HttpSession session = request.getSession();
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-            user.setLocale(localeToSet);
-            updateUser = true;
+        updateUser = isUpdateLocale(localeToSet, user, request);
+
+        if (updateUser) {
+            try {
+                userService.updateNow(user);
+            } catch (ServiceException e) {
+                throw new CommandException(e);
+            }
         }
-
-//        if (updateUser == true)
-//            new UserDao().updateUser(user);
-
 
         log.debug("Command finished");
         return Path.PAGE__SETTINGS;
     }
 
+    private boolean isUpdateFirstName(String firstName,User user) throws CommandException {
+        try {
+            if (Validator.isValid(firstName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+                user.setFirstName(firstName);
+                return true;
+            }
+        } catch (ValidatorException e) {
+            throw new CommandException(e);
+        }
+        return false;
+    }
+    private boolean isUpdateLastName(String lastName,User user) throws CommandException {
+        try {
+            if (Validator.isValid(lastName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+                user.setLastName(lastName);
+                return true;
+            }
+        } catch (ValidatorException e) {
+            throw new CommandException(e);
+        }
+        return false;
+    }
+    private boolean isUpdateLocale(String localeToSet, User user, HttpServletRequest request) throws CommandException {
+        try {
+            if(Validator.isValid(localeToSet, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+                HttpSession session = request.getSession();
+                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+                session.setAttribute("defaultLocale", localeToSet);
+                user.setLocale(localeToSet);
+                return true;
+            }
+        } catch (ValidatorException e) {
+            throw createCommandException("isUpdateLocale", e);
+        }
+
+        return false;
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    public CommandException createCommandException(String methodName, ValidatorException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

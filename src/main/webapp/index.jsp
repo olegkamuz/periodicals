@@ -5,11 +5,11 @@
 <html>
 
 <c:set var="title" value="Menu" scope="page"/>
-<%@ include file="/WEB-INF/jspf/headOLEG.jspf" %>
+<%@ include file="/WEB-INF/jspf/head.jspf" %>
 
 <body>
 <div>
-    <%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
+    <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
     <form class="form-custom" id="make_order" action="create-subscription">
@@ -23,29 +23,26 @@
                     <p class="lead text-muted">Here you can find some interesting stuff to read, so don't hesitate
                         subscribe to few magazines and you'll like it.Spend some time with new knowledge sweet as cake,
                         healthy as apple.</p>
+                    <c:if test="${empty user}">
+                    <h3>LOGIN TO SUBSCRIBE</h3>
+                    </c:if>
                 </div>
             </section>
 
             <div class="container">
                 <div class="row">
-                    <%--                    <c:forEach items="${paramValues}" var="entry">--%>
-                    <%--                        <c:forEach items="${entry.value}" var="item">--%>
-                    <%--                                &${entry.key}=${item}--%>
-                    <%--                        </c:forEach>--%>
-                    <%--                    </c:forEach>--%>
                     <div class="subscription_submit">
                         <input class="btn btn-primary my-2" type="submit"
                                value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
                         <c:url var="reset_url" value="">
-                            <c:forEach items="${paramValues}" var="item">
-                                <c:if test="${entry.key != 'login' &&
-                                                                     entry.key != 'password' &&
-                                                                     entry.key != 'reset_check' &&
-                                                                     entry.key != 'magazineId'
-                                                                     }">
-                                    <c:forEach items="${item.key}" var="entry.key">
-                                        <c:param name="${item.key}" value="${entry.value}"/>
-                                    </c:forEach>
+                            <c:forEach items="${param}" var="entry">
+                                <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
+                                    <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
                             </c:forEach>
                             <c:param name="reset_checked" value="all"/>
@@ -58,7 +55,19 @@
                     </div>
                     <div class="sorting">
                         <div class="dropdown show dropdown-filtering">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                            <c:url var="url_filter" value="">
+                                <c:forEach items="${param}" var="entry">
+                                    <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
+                                        <c:param name="${entry.key}" value="${entry.value}"/>
+                                    </c:if>
+                                </c:forEach>
+                            </c:url>
+                            <a class="btn btn-secondary dropdown-toggle" href="${url_filter}" role="button"
                                id="dropdownMenuLinkFilter"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <c:set var="interior" value="interior"/>
@@ -88,6 +97,8 @@
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'filter' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
@@ -106,6 +117,8 @@
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'filter' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
@@ -124,6 +137,8 @@
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'filter' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
@@ -142,6 +157,8 @@
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'filter' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
@@ -161,6 +178,8 @@
                                 <c:url var="url" value="">
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'filter' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
@@ -179,7 +198,19 @@
                         </div>
 
                         <div class="dropdown show dropdown-custom">
-                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                            <c:url var="url_sort" value="">
+                                <c:forEach items="${param}" var="entry">
+                                    <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password'
+                                         }">
+                                        <c:param name="${entry.key}" value="${entry.value}"/>
+                                    </c:if>
+                                </c:forEach>
+                            </c:url>
+                            <a class="btn btn-secondary dropdown-toggle" href="${url_sort}" role="button"
                                id="dropdownMenuLink"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <c:set var="name_asc" value="name_asc"/>
@@ -211,6 +242,8 @@
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -229,6 +262,8 @@
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -248,6 +283,8 @@
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -267,6 +304,8 @@
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -286,6 +325,8 @@
                                     <c:forEach items="${param}" var="entry">
                                         <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -311,7 +352,8 @@
                                         <c:if test="${
                                         entry.key != 'login' &&
                                          entry.key != 'password' &&
-                                         entry.key != 'magazineId'
+                                         entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked'
                                          }">
                                             <c:forEach items="${entry.value}" var="value">
                                                 <c:param name="${entry.key}" value="${value}"/>
@@ -325,30 +367,14 @@
                                     <a href="${check_url}">
                                         <div class="mag_image">
                                             <img
-                                                 src="<c:url value="/static/images/${magazine.image}"/>"
-                                                 width="100%"/>
+                                                    src="<c:url value="/static/images/${magazine.image}"/>"
+                                                    width="100%"/>
                                         </div>
                                         <div class="name">
                                             <p>${magazine.name}</p>
                                         </div>
                                         <div class="price">
                                             <p>${magazine.price}</p>
-                                        </div>
-                                        <div class="form-check form-switch">
-                                                <%--                                            <input class="form-check-input" type="checkbox"--%>
-                                                <%--                                                   id="magazineId${magazine.id}"--%>
-                                                <%--                                                   name="magazineId"--%>
-                                                <%--                                                   value="${magazine.id}"--%>
-                                                <%--                                                    <c:forEach var="item" items="${magazineId}">--%>
-                                                <%--                                                        <c:if test="${item eq magazine.id}">--%>
-                                                <%--                                                            checked--%>
-                                                <%--                                                        </c:if>--%>
-                                                <%--                                                    </c:forEach>--%>
-                                                <%--                                            />--%>
-                                                <%--                                            <label class="form-check-label" for="magazineId${magazine.id}">Add this--%>
-                                                <%--                                                magazine--%>
-                                                <%--                                                to--%>
-                                                <%--                                                subscription</label>--%>
                                         </div>
                                     </a>
                                 </div>
@@ -359,6 +385,8 @@
                                             <c:url var="first_url" value="">
                                                 <c:forEach items="${param}" var="entry">
                                                     <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -376,6 +404,8 @@
                                     <c:url var="prev_url" value="">
                                         <c:forEach items="${param}" var="entry">
                                             <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -400,6 +430,8 @@
                                                     <c:url var="first_url" value="">
                                                         <c:forEach items="${param}" var="entry">
                                                             <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -417,6 +449,8 @@
                                             <c:url var="url" value="">
                                                 <c:forEach items="${param}" var="entry">
                                                     <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -434,7 +468,12 @@
                                             <span>...</span>
                                             <c:url var="url" value="">
                                                 <c:forEach items="${param}" var="entry">
-                                                    <c:if test="${entry.key != 'page'}">
+                                                    <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
+                                                             entry.key != 'password' &&
+                                                              entry.key != 'login'
+                                                    }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
                                                     </c:if>
                                                 </c:forEach>
@@ -450,6 +489,8 @@
                                             <c:url var="url" value="">
                                                 <c:forEach items="${param}" var="entry">
                                                     <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -469,6 +510,8 @@
                                     <c:url var="next_url" value="">
                                         <c:forEach items="${param}" var="entry">
                                             <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -487,6 +530,8 @@
                                     <c:url var="last_url" value="">
                                         <c:forEach items="${param}" var="entry">
                                             <c:if test="${entry.key != 'page' &&
+                                                            entry.key != 'magazineId' &&
+                                                            entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
                                                               entry.key != 'login'
                                                               }">
@@ -509,27 +554,22 @@
 
                 <div class="container container_by_themes">
                     <c:forEach var="theme" items="${magazinesByThemes}">
-                        <c:url value="/one-theme-magazines" var="url">
-                            <c:param name="theme" value="${theme.key.name}"/>
-                        </c:url>
-                        <a href="<c:out value='${url}'/>">
-                            <div class="row">
-                                <div class="theme-name"><h3>${theme.key.name}</h3></div>
-                                <c:forEach var="magazine" items="${theme.value}" end="2">
-                                    <div class="col">
-                                        <div class="mag_image">
-                                            <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
-                                        </div>
-                                        <div class="name">
-                                            <p>${magazine.name}</p>
-                                        </div>
-                                        <div class="price">
-                                            <p>${magazine.price}</p>
-                                        </div>
+                        <div class="row">
+                            <div class="theme-name"><h3>${theme.key.name}</h3></div>
+                            <c:forEach var="magazine" items="${theme.value}" end="2">
+                                <div class="col">
+                                    <div class="mag_image">
+                                        <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
                                     </div>
-                                </c:forEach>
-                            </div>
-                        </a>
+                                    <div class="name">
+                                        <p>${magazine.name}</p>
+                                    </div>
+                                    <div class="price">
+                                        <p>${magazine.price}</p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
                     </c:forEach>
                 </div>
 

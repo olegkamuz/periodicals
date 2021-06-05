@@ -1,6 +1,7 @@
 package com.training.periodical.controller.filter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
-import com.training.periodical.model.dao.UserDao;
 import org.apache.log4j.Logger;
 
 import com.training.periodical.Path;
@@ -31,8 +31,8 @@ import com.training.periodical.model.dao.Role;
 /**
  * Security filter
  */
-public class CommandAccessFilter implements Filter {
-
+public class CommandAccessFilter implements Filter, Serializable {
+    private static final long serialVersionUID = -5440261993963302752L;
     private static final Logger log = Logger.getLogger(CommandAccessFilter.class);
 
     // commands access
@@ -50,14 +50,14 @@ public class CommandAccessFilter implements Filter {
         log.debug("Filter starts");
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponce = (HttpServletResponse) response;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         if (accessAllowed(request)) {
             log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
             setPreviousParameters(httpRequest);
-            httpResponce.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
+            httpResponse.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
 
 //            if (response instanceof HttpServletResponse) {
 //                if (request instanceof HttpServletRequest) {
@@ -83,9 +83,6 @@ public class CommandAccessFilter implements Filter {
             List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
             request.getSession().setAttribute("magazineId", list);
         }
-        if(request.getParameter("theme") != null){
-            request.getSession().setAttribute("theme", request.getParameter("theme"));
-        }
         if(request.getParameter("pre_sort") != null){
             request.getSession().setAttribute("pre_sort", request.getParameter("pre_sort"));
         }
@@ -110,13 +107,13 @@ public class CommandAccessFilter implements Filter {
 //            e.printStackTrace();
 //        }
 
-//        try {
-//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
-//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
-//        } catch (DaoException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
 
 //        // todo remove on prod
 

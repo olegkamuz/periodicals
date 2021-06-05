@@ -1,6 +1,9 @@
 package com.training.periodical.model.dao.query;
 
-public class SubscriptionQuery {
+import java.io.Serializable;
+
+public class SubscriptionQuery implements Serializable {
+    private static final long serialVersionUID = -6262811607549592274L;
     public static final String SQL__GET_USER_ORDER_BEANS =
             "SELECT o.id, u.first_name, u.last_name, o.bill, s.name" +
                     "	FROM users u, orders o, statuses s" +
@@ -15,7 +18,6 @@ public class SubscriptionQuery {
     public static final String SQL__FIND_ORDERS_BY_STATUS =
             "SELECT * FROM orders WHERE status_id=?";
 
-    /********************* NOT USED *******************************/
     public static final String SQL__INSERT_SUBSCRIPTION =
             "INSERT INTO subscription (user_id, magazine_id) VALUES (?, ?)";
 
@@ -30,6 +32,7 @@ public class SubscriptionQuery {
                     "(SELECT SUM(m.price) FROM menu m, orders_menu om " +
                     "WHERE m.id=om.menu_id and om.order_id=?) " +
                     "WHERE id=?";
+    public static final String SQL__COUNT_BY_COMPOSITE_KEY =
+            "SELECT COUNT(*) FROM `subscription` WHERE user_id=? AND magazine_id=?";
 
-    /**************************************************************/
 }

@@ -1,6 +1,9 @@
 package com.training.periodical.model.dao.query;
 
-public class UserQuery {
+import java.io.Serializable;
+
+public class UserQuery implements Serializable {
+    private static final long serialVersionUID = -1144394670552689910L;
     public static final String SQL__FIND_USER_BY_LOGIN =
             "SELECT * FROM `user` WHERE login=?";
 

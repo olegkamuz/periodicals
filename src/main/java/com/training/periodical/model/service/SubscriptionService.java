@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class SubscriptionService extends AbstractService<Subscription> {
+    private static final long serialVersionUID = -1935724741540882617L;
     private static final Logger log = Logger.getLogger(SubscriptionService.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    public void createSubscriptionPurchase(Long userId, String[] magazineIds, BigDecimal userBalance) throws ServiceException {
+    public void createSubscriptionPurchase(Long userId, List<String> magazineIds, BigDecimal userBalance) throws ServiceException {
         try (SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao();
              Connection connection = subscriptionDao.getConnection();
              UserDao userDao = daoFactory.createUserDao(connection)) {
@@ -26,6 +27,14 @@ public class SubscriptionService extends AbstractService<Subscription> {
             log.info(this.getClass().getSimpleName() + " creating subscription using Daos");
         } catch (DaoException | SQLException e) {
             throw createServiceException("createSubscriptionPurchase", e);
+        }
+    }
+
+    public int countByCompositeKey(long userId, long magazineId) throws ServiceException{
+        try(SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao()) {
+            return subscriptionDao.countByCompositeKey(userId, magazineId);
+        } catch (DaoException e){
+            throw createServiceException("countByCompositeKey", e);
         }
     }
 

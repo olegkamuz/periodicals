@@ -1,10 +1,13 @@
 package com.training.periodical;
 
+import java.io.Serializable;
+
 /**
  * Path holder (jsp pages, controller commands).
  * 
  */
-public final class Path {
+public final class Path implements Serializable {
+    private static final long serialVersionUID = 8957289300674157212L;
 
 	// pages
 	public static final String PAGE__LOGIN = "/login.jsp";

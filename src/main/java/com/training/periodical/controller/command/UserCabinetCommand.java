@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserCabinetCommand implements Command {
+    private static final long serialVersionUID = 5034889545771020837L;
     private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
     private final UserSubscriptionService UserSubService;
     private final UserService userService;
@@ -90,5 +91,13 @@ public class UserCabinetCommand implements Command {
 
     private boolean isAttributeSet(HttpServletRequest request, String attributeName) {
         return request.getSession().getAttribute(attributeName) != null;
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 }

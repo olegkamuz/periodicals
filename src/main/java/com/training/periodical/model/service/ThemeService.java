@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ThemeService extends AbstractService<Theme>{
+    private static final long serialVersionUID = 7039501575798690288L;
     private static final Logger log = Logger.getLogger(UserService.class);
 
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();

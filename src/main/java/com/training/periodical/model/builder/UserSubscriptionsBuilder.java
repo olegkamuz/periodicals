@@ -8,6 +8,7 @@ import com.training.periodical.bean.UserSubscriptionBean;
 import com.training.periodical.model.dao.Fields;
 
 public class UserSubscriptionsBuilder implements Builder<UserSubscriptionBean>{
+    private static final long serialVersionUID = 2384741942615781824L;
     private String magazineName;
     private BigDecimal magazinePrice;
     private String magazineImage;

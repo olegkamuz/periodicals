@@ -1,5 +1,6 @@
 package com.training.periodical.controller.command;
 
+import com.training.periodical.model.service.ServiceException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
  * Login command. Just to return page path;
  */
 public class LoginCommand implements Command {
-
+    private static final long serialVersionUID = -507636500922845647L;
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
     @Override
@@ -26,4 +27,11 @@ public class LoginCommand implements Command {
 
     }
 
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

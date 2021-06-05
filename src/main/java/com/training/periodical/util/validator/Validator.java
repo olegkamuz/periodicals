@@ -1,24 +1,26 @@
 package com.training.periodical.util.validator;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 /**
  * Validate input data in validation check order specified
- * <p>
+ *
  * for range check both boundaries need to be set first
  */
-public class Validator {
+public class Validator implements Serializable {
+    private static final long serialVersionUID = 763482292333045953L;
     public static Integer range_int_from;
     public static Integer range_int_to;
 
-    public enum CheckType {
+    public enum Check {
         NOT_NULL, NOT_EMPTY, IS_CAST_TO_INT, IN_INT_RANGE_INCLUSIVE_INCLUSIVE, URL_DECODE, ALL
     }
 
-    public static boolean isValid(String data, CheckType... parameters) throws ValidatorException {
-        for (CheckType parameter : parameters) {
+    public static boolean isValid(String data, Check... parameters) throws ValidatorException {
+        for (Check parameter : parameters) {
             switch (parameter) {
                 case NOT_NULL:
                     if (data == null) return false;

@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MagazineBuilder implements Builder<Magazine> {
+    private static final long serialVersionUID = -52120070602340346L;
     private String id;
     private String name;
     private BigDecimal price;

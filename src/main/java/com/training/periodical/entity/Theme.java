@@ -5,8 +5,8 @@ package com.training.periodical.entity;
  * 
  */
 public class Theme extends Entity {
-
-	private String name;
+    private static final long serialVersionUID = -7781605280789397768L;
+    private String name;
 
 	public String getName() {
 		return name;

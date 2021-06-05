@@ -7,7 +7,6 @@ package com.training.periodical.entity;
  * 
  */
 public class MenuItem extends Entity {
-
 	private static final long serialVersionUID = 4716395168539434663L;
 
 	private String name;

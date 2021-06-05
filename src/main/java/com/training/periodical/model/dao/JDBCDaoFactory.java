@@ -9,7 +9,7 @@ import com.training.periodical.model.builder.UserSubscriptionsBuilder;
 import java.sql.Connection;
 
 public class JDBCDaoFactory extends AbstractDaoFactory{
-
+    private static final long serialVersionUID = 9081081887394751631L;
     private DBManager dbManager = DBManager.getInstance();
 
     @Override

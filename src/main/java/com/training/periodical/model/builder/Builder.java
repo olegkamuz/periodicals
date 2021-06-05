@@ -3,6 +3,7 @@ package com.training.periodical.model.builder;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.DaoException;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
  * Implementations are not supposed to move cursor of the resultSet via next() method,
  * but only extract information from the row in current cursor position.
  */
-public interface Builder<T> {
+public interface Builder<T> extends Serializable {
 
     T build(ResultSet rs) throws SQLException;
 }

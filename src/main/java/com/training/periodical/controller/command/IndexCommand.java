@@ -1,5 +1,6 @@
 package com.training.periodical.controller.command;
 
+import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.ServiceException;
@@ -19,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,6 +67,14 @@ public class IndexCommand implements Command {
         } else {
             return showAll(request, page);
         }
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 
 
@@ -413,10 +420,10 @@ public class IndexCommand implements Command {
     private boolean validateFilterOrSort(String data) throws CommandException {
         try {
             if (Validator.isValid(data,
-                    Validator.CheckType.NOT_NULL,
-                    Validator.CheckType.NOT_EMPTY,
-                    Validator.CheckType.URL_DECODE,
-                    Validator.CheckType.ALL
+                    Validator.Check.NOT_NULL,
+                    Validator.Check.NOT_EMPTY,
+                    Validator.Check.URL_DECODE,
+                    Validator.Check.ALL
             )) return true;
         } catch (ValidatorException e) {
             throw new CommandException(e);
@@ -430,10 +437,10 @@ public class IndexCommand implements Command {
         Validator.range_int_to = range_to;
         try {
             if (Validator.isValid(data,
-                    Validator.CheckType.NOT_NULL,
-                    Validator.CheckType.NOT_EMPTY,
-                    Validator.CheckType.IS_CAST_TO_INT,
-                    Validator.CheckType.IN_INT_RANGE_INCLUSIVE_INCLUSIVE
+                    Validator.Check.NOT_NULL,
+                    Validator.Check.NOT_EMPTY,
+                    Validator.Check.IS_CAST_TO_INT,
+                    Validator.Check.IN_INT_RANGE_INCLUSIVE_INCLUSIVE
             )) return true;
         } catch (ValidatorException e) {
             throw new CommandException(e);

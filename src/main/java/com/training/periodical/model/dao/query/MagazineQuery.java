@@ -1,6 +1,9 @@
 package com.training.periodical.model.dao.query;
 
-public class MagazineQuery {
+import java.io.Serializable;
+
+public class MagazineQuery implements Serializable {
+    private static final long serialVersionUID = -4845845434231486872L;
     public static final String SQL__FIND_ALL_MAGAZINES =
             "SELECT * FROM magazine";
 

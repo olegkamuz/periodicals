@@ -1,10 +1,8 @@
 package com.training.periodical.model.dao;
 
-import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.Query;
-import com.training.periodical.model.dao.query.ThemeQuery;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 
 public abstract class AbstractDao<T> implements IDao<T> {
-
+    private static final long serialVersionUID = 6242682689824341676L;
     protected String tableName;
 
     public String getTableName() {
@@ -119,5 +116,5 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-
+    protected abstract DaoException createDaoException(String methodName, Exception e);
 }

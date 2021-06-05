@@ -77,9 +77,23 @@ public class LoginCheckCommand implements Command {
                 forward = Path.REDIRECT__INDEX;
             }
 
+            StringBuilder sb = new StringBuilder();
+            if(request.getSession().getAttribute("pre_sort") != null){
+                sb.append("?sort=");
+                sb.append(request.getSession().getAttribute("pre_sort"));
+            }
+            if(request.getSession().getAttribute("pre_filter") != null){
+                sb.append("&filter=");
+                sb.append(request.getSession().getAttribute("pre_filter"));
+            }
+            if(request.getSession().getAttribute("pre_page") != null){
+                sb.append("&page=");
+                sb.append(request.getSession().getAttribute("pre_page"));
+            }
+
             if (userRole == Role.CLIENT) {
-                if (session.getAttribute("theme") != null && session.getAttribute("magazineId") != null) {
-                    forward = Path.REDIRECT__LIST_MAGAZINES_BY_ONE_THEME;
+                if (session.getAttribute("magazineId") != null) {
+                    forward = Path.REDIRECT__INDEX + sb;
                 } else {
                     forward = Path.FORWARD__INDEX;
                 }
@@ -111,4 +125,11 @@ public class LoginCheckCommand implements Command {
         return forward;
     }
 
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 }

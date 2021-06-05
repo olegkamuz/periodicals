@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class MagazineService extends AbstractService<Magazine> {
-
+    private static final long serialVersionUID = -3746123482820783199L;
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
     public List<Magazine> findMagazineByThemeName(String themeName) throws ServiceException {
@@ -142,7 +142,7 @@ public class MagazineService extends AbstractService<Magazine> {
         }
     }
 
-    public BigDecimal findSumPriceByIds(String[] magazineIds) throws ServiceException {
+    public BigDecimal findSumPriceByIds(List<String> magazineIds) throws ServiceException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findSumPriceByIds(magazineIds);
         } catch (DaoException e) {

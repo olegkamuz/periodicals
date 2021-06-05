@@ -11,6 +11,7 @@ import java.sql.SQLException;
  * Extracts a subscription from the result set row.
  */
 public class SubscriptionBuilder implements Builder<Subscription> {
+    private static final long serialVersionUID = -1808634560539486042L;
 
     @Override
     public Subscription build(ResultSet rs) throws SQLException {

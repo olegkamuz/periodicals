@@ -1,6 +1,8 @@
 package com.training.periodical.util.validator;
 
 public class ValidatorException extends Exception{
+    private static final long serialVersionUID = 7335711383291322546L;
+
     public ValidatorException() {
         super();
     }

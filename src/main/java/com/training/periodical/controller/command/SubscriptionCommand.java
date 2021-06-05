@@ -11,12 +11,16 @@ import com.training.periodical.model.service.SubscriptionService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Create Subscription.
  */
 public class SubscriptionCommand implements Command {
+    private static final long serialVersionUID = 4085515554426545356L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final SubscriptionService subscriptionService;
     private final UserService userService;
@@ -36,11 +40,24 @@ public class SubscriptionCommand implements Command {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
-        String[] magazineIds = request.getParameterMap().get("magazineId");
+        List<String> magazineIds = new ArrayList<>();
+        Object obj = request.getSession().getAttribute("magazineId");
+        if (obj instanceof List) {
+            for (Object ob : (List) obj) {
+                if (ob instanceof String) {
+                    magazineIds.add((String) ob);
+                }
+            }
+        }
 
-        if (magazineIds == null || magazineIds.length == 0) {
+        magazineIds = removePossibleMagIdsDuplication(magazineIds);
+
+        magazineIds = checkForAlreadyAdded(subscriptionService, userId, magazineIds);
+
+
+        if (magazineIds.size() == 0) {
             log.debug("Command finished");
-            return Path.REDIRECT__INDEX;
+            return Path.REDIRECT__USER_CABINET;
         }
 
         try {
@@ -52,14 +69,43 @@ public class SubscriptionCommand implements Command {
         }
 
         cleanSessionSubscriptionList(request);
+        cleanSessionMagazineId(request);
 
         log.debug("Command finished");
         return Path.REDIRECT__USER_CABINET;
     }
 
+    private List<String> checkForAlreadyAdded(SubscriptionService subscriptionService,Long userId, List<String> magazineIds) throws CommandException {
+        try {
+            List<String> temp = new ArrayList<>();
+            for (String magId : magazineIds) {
+                if (!(subscriptionService.countByCompositeKey(userId, Long.parseLong(magId)) > 0)) {
+                    temp.add(magId);
+                }
+            }
+            return temp;
+        } catch (ServiceException e){
+            throw new CommandException(e);
+        }
+    }
+
+    private List<String> removePossibleMagIdsDuplication(List<String> magazineIds) {
+        List<String> magId = new ArrayList<>();
+        if(!magazineIds.isEmpty()){
+            magId = new ArrayList<>(
+                    new HashSet<>(magazineIds));
+        }
+        return magId;
+    }
+
     private void cleanSessionSubscriptionList(HttpServletRequest request) {
         if (request.getSession().getAttribute("subscriptionList") != null){
             request.getSession().removeAttribute("subscriptionList");
+        }
+    }
+    private void cleanSessionMagazineId(HttpServletRequest request) {
+        if (request.getSession().getAttribute("magazineId") != null){
+            request.getSession().removeAttribute("magazineId");
         }
     }
 
@@ -70,7 +116,7 @@ public class SubscriptionCommand implements Command {
         return userBalance = userBalance.subtract(sumPriceMagazines);
     }
 
-    private boolean isEnoughMoney(String userId, String[] magazineIds) throws CommandException {
+    private boolean isEnoughMoney(String userId, List<String> magazineIds) throws CommandException {
         try {
             sumPriceMagazines = getSumPriceMagazines(magazineIds);
             if (sumPriceMagazines == null) return false;
@@ -84,7 +130,7 @@ public class SubscriptionCommand implements Command {
         return userBalance.compareTo(sumPriceMagazines) >= 0;
     }
 
-    private BigDecimal getSumPriceMagazines(String[] magazineIds) throws ServiceException {
+    private BigDecimal getSumPriceMagazines(List<String> magazineIds) throws ServiceException {
         return magazineService.findSumPriceByIds(magazineIds);
     }
 
@@ -99,5 +145,13 @@ public class SubscriptionCommand implements Command {
             return null;
         }
         return userBalance;
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
     }
 }

@@ -1,6 +1,8 @@
 package com.training.periodical.model.service;
 
 public class ServiceException extends Exception {
+    private static final long serialVersionUID = 2970936039964677068L;
+
     public ServiceException() {
         super();
     }

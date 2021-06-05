@@ -6,6 +6,7 @@ import java.math.BigDecimal;
  * Magazine item entity.
  */
 public class Magazine extends Entity {
+    private static final long serialVersionUID = -8305716862338793072L;
     private String name;
     private BigDecimal price;
     private String image;

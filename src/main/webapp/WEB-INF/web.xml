@@ -52,6 +52,8 @@
         <url-pattern>/registration-save</url-pattern>
         <url-pattern>/user-cabinet</url-pattern>
         <url-pattern>/admin-cabinet</url-pattern>
+        <url-pattern>/view-settings</url-pattern>
+        <url-pattern>/update-settings</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -99,7 +101,7 @@
         </init-param>
         <init-param>
             <param-name>common</param-name>
-            <param-value>noCommand viewSettings updateSettings</param-value>
+            <param-value>noCommand view-settings update-settings</param-value>
         </init-param>
         <init-param>
             <param-name>out-of-control</param-name>
@@ -116,9 +118,9 @@
     <!--============================================================
         Context listener
     =============================================================-->
-    <!--    <listener>
-            <listener-class>ContextListener</listener-class>
-        </listener>-->
+        <listener>
+            <listener-class>com.training.periodical.controller.listener.ContextListener</listener-class>
+        </listener>
 
 
     <!--============================================================

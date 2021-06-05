@@ -1,8 +1,10 @@
 package com.training.periodical.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class UserSubscriptionBean {
+public class UserSubscriptionBean implements Serializable {
+    private static final long serialVersionUID = 7164161986058016827L;
     private String magazineName;
     private BigDecimal magazinePrice;
     private String magazineImage;

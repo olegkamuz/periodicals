@@ -5,10 +5,10 @@
 <html>
 
 <c:set var="title" value="List orders" scope="page"/>
-<%@ include file="/WEB-INF/jspf/headOLEG.jspf" %>
+<%@ include file="/WEB-INF/jspf/head.jspf" %>
 
 <body style="background-image: none">
-<%@ include file="/WEB-INF/jspf/headerOLEG.jspf" %>
+<%@ include file="/WEB-INF/jspf/header.jspf" %>
 <table id="main-container">
     <tr>
         <td class="content">

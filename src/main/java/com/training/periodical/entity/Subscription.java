@@ -4,7 +4,7 @@ package com.training.periodical.entity;
  * Subsctiption entity.
  */
 public class Subscription extends Entity {
-
+    private static final long serialVersionUID = -306070520025706236L;
     private Long userId;
 
     private Long magazineId;
