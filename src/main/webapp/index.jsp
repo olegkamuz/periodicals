@@ -28,26 +28,26 @@
 
             <div class="container">
                 <div class="row">
-<%--                    <c:forEach items="${paramValues}" var="entry">--%>
-<%--                        <c:forEach items="${entry.value}" var="item">--%>
-<%--                                &${entry.key}=${item}--%>
-<%--                        </c:forEach>--%>
-<%--                    </c:forEach>--%>
+                    <%--                    <c:forEach items="${paramValues}" var="entry">--%>
+                    <%--                        <c:forEach items="${entry.value}" var="item">--%>
+                    <%--                                &${entry.key}=${item}--%>
+                    <%--                        </c:forEach>--%>
+                    <%--                    </c:forEach>--%>
                     <div class="subscription_submit">
                         <input class="btn btn-primary my-2" type="submit"
                                value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
                         <c:url var="reset_url" value="">
-                            <%--                            <c:forEach items="${paramValues}" var="item">--%>
-                            <%--                                <c:if test="${entry.key != 'login' &&--%>
-                            <%--                                         entry.key != 'password' &&--%>
-                            <%--                                         entry.key != 'reset_check' &&--%>
-                            <%--                                         entry.key != 'magazineId'--%>
-                            <%--                                         }">--%>
-                            <%--                                    <c:forEach items="${item.key}" var="entry.key">--%>
-                            <%--                                        <c:param name="${item.key}" value="${entry.value}"/>--%>
-                            <%--                                    </c:forEach>--%>
-                            <%--                                </c:if>--%>
-                            <%--                            </c:forEach>--%>
+                            <c:forEach items="${paramValues}" var="item">
+                                <c:if test="${entry.key != 'login' &&
+                                                                     entry.key != 'password' &&
+                                                                     entry.key != 'reset_check' &&
+                                                                     entry.key != 'magazineId'
+                                                                     }">
+                                    <c:forEach items="${item.key}" var="entry.key">
+                                        <c:param name="${item.key}" value="${entry.value}"/>
+                                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
                             <c:param name="reset_checked" value="all"/>
                         </c:url>
                         <a href="<c:out value='${reset_url}'/>">
@@ -299,28 +299,15 @@
                                    href="<c:out value='${url}'/>">
                                     <fmt:message key="index_jsp.label.sort.price_desc"/>
                                 </a>
-
                             </div>
                         </div>
                     </div>
-
                     <c:choose>
                         <c:when test="${fn:length(magazinesPage) == 0}">No magazines in filtered theme</c:when>
                         <c:otherwise>
                             <c:forEach var="magazine" items="${magazinesPage}">
                                 <c:url var="check_url" value="">
-
-<%--                                    <c:forEach items="${param}" var="entry">--%>
-<%--                                        <c:if test="${entry.key != magazineId &&--%>
-<%--                                        entry.key != 'login' &&--%>
-<%--                                         entry.key != 'password'--%>
-<%--                                         }">--%>
-<%--                                            <c:param name="${entry.key}" value="${entry.value}"/>--%>
-<%--                                        </c:if>--%>
-<%--                                    </c:forEach>--%>
-
                                     <c:forEach items="${paramValues}" var="entry">
-
                                         <c:if test="${
                                         entry.key != 'login' &&
                                          entry.key != 'password' &&
@@ -330,36 +317,38 @@
                                                 <c:param name="${entry.key}" value="${value}"/>
                                             </c:forEach>
                                         </c:if>
-
                                     </c:forEach>
-
                                     <c:param name="magazineId" value="${magazine.id}"/>
-
-
-
-
                                 </c:url>
                                 <div class="col <c:forEach var="item" items="${magazineId}">
                             <c:if test="${item eq magazine.id}">col-custom</c:if></c:forEach>">
                                     <a href="${check_url}">
-                                        <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
-                                        <p>${magazine.name}</p>
-                                        <p>${magazine.price}</p>
+                                        <div class="mag_image">
+                                            <img
+                                                 src="<c:url value="/static/images/${magazine.image}"/>"
+                                                 width="100%"/>
+                                        </div>
+                                        <div class="name">
+                                            <p>${magazine.name}</p>
+                                        </div>
+                                        <div class="price">
+                                            <p>${magazine.price}</p>
+                                        </div>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox"
-                                                   id="magazineId${magazine.id}"
-                                                   name="magazineId"
-                                                   value="${magazine.id}"
-                                                    <c:forEach var="item" items="${magazineId}">
-                                                        <c:if test="${item eq magazine.id}">
-                                                            checked
-                                                        </c:if>
-                                                    </c:forEach>
-                                            />
-                                            <label class="form-check-label" for="magazineId${magazine.id}">Add this
-                                                magazine
-                                                to
-                                                subscription</label>
+                                                <%--                                            <input class="form-check-input" type="checkbox"--%>
+                                                <%--                                                   id="magazineId${magazine.id}"--%>
+                                                <%--                                                   name="magazineId"--%>
+                                                <%--                                                   value="${magazine.id}"--%>
+                                                <%--                                                    <c:forEach var="item" items="${magazineId}">--%>
+                                                <%--                                                        <c:if test="${item eq magazine.id}">--%>
+                                                <%--                                                            checked--%>
+                                                <%--                                                        </c:if>--%>
+                                                <%--                                                    </c:forEach>--%>
+                                                <%--                                            />--%>
+                                                <%--                                            <label class="form-check-label" for="magazineId${magazine.id}">Add this--%>
+                                                <%--                                                magazine--%>
+                                                <%--                                                to--%>
+                                                <%--                                                subscription</label>--%>
                                         </div>
                                     </a>
                                 </div>
@@ -528,9 +517,15 @@
                                 <div class="theme-name"><h3>${theme.key.name}</h3></div>
                                 <c:forEach var="magazine" items="${theme.value}" end="2">
                                     <div class="col">
-                                        <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
-                                        <p>${magazine.name}</p>
-                                        <p>${magazine.price}</p>
+                                        <div class="mag_image">
+                                            <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
+                                        </div>
+                                        <div class="name">
+                                            <p>${magazine.name}</p>
+                                        </div>
+                                        <div class="price">
+                                            <p>${magazine.price}</p>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </div>

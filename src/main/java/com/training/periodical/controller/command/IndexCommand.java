@@ -47,18 +47,6 @@ public class IndexCommand implements Command {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
 
-
-        if(request.getParameter("sort") != null){
-            request.getSession().setAttribute("sort", request.getParameter("sort"));
-        }
-        if(request.getParameter("filter") != null){
-            request.getSession().setAttribute("filter", request.getParameter("filter"));
-        }
-        if(request.getParameter("page") != null){
-            request.getSession().setAttribute("page", request.getParameter("page"));
-        }
-
-
         resetCheckedIfRequested(request);
         setCheckedMagazines(request);
 
@@ -286,24 +274,8 @@ public class IndexCommand implements Command {
             log.trace("No magazines in filter theme " + filterName);
         }
 
-        StringBuilder sb = new StringBuilder();
-
-        if(request.getSession().getAttribute("sort") != null){
-            sb.append("?sort=");
-            sb.append(request.getSession().getAttribute("sort"));
-        }
-        if(request.getSession().getAttribute("filter") != null){
-            sb.append("&filter=");
-            sb.append(request.getSession().getAttribute("filter"));
-        }
-        if(request.getSession().getAttribute("page") != null){
-            sb.append("&page=");
-            sb.append(request.getSession().getAttribute("page"));
-        }
         log.debug("Command finished");
         return Path.PAGE_INDEX;
-//        return Path.PAGE_INDEX + sb;
-//        return Path.REDIRECT__INDEX + sb;
     }
 
     private boolean isPageOutOfRange(int allMagazinesAmount, String page) throws CommandException {

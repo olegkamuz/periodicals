@@ -119,3 +119,17 @@ a.disabled {
 .col-custom {
     background-color: #9a7264;
 }
+.mag_image img {
+    border-radius: 5px;
+}
+.mag_image{
+    padding-top: 17px;
+    padding-bottom: 17px;
+}
+.name {
+    text-align: center;
+    height: 70px;
+}
+.price {
+    text-align: center;
+}
