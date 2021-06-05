@@ -28,18 +28,9 @@ public class UserCabinetCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("User cabinet command starts");
 
-        User user;
-        Long userId = ((User) request.getSession().getAttribute("user")).getId();
-        try {
-            Optional<User> optionalUser = userService.findById(userId);
-            if(optionalUser.isPresent()){
-                user = optionalUser.get();
-            } else {
-                return Path.REDIRECT__INDEX;
-            }
-        } catch (ServiceException e) {
-            throw new CommandException(e);
-        }
+        long userId = ((User) request.getSession().getAttribute("user")).getId();
+        User user = getUser(userId);
+        showBalance(userId, request);
 
         String replenish = request.getParameter("replenish");
 
@@ -48,7 +39,7 @@ public class UserCabinetCommand implements Command {
                 BigDecimal newBalance = (new BigDecimal(replenish))
                         .add(user.getBalance());
                 userService.updateBalance(newBalance, user.getId());
-                ((User) request.getSession().getAttribute("user")).setBalance(newBalance);
+                showBalance(userId, request);
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }
@@ -60,6 +51,31 @@ public class UserCabinetCommand implements Command {
 
         log.info("User cabinet command finish");
         return Path.PAGE__USER_CABINET;
+    }
+
+    private void showBalance(long userId, HttpServletRequest request) {
+        try {
+            BigDecimal balanceFromDB = getUser(userId).getBalance();
+            ((User) request.getSession().getAttribute("user")).setBalance(balanceFromDB);
+        } catch (CommandException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private User getUser(long userId) throws CommandException{
+        User user;
+        try {
+            Optional<User> optionalUser = userService.findById(userId);
+            if(optionalUser.isPresent()){
+                user = optionalUser.get();
+            } else {
+                throw new CommandException("exception in getUser" +
+                         UserCabinetCommand.class.getSimpleName());
+            }
+        } catch (ServiceException e) {
+            throw new CommandException(e);
+        }
+        return user;
     }
 
     private void setSessionSubscriptionList(HttpServletRequest request) throws CommandException {

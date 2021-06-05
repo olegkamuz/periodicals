@@ -116,3 +116,6 @@ a.disabled {
     align-content: center;
     justify-content: center;
 }
+.col-custom {
+    background-color: #9a7264;
+}

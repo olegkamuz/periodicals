@@ -14,12 +14,17 @@ import com.training.periodical.entity.Theme;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Lists menu items.
@@ -42,8 +47,20 @@ public class IndexCommand implements Command {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
 
+
+        if(request.getParameter("sort") != null){
+            request.getSession().setAttribute("sort", request.getParameter("sort"));
+        }
+        if(request.getParameter("filter") != null){
+            request.getSession().setAttribute("filter", request.getParameter("filter"));
+        }
+        if(request.getParameter("page") != null){
+            request.getSession().setAttribute("page", request.getParameter("page"));
+        }
+
+
         resetCheckedIfRequested(request);
-        setPreviousCheckedMagazines(request);
+        setCheckedMagazines(request);
 
         String sort = getSort(request);
         String filter = getFilter(request);
@@ -65,17 +82,18 @@ public class IndexCommand implements Command {
         }
     }
 
-    private void resetCheckedIfRequested(HttpServletRequest request){
+
+    private void resetCheckedIfRequested(HttpServletRequest request) {
         if (request.getParameter("reset_checked") != null) {
-            request.getSession().removeAttribute("checked");
             request.getSession().removeAttribute("magazineId");
+//            request.getSession().removeAttribute("magIds");
         }
     }
 
     private String getSort(HttpServletRequest request) {
         String sort = "";
         if (request.getSession().getAttribute("pre_sort") != null) {
-            sort = (String)request.getSession().getAttribute("pre_sort");
+            sort = (String) request.getSession().getAttribute("pre_sort");
             request.getSession().removeAttribute("pre_sort");
         } else {
             sort = request.getParameter("sort");
@@ -86,17 +104,18 @@ public class IndexCommand implements Command {
     private String getFilter(HttpServletRequest request) {
         String filter = "";
         if (request.getSession().getAttribute("pre_filter") != null) {
-            filter = (String)request.getSession().getAttribute("pre_filter");
+            filter = (String) request.getSession().getAttribute("pre_filter");
             request.getSession().removeAttribute("pre_filter");
         } else {
             filter = request.getParameter("filter");
         }
         return filter;
     }
-    private String getPage(HttpServletRequest request){
+
+    private String getPage(HttpServletRequest request) {
         String page = "";
         if (request.getSession().getAttribute("pre_page") != null) {
-            page = (String)request.getSession().getAttribute("pre_page");
+            page = (String) request.getSession().getAttribute("pre_page");
             request.getSession().removeAttribute("pre_page");
         } else {
             page = request.getParameter("page");
@@ -109,6 +128,56 @@ public class IndexCommand implements Command {
             request.getSession().setAttribute("checked",
                     request.getSession().getAttribute("magazineId"));
         }
+    }
+
+    private void setCheckedMagazines(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+
+        List<String> previousMagIds = new ArrayList<>();
+        String[] thisMomentMagIds = null;
+        Object obj = session.getAttribute("magazineId");
+        if (obj instanceof List) {
+            for (Object ob : (List) obj) {
+                if (ob instanceof String) {
+                    previousMagIds.add((String) ob);
+                }
+            }
+        }
+
+        if (request.getParameterValues("magazineId") != null) {
+            thisMomentMagIds = request.getParameterValues("magazineId");
+        }
+
+
+        ArrayList<String> magIds = new ArrayList<>();
+        if (thisMomentMagIds != null) {
+//            if (previousMagIds != null) {
+//                Set<String> result = Arrays.stream(thisMomentMagIds)
+//                        .distinct()
+//                        .filter(previousMagIds::contains)
+//                        .collect(Collectors.toSet());
+//                magIds.addAll(result);
+//            } else {
+//                magIds.addAll(Arrays.asList(thisMomentMagIds));
+//            }
+            magIds.addAll(Arrays.asList(thisMomentMagIds));
+        }
+        if (previousMagIds != null) {
+            magIds.addAll(previousMagIds);
+//            session.removeAttribute("magazineId");
+        }
+
+        if(thisMomentMagIds != null && previousMagIds != null){
+            magIds.addAll(Arrays.asList(thisMomentMagIds));
+            Set<String> result = Arrays.stream(thisMomentMagIds)
+                    .distinct()
+                    .filter(previousMagIds::contains)
+                    .collect(Collectors.toSet());
+            magIds.removeAll(result);
+        }
+
+        request.getSession().setAttribute("magazineId", magIds);
     }
 
     private void showMagazinesByThemes(HttpServletRequest request) throws CommandException {
@@ -217,8 +286,24 @@ public class IndexCommand implements Command {
             log.trace("No magazines in filter theme " + filterName);
         }
 
+        StringBuilder sb = new StringBuilder();
+
+        if(request.getSession().getAttribute("sort") != null){
+            sb.append("?sort=");
+            sb.append(request.getSession().getAttribute("sort"));
+        }
+        if(request.getSession().getAttribute("filter") != null){
+            sb.append("&filter=");
+            sb.append(request.getSession().getAttribute("filter"));
+        }
+        if(request.getSession().getAttribute("page") != null){
+            sb.append("&page=");
+            sb.append(request.getSession().getAttribute("page"));
+        }
         log.debug("Command finished");
         return Path.PAGE_INDEX;
+//        return Path.PAGE_INDEX + sb;
+//        return Path.REDIRECT__INDEX + sb;
     }
 
     private boolean isPageOutOfRange(int allMagazinesAmount, String page) throws CommandException {

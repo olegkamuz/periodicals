@@ -80,7 +80,8 @@ public class CommandAccessFilter implements Filter {
 
     private void setPreviousParameters(HttpServletRequest request){
         if(request.getParameterValues("magazineId") != null){
-            request.getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
+            List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
+            request.getSession().setAttribute("magazineId", list);
         }
         if(request.getParameter("theme") != null){
             request.getSession().setAttribute("theme", request.getParameter("theme"));
