@@ -25,14 +25,13 @@ public class LogoutCommand extends AbstractCommand {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         HttpSession session = request.getSession(false);
         if (session != null)
             session.invalidate();
 
         log.debug("Command finished");
-        return Path.PAGE__LOGIN;
+        return Path.REDIRECT__INDEX;
     }
 
     @Override

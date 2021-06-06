@@ -21,11 +21,8 @@ public final class Path implements Serializable {
 	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
     public static final String PAGE__LIST_MAGAZINES_BY_THEMES = "/client/list_by_category_menu.jsp";
     public static final String PAGE_INDEX = "/index.jsp";
-//    public static final String PAGE_INDEX = "/client/index.jsp";
-    public static final String PAGE__LIST_MAGAZINES_BY_ONE_THEME = "/WEB-INF/jsp/client/one-theme-magazines.jsp";
 
     // forward
-    public static final String FORWARD__LIST_MAGAZINES_BY_ONE_THEME = "/one-theme-magazines";
     public static final String FORWARD__INDEX = "/index";
     public static final String FORWARD__USER_CABINET = "/client/user-cabinet";
 

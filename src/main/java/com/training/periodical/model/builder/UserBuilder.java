@@ -83,6 +83,7 @@ public class UserBuilder implements Builder<User> {
         user.setBalance(rs.getBigDecimal(Fields.USER__BALANCE));
         user.setFirstName(rs.getString(Fields.USER__FIRST_NAME));
         user.setLastName(rs.getString(Fields.USER__LAST_NAME));
+        user.setLocale(rs.getString(Fields.USER__LOCALE));
         user.setRoleId(rs.getInt(Fields.USER__ROLE_ID));
         user.setBlocked(rs.getInt(Fields.USER__BLOCKED));
         return user;

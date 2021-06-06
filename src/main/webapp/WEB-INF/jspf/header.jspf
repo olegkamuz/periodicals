@@ -13,128 +13,31 @@
         </div>
         <div id="rightHeader">
             <div class="locale">
-                <select name="localeToSet">
-                    <c:choose>
-                        <c:when test="${not empty defaultLocale}">
-                            <option value="">${defaultLocale}
-                                <fmt:message key="settings_jsp.label.default"/>
-                            </option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value=""/>
-                        </c:otherwise>
-                    </c:choose>
-
-                    <c:forEach var="localeName" items="${locales}">
-                        <option value="${localeName}">${localeName}</option>
-                    </c:forEach>
-                </select>
-            </div>
-            <a href="<c:if test="${not empty userRole}">
-                        <c:if test="${userRole.name eq 'admin'}">
-                            admin-cabinet
-                        </c:if>
-                        <c:if test="${userRole.name eq 'client'}">
-                            user-cabinet
-                        </c:if>
-                    </c:if>
-
-            ">
-                <c:out value="${user.firstName} ${user.lastName}"/>
-            </a>
-            <c:if test="${not empty userRole}">
-                <c:out value="(${userRole.name})"/>
-            </c:if>
-            <a href="logout">
-                <fmt:message key="header_jspf.anchor.logout"/>
-            </a>
-
-        </div>
-    </c:if>
-
-
-    <c:if test="${empty user}">
-        <div id="rightHeader">
-            <div class="locale">
-<%--                <select name="localeToSet">--%>
-<%--                    <c:choose>--%>
-<%--                        <c:when test="${not empty defaultLocale}">--%>
-<%--                            <option value="">${defaultLocale}--%>
-<%--                                <fmt:message key="settings_jsp.label.default"/>--%>
-<%--                            </option>--%>
-<%--                        </c:when>--%>
-<%--                        <c:otherwise>--%>
-<%--                            <option value=""/>--%>
-<%--                        </c:otherwise>--%>
-<%--                    </c:choose>--%>
-
-<%--                    <c:forEach var="localeName" items="${locales}">--%>
-<%--                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">--%>
-<%--                            <c:forEach items="${param}" var="entry">--%>
-<%--                                <c:if test="${--%>
-<%--                                         entry.key != 'magazineId' &&--%>
-<%--                                         entry.key != 'reset_checked' &&--%>
-<%--                                         entry.key != 'login' &&--%>
-<%--                                         entry.key != 'password'--%>
-<%--                                         }">--%>
-<%--                                    <c:param name="${entry.key}" value="${entry.value}"/>--%>
-<%--                                </c:if>--%>
-<%--                            </c:forEach>--%>
-<%--                        </c:url>--%>
-<%--                        <a href="${url}">--%>
-<%--                            <option value="${localeName}">${localeName}</option>--%>
-<%--                        </a>--%>
-<%--                    </c:forEach>--%>
-<%--                </select>--%>
-
-
-
                 <div class="dropdown show dropdown_custom">
-<%--                    <c:url var="url_filter" value="">--%>
-<%--                        <c:forEach items="${param}" var="entry">--%>
-<%--                            <c:if test="${--%>
-<%--                                         entry.key != 'magazineId' &&--%>
-<%--                                                            entry.key != 'reset_checked' &&--%>
-<%--                                         entry.key != 'login' &&--%>
-<%--                                         entry.key != 'password'--%>
-<%--                                         }">--%>
-<%--                                <c:param name="${entry.key}" value="${entry.value}"/>--%>
-<%--                            </c:if>--%>
-<%--                        </c:forEach>--%>
-<%--                    </c:url>--%>
-
-<%--                    <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">--%>
-<%--                        <c:forEach items="${param}" var="entry">--%>
-<%--                            <c:if test="${--%>
-<%--                                         entry.key != 'magazineId' &&--%>
-<%--                                         entry.key != 'reset_checked' &&--%>
-<%--                                         entry.key != 'login' &&--%>
-<%--                                         entry.key != 'password'--%>
-<%--                                         }">--%>
-<%--                                <c:param name="${entry.key}" value="${entry.value}"/>--%>
-<%--                            </c:if>--%>
-<%--                        </c:forEach>--%>
-<%--                        <c:param name="${entry.key}" value="${entry.value}"/>--%>
-<%--                    </c:url>--%>
-
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
                        id="dropdownMenuLinkFilter"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <c:set var="ru" value="ru"/>
                         <c:set var="en" value="en"/>
                         <c:choose>
-                            <c:when test="${fieldToFilter eq ru}">
-                                <fmt:message key="index_jsp.label.filter.interior"/>
+                            <c:when test="${defaultLocale eq ru}">
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.language.russian"/>
+                                </option>
                             </c:when>
-                            <c:when test="${fieldToFilter eq en}">
-                                <fmt:message key="index_jsp.label.filter.sport"/>
+                            <c:when test="${defaultLocale eq en}">
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.language.english"/>
+                                </option>
                             </c:when>
                             <c:otherwise>
-                                <fmt:message key="index_jsp.label.filter.all_wo_filter"/>
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.choose"/>
+                                </option>
                             </c:otherwise>
                         </c:choose>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkFilter">
+                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLinkFilter">
                         <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
@@ -151,7 +54,7 @@
                         </c:url>
                         <a class="dropdown-item"
                            href="<c:out value='${url}'/>">
-                            ru
+                            <fmt:message key="index_jsp.label.language.russian"/>
                         </a>
 
                         <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
@@ -170,21 +73,109 @@
                         </c:url>
                         <a class="dropdown-item"
                            href="<c:out value='${url}'/>">
-                            en
+                            <fmt:message key="index_jsp.label.language.english"/>
                         </a>
                     </div>
                 </div>
+            </div>
 
+            <div class="cabinet">
+                <a href="<c:if test="${not empty userRole}">
+                        <c:if test="${userRole.name eq 'admin'}">
+                            admin-cabinet
+                        </c:if>
+                        <c:if test="${userRole.name eq 'client'}">
+                            user-cabinet
+                        </c:if>
+                    </c:if>
 
+            ">
+                    <c:out value="${user.firstName} ${user.lastName}"/>
+                </a>
+            </div>
+            <div class="logout">
+                <a href="logout">
+                    <fmt:message key="header_jspf.anchor.logout"/>
+                </a>
             </div>
         </div>
     </c:if>
 
-    <c:if test="${empty user and title ne 'Login'}">
+    <c:if test="${empty user}">
         <div id="rightHeader">
-            <a href="login">
-                <fmt:message key="header_jspf.anchor.login"/>
-            </a>
+            <div class="locale">
+                <div class="dropdown show dropdown_custom">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                       id="dropdownMenuLinkLanguageGuest"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <c:set var="ru" value="ru"/>
+                        <c:set var="en" value="en"/>
+                        <c:choose>
+                            <c:when test="${defaultLocale eq ru}">
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.language.russian"/>
+                                </option>
+                            </c:when>
+                            <c:when test="${defaultLocale eq en}">
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.language.english"/>
+                                </option>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="">
+                                    <fmt:message key="index_jsp.label.choose"/>
+                                </option>
+                            </c:otherwise>
+                        </c:choose>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLinkFilter">
+                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                            <c:forEach items="${param}" var="entry">
+                                <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                         entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password' &&
+                                         entry.key != 'localeToSet'
+                                         }">
+                                    <c:param name="${entry.key}" value="${entry.value}"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:param name="localeToSet" value="ru"/>
+                        </c:url>
+                        <a class="dropdown-item"
+                           href="<c:out value='${url}'/>">
+                            <fmt:message key="index_jsp.label.language.russian"/>
+                        </a>
+
+                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                            <c:forEach items="${param}" var="entry">
+                                <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                         entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password' &&
+                                         entry.key != 'localeToSet'
+                                         }">
+                                    <c:param name="${entry.key}" value="${entry.value}"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:param name="localeToSet" value="en"/>
+                        </c:url>
+                        <a class="dropdown-item"
+                           href="<c:out value='${url}'/>">
+                            <fmt:message key="index_jsp.label.language.english"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <c:if test="${empty user and title ne 'Login'}">
+                <div id="login">
+                    <a href="login">
+                        <fmt:message key="header_jspf.anchor.login"/>
+                    </a>
+                </div>
+            </c:if>
         </div>
     </c:if>
 </div>

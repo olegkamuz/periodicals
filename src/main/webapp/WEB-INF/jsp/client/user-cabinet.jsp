@@ -12,7 +12,7 @@
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
-    <div class="wrapper">
+    <div class="wrapper wrapper-cabinet">
         <section class="jumbotron text-center">
             <div class="container">
                 <p class="lead text-muted">Hello, ${user.login}</p>

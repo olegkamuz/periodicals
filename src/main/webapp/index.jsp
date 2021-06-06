@@ -39,6 +39,7 @@
                                 <c:if test="${
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password'
                                          }">
@@ -60,7 +61,9 @@
                                     <c:if test="${
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                         <c:param name="${entry.key}" value="${entry.value}"/>
@@ -100,7 +103,9 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -121,6 +126,7 @@
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -141,6 +147,7 @@
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -161,6 +168,7 @@
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -182,6 +190,7 @@
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'page' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -204,6 +213,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                         <c:param name="${entry.key}" value="${entry.value}"/>
@@ -245,6 +255,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -265,6 +276,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -286,6 +298,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -307,6 +320,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -328,6 +342,7 @@
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
                                             <c:param name="${entry.key}" value="${entry.value}"/>
@@ -351,6 +366,7 @@
                                     <c:forEach items="${paramValues}" var="entry">
                                         <c:if test="${
                                         entry.key != 'login' &&
+                                         entry.key != 'localeToSet' &&
                                          entry.key != 'password' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked'
@@ -388,7 +404,8 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
-                                                              entry.key != 'login'
+                                                              entry.key != 'login' &&
+                                         entry.key != 'localeToSet'
                                                               }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
                                                     </c:if>
@@ -407,7 +424,8 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
-                                                              entry.key != 'login'
+                                                              entry.key != 'login' &&
+                                         entry.key != 'localeToSet'
                                                               }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>
                                             </c:if>
@@ -433,7 +451,8 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
-                                                              entry.key != 'login'
+                                                              entry.key != 'login' &&
+                                         entry.key != 'localeToSet'
                                                               }">
                                                                 <c:param name="${entry.key}"
                                                                          value="${entry.value}"/>
@@ -472,6 +491,7 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
+                                         entry.key != 'localeToSet' &&
                                                               entry.key != 'login'
                                                     }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
@@ -492,6 +512,7 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
+                                         entry.key != 'localeToSet' &&
                                                               entry.key != 'login'
                                                               }">
                                                         <c:param name="${entry.key}" value="${entry.value}"/>
@@ -513,6 +534,7 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
+                                         entry.key != 'localeToSet' &&
                                                               entry.key != 'login'
                                                               }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>
@@ -533,6 +555,7 @@
                                                             entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
                                                              entry.key != 'password' &&
+                                         entry.key != 'localeToSet' &&
                                                               entry.key != 'login'
                                                               }">
                                                 <c:param name="${entry.key}" value="${entry.value}"/>

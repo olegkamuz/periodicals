@@ -15,7 +15,7 @@ body {
 
 #leftHeader {
     float: left;
-    padding: 6px 6px 0px;
+    padding: 4px 6px 0px;
 }
 
 #rightHeader {
@@ -24,8 +24,20 @@ body {
     margin-right: 10px;
     color: wheat;
     padding: 6px 6px 0px;
-}
+    width: 310px;
 
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: space-evenly;
+    align-items: baseline;
+}
+.locale {
+}
+#login {
+    width: 30px;
+}
 a:link, a:visited {
     color: #ffffff;
 }
@@ -66,6 +78,10 @@ a {
     width: 1165px;
     background-color: white;
     padding-bottom: 15px;
+}
+.wrapper-cabinet {
+    margin-top: -20px;
+    padding-bottom: 400px;
 }
 #make_order {
     margin-bottom: 0px;
@@ -135,9 +151,42 @@ a.disabled {
 }
 .home {
     float: left;
-    padding: 6px 6px 0px 6px;
+    padding: 6px 11px 0px 19px;
+    margin-top: -2px;
 }
 .dropdown_custom a.btn {
     font-size: 10px !important;
     padding: 3px;
+    margin-top: -3px;
 }
+.dropdown-menu-custom.show {
+    float: left;
+    transform: translate3d(-30px, 23px, 0px) !important;
+    min-width: 9rem;
+}
+form#settings_form {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    align-items: center;
+}
+form#settings_form legend{
+    text-align: center;
+}
+fieldset.settings_lang {
+    padding-bottom: 14px;
+}
+.lang_select {
+    width: 233px;
+    font-size: 23px;
+}
+body div#error_wrapper {
+    padding-top: 100px;
+    display: flex;
+    align-content: stretch;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: crimson !important;
+}
+

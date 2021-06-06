@@ -31,16 +31,22 @@ public class UpdateSettingsCommand implements Command {
         log.debug("Command starts");
 
         User user = (User) request.getSession().getAttribute("user");
-        boolean updateUser;
+        boolean updateUser = false;
 
         String firstName = request.getParameter("firstName");
-        updateUser = isUpdateFirstName(firstName, user);
+        if(isUpdateFirstName(firstName, user)) {
+            updateUser = true;
+        }
 
         String lastName = request.getParameter("lastName");
-        updateUser = isUpdateLastName(lastName, user);
+        if(isUpdateLastName(lastName, user)) {
+            updateUser = true;
+        }
 
         String localeToSet = request.getParameter("localeToSet");
-        updateUser = isUpdateLocale(localeToSet, user, request);
+        if(isUpdateLocale(localeToSet, user, request)) {
+            updateUser = true;
+        }
 
         if (updateUser) {
             try {

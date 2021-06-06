@@ -54,6 +54,7 @@
         <url-pattern>/admin-cabinet</url-pattern>
         <url-pattern>/view-settings</url-pattern>
         <url-pattern>/update-settings</url-pattern>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
