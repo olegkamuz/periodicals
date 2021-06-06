@@ -101,7 +101,7 @@
         </init-param>
         <init-param>
             <param-name>common</param-name>
-            <param-value>noCommand view-settings update-settings</param-value>
+            <param-value>view-settings update-settings</param-value>
         </init-param>
         <init-param>
             <param-name>out-of-control</param-name>

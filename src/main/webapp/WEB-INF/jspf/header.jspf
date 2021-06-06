@@ -8,9 +8,28 @@
         <div id="leftHeader">
             <a href="view-settings">
                 <fmt:message key="header_jspf.anchor.settings"/>
-            </a> &nbsp;
+            </a>
+                <%--            &nbsp;--%>
         </div>
         <div id="rightHeader">
+            <div class="locale">
+                <select name="localeToSet">
+                    <c:choose>
+                        <c:when test="${not empty defaultLocale}">
+                            <option value="">${defaultLocale}
+                                <fmt:message key="settings_jsp.label.default"/>
+                            </option>
+                        </c:when>
+                        <c:otherwise>
+                            <option value=""/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <c:forEach var="localeName" items="${locales}">
+                        <option value="${localeName}">${localeName}</option>
+                    </c:forEach>
+                </select>
+            </div>
             <a href="<c:if test="${not empty userRole}">
                         <c:if test="${userRole.name eq 'admin'}">
                             admin-cabinet
@@ -30,6 +49,134 @@
                 <fmt:message key="header_jspf.anchor.logout"/>
             </a>
 
+        </div>
+    </c:if>
+
+
+    <c:if test="${empty user}">
+        <div id="rightHeader">
+            <div class="locale">
+<%--                <select name="localeToSet">--%>
+<%--                    <c:choose>--%>
+<%--                        <c:when test="${not empty defaultLocale}">--%>
+<%--                            <option value="">${defaultLocale}--%>
+<%--                                <fmt:message key="settings_jsp.label.default"/>--%>
+<%--                            </option>--%>
+<%--                        </c:when>--%>
+<%--                        <c:otherwise>--%>
+<%--                            <option value=""/>--%>
+<%--                        </c:otherwise>--%>
+<%--                    </c:choose>--%>
+
+<%--                    <c:forEach var="localeName" items="${locales}">--%>
+<%--                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">--%>
+<%--                            <c:forEach items="${param}" var="entry">--%>
+<%--                                <c:if test="${--%>
+<%--                                         entry.key != 'magazineId' &&--%>
+<%--                                         entry.key != 'reset_checked' &&--%>
+<%--                                         entry.key != 'login' &&--%>
+<%--                                         entry.key != 'password'--%>
+<%--                                         }">--%>
+<%--                                    <c:param name="${entry.key}" value="${entry.value}"/>--%>
+<%--                                </c:if>--%>
+<%--                            </c:forEach>--%>
+<%--                        </c:url>--%>
+<%--                        <a href="${url}">--%>
+<%--                            <option value="${localeName}">${localeName}</option>--%>
+<%--                        </a>--%>
+<%--                    </c:forEach>--%>
+<%--                </select>--%>
+
+
+
+                <div class="dropdown show dropdown_custom">
+<%--                    <c:url var="url_filter" value="">--%>
+<%--                        <c:forEach items="${param}" var="entry">--%>
+<%--                            <c:if test="${--%>
+<%--                                         entry.key != 'magazineId' &&--%>
+<%--                                                            entry.key != 'reset_checked' &&--%>
+<%--                                         entry.key != 'login' &&--%>
+<%--                                         entry.key != 'password'--%>
+<%--                                         }">--%>
+<%--                                <c:param name="${entry.key}" value="${entry.value}"/>--%>
+<%--                            </c:if>--%>
+<%--                        </c:forEach>--%>
+<%--                    </c:url>--%>
+
+<%--                    <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">--%>
+<%--                        <c:forEach items="${param}" var="entry">--%>
+<%--                            <c:if test="${--%>
+<%--                                         entry.key != 'magazineId' &&--%>
+<%--                                         entry.key != 'reset_checked' &&--%>
+<%--                                         entry.key != 'login' &&--%>
+<%--                                         entry.key != 'password'--%>
+<%--                                         }">--%>
+<%--                                <c:param name="${entry.key}" value="${entry.value}"/>--%>
+<%--                            </c:if>--%>
+<%--                        </c:forEach>--%>
+<%--                        <c:param name="${entry.key}" value="${entry.value}"/>--%>
+<%--                    </c:url>--%>
+
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                       id="dropdownMenuLinkFilter"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <c:set var="ru" value="ru"/>
+                        <c:set var="en" value="en"/>
+                        <c:choose>
+                            <c:when test="${fieldToFilter eq ru}">
+                                <fmt:message key="index_jsp.label.filter.interior"/>
+                            </c:when>
+                            <c:when test="${fieldToFilter eq en}">
+                                <fmt:message key="index_jsp.label.filter.sport"/>
+                            </c:when>
+                            <c:otherwise>
+                                <fmt:message key="index_jsp.label.filter.all_wo_filter"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLinkFilter">
+                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                            <c:forEach items="${param}" var="entry">
+                                <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                         entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password' &&
+                                         entry.key != 'localeToSet'
+                                         }">
+                                    <c:param name="${entry.key}" value="${entry.value}"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:param name="localeToSet" value="ru"/>
+                        </c:url>
+                        <a class="dropdown-item"
+                           href="<c:out value='${url}'/>">
+                            ru
+                        </a>
+
+                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                            <c:forEach items="${param}" var="entry">
+                                <c:if test="${
+                                         entry.key != 'magazineId' &&
+                                         entry.key != 'reset_checked' &&
+                                         entry.key != 'login' &&
+                                         entry.key != 'password' &&
+                                         entry.key != 'localeToSet'
+                                         }">
+                                    <c:param name="${entry.key}" value="${entry.value}"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:param name="localeToSet" value="en"/>
+                        </c:url>
+                        <a class="dropdown-item"
+                           href="<c:out value='${url}'/>">
+                            en
+                        </a>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     </c:if>
 

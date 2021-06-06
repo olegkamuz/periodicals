@@ -86,6 +86,7 @@ public class RegistrationSaveCommand implements Command {
                 this.getClass().getSimpleName(), e);
     }
 
+    @Override
     public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +

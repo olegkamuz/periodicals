@@ -27,7 +27,6 @@ public class CommandContainer implements Serializable {
 		commands.put("login", new LoginCommand());
         commands.put("login-check", new LoginCheckCommand(new UserService()));
 		commands.put("logout", new LogoutCommand());
-		commands.put("noCommand", new NoCommand());
 		commands.put("view-settings", new ViewSettingsCommand());
 		commands.put("update-settings", new UpdateSettingsCommand(new UserService()));
 

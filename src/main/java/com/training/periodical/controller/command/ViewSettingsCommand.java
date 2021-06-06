@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.training.periodical.Path;
 import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 /**
@@ -28,6 +29,14 @@ public class ViewSettingsCommand implements Command {
 
     @Override
     public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

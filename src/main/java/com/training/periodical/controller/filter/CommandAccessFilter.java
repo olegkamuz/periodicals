@@ -23,6 +23,8 @@ import javax.servlet.http.HttpSession;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
+import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import com.training.periodical.Path;
@@ -56,25 +58,9 @@ public class CommandAccessFilter implements Filter, Serializable {
             log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
+            log.error("Error in do filter method at CommandAccessFilter");
             setPreviousParameters(httpRequest);
             httpResponse.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
-
-//            if (response instanceof HttpServletResponse) {
-//                if (request instanceof HttpServletRequest) {
-//                    ((HttpServletRequest) request).getSession().setAttribute("magazineId", Arrays.asList(request.getParameterValues("magazineId")));
-//                    ((HttpServletRequest) request).getSession().setAttribute("theme", request.getParameter("theme"));
-//                }
-//                ((HttpServletResponse) response).sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
-//            } else {
-//
-//                String errorMessage = "You do not have permission to access the requested resource";
-//
-//                request.setAttribute("errorMessage", errorMessage);
-//                log.trace("Set the request attribute: errorMessage --> " + errorMessage);
-//
-//                request.getRequestDispatcher(Path.PAGE__ERROR_PAGE)
-//                        .forward(request, response);
-//            }
         }
     }
 
@@ -107,29 +93,31 @@ public class CommandAccessFilter implements Filter, Serializable {
 //            e.printStackTrace();
 //        }
 
-        try {
-            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
-            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
-        } catch (DaoException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
+//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
+//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
+//        } catch (DaoException e) {
+//            e.printStackTrace();
+//        }
 
 //        // todo remove on prod
 
-//        String commandName = request.getParameter("command");
-        String commandName;
-        if (request instanceof HttpServletRequest) {
-            commandName = ((HttpServletRequest) request).getServletPath().replace("/", "");
-        } else {
-            return false;
-        }
+        String commandName = ((HttpServletRequest) request).getServletPath().replace("/", "");
 
         AbstractDaoFactory.getInstance();
 
+        try {
+            if (!Validator.isValid(commandName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)){
+                return false;
+            }
+        } catch (ValidatorException e) {
+            log.error(e);
+        }
+
 //        if (commandName == null || commandName.isEmpty())
-        if (commandName.isEmpty())
-            return false;
+//        if (commandName.isEmpty())
+//            return false;
 
         if (outOfControl.contains(commandName))
             return true;
@@ -172,7 +160,7 @@ public class CommandAccessFilter implements Filter, Serializable {
      * @return list of parameter values.
      */
     private List<String> asList(String str) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         StringTokenizer st = new StringTokenizer(str);
         while (st.hasMoreTokens()) list.add(st.nextToken());
         return list;

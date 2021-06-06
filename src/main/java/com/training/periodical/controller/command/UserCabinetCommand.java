@@ -6,6 +6,7 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
 import com.training.periodical.model.service.UserSubscriptionService;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 public class UserCabinetCommand implements Command {
     private static final long serialVersionUID = 5034889545771020837L;
-    private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
+    private static final Logger log = Logger.getLogger(UserCabinetCommand.class);
     private final UserSubscriptionService UserSubService;
     private final UserService userService;
 
@@ -95,6 +96,14 @@ public class UserCabinetCommand implements Command {
 
     @Override
     public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

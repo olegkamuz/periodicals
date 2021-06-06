@@ -9,13 +9,14 @@ import javax.servlet.http.HttpSession;
 
 import com.training.periodical.Path;
 import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 /**
  * Logout command.
  *
  */
-public class LogoutCommand implements Command {
+public class LogoutCommand extends AbstractCommand {
     private static final long serialVersionUID = -2785976616686657267L;
     private static final Logger log = Logger.getLogger(LogoutCommand.class);
 
@@ -23,6 +24,8 @@ public class LogoutCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         HttpSession session = request.getSession(false);
         if (session != null)
@@ -34,6 +37,14 @@ public class LogoutCommand implements Command {
 
     @Override
     public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

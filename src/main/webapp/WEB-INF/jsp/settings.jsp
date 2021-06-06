@@ -24,7 +24,9 @@
                         <select name="localeToSet">
                             <c:choose>
                                 <c:when test="${not empty defaultLocale}">
-                                    <option value="">${defaultLocale}[Default]</option>
+                                    <option value="">${defaultLocale}
+                                        <fmt:message key="settings_jsp.label.default"/>
+                                    </option>
                                 </c:when>
                                 <c:otherwise>
                                     <option value=""/>

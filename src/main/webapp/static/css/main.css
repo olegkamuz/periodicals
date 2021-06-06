@@ -137,3 +137,7 @@ a.disabled {
     float: left;
     padding: 6px 6px 0px 6px;
 }
+.dropdown_custom a.btn {
+    font-size: 10px !important;
+    padding: 3px;
+}

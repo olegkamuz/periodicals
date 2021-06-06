@@ -7,6 +7,9 @@
 <%@ include file="/WEB-INF/jspf/headLoginRegistration.jspf" %>
 
 <body>
+<div>
+    <%@ include file="/WEB-INF/jspf/header.jspf" %>
+</div>
 <div class="login_form">
 	<table id="main-container">
 

@@ -8,11 +8,11 @@ import java.nio.charset.StandardCharsets;
 /**
  * Validate input data in validation check order specified
  *
- * for range check both boundaries need to be set first
+ * for range check left boundary need to be set first
  */
 public class Validator implements Serializable {
     private static final long serialVersionUID = 763482292333045953L;
-    public static Integer range_int_from;
+    private static Integer range_int_from = 0;
     public static Integer range_int_to;
 
     public enum Check {
@@ -36,7 +36,7 @@ public class Validator implements Serializable {
                     }
                     break;
                 case IN_INT_RANGE_INCLUSIVE_INCLUSIVE:
-                    if (range_int_from == null || range_int_to == null) {
+                    if (range_int_to == null) {
                         throw new ValidatorException("exception in isValidate method at" +
                                 Validator.class.getSimpleName() + " ranges not set");
                     }

@@ -8,6 +8,7 @@ import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.model.service.UserService;
+import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class AdminCabinetCommand implements Command {
-    private static final Logger log = Logger.getLogger(ListByOneCategoryMenuCommand.class);
+    private static final Logger log = Logger.getLogger(AdminCabinetCommand.class);
     private final UserService userService;
     private final MagazineService magazineService;
     private final MagazineBuilder magazineBuilder;
@@ -192,6 +193,14 @@ public class AdminCabinetCommand implements Command {
 
     @Override
     public CommandException createCommandException(String methodName, ServiceException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

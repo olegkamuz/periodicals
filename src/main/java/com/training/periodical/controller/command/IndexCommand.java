@@ -1,6 +1,5 @@
 package com.training.periodical.controller.command;
 
-import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.service.MagazineService;
 import com.training.periodical.model.service.ServiceException;
@@ -16,6 +15,7 @@ import com.training.periodical.entity.Theme;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,15 +26,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Lists menu items.
+ * Lists magazines with pagination, sorting and filtering; Shows magazines by themes.
  */
-public class IndexCommand implements Command {
+public class IndexCommand extends AbstractCommand {
+    private static final long serialVersionUID = -650070544358974520L;
 
     private static final Logger log = Logger.getLogger(IndexCommand.class);
     private final ThemeService themeService;
     private final MagazineService magazineService;
     private final int PAGE_SIZE = 5;
-    private final int RANGE_FROM = 0;
 
     public IndexCommand(ThemeService themeService, MagazineService magazineService) {
         this.themeService = themeService;
@@ -45,6 +45,8 @@ public class IndexCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         resetCheckedIfRequested(request);
         setCheckedMagazines(request);
@@ -69,6 +71,7 @@ public class IndexCommand implements Command {
         }
     }
 
+
     @Override
     public CommandException createCommandException(String methodName, ServiceException e) {
         return new CommandException("exception in " +
@@ -77,11 +80,17 @@ public class IndexCommand implements Command {
                 this.getClass().getSimpleName(), e);
     }
 
+    @Override
+    public CommandException createCommandException(String methodName, ValidatorException e) {
+        return new CommandException("exception in " +
+                methodName +
+                " method at " +
+                this.getClass().getSimpleName(), e);
+    }
 
     private void resetCheckedIfRequested(HttpServletRequest request) {
         if (request.getParameter("reset_checked") != null) {
             request.getSession().removeAttribute("magazineId");
-//            request.getSession().removeAttribute("magIds");
         }
     }
 
@@ -144,23 +153,12 @@ public class IndexCommand implements Command {
             thisMomentMagIds = request.getParameterValues("magazineId");
         }
 
-
         ArrayList<String> magIds = new ArrayList<>();
         if (thisMomentMagIds != null) {
-//            if (previousMagIds != null) {
-//                Set<String> result = Arrays.stream(thisMomentMagIds)
-//                        .distinct()
-//                        .filter(previousMagIds::contains)
-//                        .collect(Collectors.toSet());
-//                magIds.addAll(result);
-//            } else {
-//                magIds.addAll(Arrays.asList(thisMomentMagIds));
-//            }
             magIds.addAll(Arrays.asList(thisMomentMagIds));
         }
         if (previousMagIds != null) {
             magIds.addAll(previousMagIds);
-//            session.removeAttribute("magazineId");
         }
 
         if(thisMomentMagIds != null && previousMagIds != null){
@@ -433,7 +431,6 @@ public class IndexCommand implements Command {
 
     private boolean validatePage(String data, int range_to)
             throws CommandException {
-        Validator.range_int_from = RANGE_FROM;
         Validator.range_int_to = range_to;
         try {
             if (Validator.isValid(data,

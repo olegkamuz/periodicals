@@ -2,6 +2,7 @@ package com.training.periodical.controller.command;
 
 import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.util.validator.ValidatorException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -24,4 +25,5 @@ public interface Command extends Serializable{
 	String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException;
 
     CommandException createCommandException(String methodName, ServiceException e);
+    CommandException createCommandException(String methodName, ValidatorException e);
 }
