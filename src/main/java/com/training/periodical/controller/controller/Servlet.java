@@ -45,7 +45,6 @@ public class Servlet extends HttpServlet {
             result = CommandContainer.get(commandName).execute(request, response);
         } catch (CommandException e) {
             log.error(e);
-//            result = Path.PAGE__ERROR_PAGE;
             result = Path.REDIRECT__INDEX;
         }
         log.trace("Forward address --> " + result);

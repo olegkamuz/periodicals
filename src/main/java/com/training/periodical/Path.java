@@ -18,7 +18,7 @@ public final class Path implements Serializable {
 	public static final String PAGE__ERROR_PAGE = "/WEB-INF/jsp/error_page.jsp";
 	public static final String PAGE__LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";
 	public static final String PAGE__LIST_ORDERS = "/WEB-INF/jsp/admin/list_orders.jsp";
-	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/settings.jsp";
+	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/view-settings.jsp";
     public static final String PAGE__LIST_MAGAZINES_BY_THEMES = "/client/list_by_category_menu.jsp";
     public static final String PAGE_INDEX = "/index.jsp";
 
@@ -32,6 +32,7 @@ public final class Path implements Serializable {
     public static final String REDIRECT__INDEX = "redirect:/index";
     public static final String REDIRECT__REGISTRATION = "redirect:/registration";
     public static final String REDIRECT__USER_CABINET = "redirect:/user-cabinet";
+    public static final String REDIRECT__ADMIN_CABINET = "redirect:/admin-cabinet";
 
 	// commands
 	public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";

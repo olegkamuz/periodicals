@@ -29,15 +29,6 @@ public class AdminCabinetCommand implements Command {
         this.magazineBuilder = magazineBuilder;
     }
 
-    private Magazine buildMagazine(HttpServletRequest request) {
-        return magazineBuilder
-                .setName(request.getParameter("magazine_name_add_value"))
-                .setPrice(new BigDecimal(request.getParameter("magazine_price_add_value")))
-                .setImage(request.getParameter("magazine_image_add_value"))
-                .setThemeId(Long.parseLong(request.getParameter("magazine_theme_id_add_value")))
-                .build();
-    }
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
@@ -60,11 +51,19 @@ public class AdminCabinetCommand implements Command {
             }
         }
 
-//        addMagazine();
         showMagazinesList(request);
 
         log.debug("Admin cabinet command finish");
         return Path.PAGE__ADMIN_CABINET;
+    }
+
+    private Magazine buildMagazine(HttpServletRequest request) {
+        return magazineBuilder
+                .setName(request.getParameter("magazine_name_add_value"))
+                .setPrice(new BigDecimal(request.getParameter("magazine_price_add_value")))
+                .setImage(request.getParameter("magazine_image_add_value"))
+                .setThemeId(Long.parseLong(request.getParameter("magazine_theme_id_add_value")))
+                .build();
     }
 
     private boolean isMagazineDataComplete(HttpServletRequest request) {
@@ -145,7 +144,7 @@ public class AdminCabinetCommand implements Command {
 
     private void showUsersList(HttpServletRequest request) throws CommandException {
         try {
-            List<User> userList = userService.findAll();
+            List<User> userList = userService.findAllClients();
             request.getSession().setAttribute("userList", userList);
         } catch (ServiceException e) {
             throw new CommandException(e);

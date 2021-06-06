@@ -63,7 +63,7 @@ UPDATE `user` SET balance=9385 WHERE id=3
 UPDATE `user` SET balance=9785.00 WHERE id=3
 
 
-
+select * from user u where role_id=1
 
 
 

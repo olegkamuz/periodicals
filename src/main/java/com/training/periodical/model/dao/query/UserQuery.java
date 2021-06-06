@@ -10,6 +10,9 @@ public class UserQuery implements Serializable {
     public static final String SQL__FIND_USER_BY_ID =
             "SELECT * FROM `user` WHERE id=?";
 
+    public static final String SQL__FIND_ALL_CLIENTS =
+            "SELECT * FROM `user` WHERE role_id=1";
+
     public static final String SQL__UPDATE_USER =
             "UPDATE `user` SET login=?, password=?, balance=?, first_name=?, last_name=?, locale=?, role_id=?, blocked=?" +
                     "	WHERE id=?";

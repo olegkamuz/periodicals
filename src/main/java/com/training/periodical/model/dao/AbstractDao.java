@@ -23,7 +23,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     public List<T> findAll(Connection connection, Builder<T> builder) throws DaoException {
         try {
             Object[] parameters = {};
-            return executeQuery(connection, Query.getFindAllFromTable(tableName), builder, parameters);
+            return executeQuery(connection, Query.findAllFromTable(tableName), builder, parameters);
         } catch (SQLException e) {
             throw new DaoException();
         }

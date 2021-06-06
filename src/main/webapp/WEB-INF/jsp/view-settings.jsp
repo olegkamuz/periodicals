@@ -11,9 +11,6 @@
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="login_form">
-    <%--    <table id="main-container">--%>
-    <%--        <tr>--%>
-    <%--            <td class="content center">--%>
     <form id="settings_form" action="update-settings" method="post">
         <h3 style="color: #6e614c !important"><fmt:message key="settings_jsp.label.localization"/></h3>
         <fieldset class="settings_lang">
@@ -22,7 +19,7 @@
             </legend>
 
 
-            <select class="lang_select"name="localeToSet">
+            <select class="lang_select" name="localeToSet">
                 <c:choose>
                     <c:when test="${not empty defaultLocale}">
                         <c:if test="${defaultLocale eq ru}">
@@ -36,11 +33,6 @@
                             </option>
                         </c:if>
 
-<%--                        <option value="${defaultLocale}">--%>
-<%--                            <fmt:message key="settings_jsp.label.default"/>--%>
-<%--                        </option>--%>
-                        <%--                        <option value="<fmt:message key="settings_jsp.label.default"/>">--%>
-                        <%--                        </option>--%>
                     </c:when>
                     <c:otherwise>
                         <option value=""/>
@@ -81,9 +73,6 @@
 
         <input type="submit" value='<fmt:message key="settings_jsp.button.update"/>'><br/>
     </form>
-    <%--            </td>--%>
-    <%--        </tr>--%>
-    <%--    </table>--%>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

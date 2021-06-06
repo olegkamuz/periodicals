@@ -1,17 +1,28 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
-<div id="header">
+<c:url var="url_command" value="${fn:replace(fn:replace(fn:replace(fn:replace(pageContext.request.requestURL, '.jsp', ''),'WEB-INF/jsp/admin/', ''),'WEB-INF/jsp/client/', '' ), 'WEB-INF/jsp/','')}">
+</c:url>
 
-    <a class="home" href="index"><fmt:message key="header_jspf.anchor.home"/></a>
+<c:url var="url_clean" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}/">
+</c:url>
+<div id="header">
+<%--    <div><h3>${url_clean}</h3></div>--%>
+<%--    <div><h3>${url_unclean}</h3></div>--%>
+<%--    <div><h3>${pageContext.request.requestURI}</h3></div>--%>
+    <a class="home" href="${url_clean}index"><fmt:message key="header_jspf.anchor.home"/></a>
     <c:if test="${not empty user}">
         <div id="leftHeader">
-            <a href="view-settings">
+<%--            <a href="view-settings">--%>
+                <a href="${url_clean}view-settings">
                 <fmt:message key="header_jspf.anchor.settings"/>
             </a>
-                <%--            &nbsp;--%>
         </div>
-        <div id="rightHeader">
+        <div class="rightHeader
+            <c:if test="${userRole.name eq 'admin'}">
+                admin_header
+            </c:if>
+            ">
             <div class="locale">
                 <div class="dropdown show dropdown_custom">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
@@ -38,7 +49,7 @@
                         </c:choose>
                     </a>
                     <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLinkFilter">
-                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                        <c:url var="url" value="${url_command}">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
                                          entry.key != 'magazineId' &&
@@ -57,7 +68,7 @@
                             <fmt:message key="index_jsp.label.language.russian"/>
                         </a>
 
-                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                        <c:url var="url" value="${url_command}">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
                                          entry.key != 'magazineId' &&
@@ -91,10 +102,14 @@
 
             ">
                     <c:out value="${user.firstName} ${user.lastName}"/>
+
+                    <c:if test="${userRole.name eq 'admin'}">
+                        <c:out value="(${userRole.name})"/>
+                    </c:if>
                 </a>
             </div>
             <div class="logout">
-                <a href="logout">
+                <a href="${url_clean}logout">
                     <fmt:message key="header_jspf.anchor.logout"/>
                 </a>
             </div>
@@ -102,7 +117,7 @@
     </c:if>
 
     <c:if test="${empty user}">
-        <div id="rightHeader">
+        <div class="rightHeader">
             <div class="locale">
                 <div class="dropdown show dropdown_custom">
                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
@@ -129,7 +144,7 @@
                         </c:choose>
                     </a>
                     <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="dropdownMenuLinkFilter">
-                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                        <c:url var="url" value="${url_command}">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
                                          entry.key != 'magazineId' &&
@@ -148,7 +163,7 @@
                             <fmt:message key="index_jsp.label.language.russian"/>
                         </a>
 
-                        <c:url var="url" value="${fn:replace(pageContext.request.requestURL, '.jsp', '')}">
+                        <c:url var="url" value="${url_command}">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
                                          entry.key != 'magazineId' &&
@@ -171,7 +186,7 @@
             </div>
             <c:if test="${empty user and title ne 'Login'}">
                 <div id="login">
-                    <a href="login">
+                    <a href="${url_clean}login">
                         <fmt:message key="header_jspf.anchor.login"/>
                     </a>
                 </div>

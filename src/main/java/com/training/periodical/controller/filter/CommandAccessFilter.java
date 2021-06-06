@@ -115,10 +115,6 @@ public class CommandAccessFilter implements Filter, Serializable {
             log.error(e);
         }
 
-//        if (commandName == null || commandName.isEmpty())
-//        if (commandName.isEmpty())
-//            return false;
-
         if (outOfControl.contains(commandName))
             return true;
 

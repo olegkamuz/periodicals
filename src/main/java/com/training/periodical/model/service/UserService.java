@@ -48,9 +48,18 @@ public class UserService extends AbstractService<User> {
         }
     }
 
+    @Override
     public List<User> findAll() throws ServiceException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findAll();
+        } catch (DaoException e) {
+            throw createServiceException("findAll", e);
+        }
+    }
+
+    public List<User> findAllClients() throws ServiceException {
+        try (UserDao userDao = daoFactory.createUserDao()) {
+            return userDao.findAllClients();
         } catch (DaoException e) {
             throw createServiceException("findAll", e);
         }

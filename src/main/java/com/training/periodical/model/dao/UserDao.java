@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.builder.UserSubscriptionsBuilder;
+import com.training.periodical.model.dao.query.Query;
 import com.training.periodical.model.dao.query.UserQuery;
 import org.apache.log4j.Logger;
 
@@ -42,6 +43,15 @@ public class UserDao extends AbstractDao<User> {
 
     public List<User> findAll() throws DaoException {
         return findAll(connection, userBuilder);
+    }
+
+    public List<User> findAllClients() throws DaoException {
+        try {
+            Object[] parameters = {};
+            return executeQuery(connection, UserQuery.SQL__FIND_ALL_CLIENTS, userBuilder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException();
+        }
     }
 
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
