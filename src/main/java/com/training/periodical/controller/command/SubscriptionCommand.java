@@ -68,6 +68,7 @@ public class SubscriptionCommand implements Command {
         try {
             if (isEnoughMoney(String.valueOf(userId), magazineIds)) {
                 subscriptionService.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
+                cleanSessionMagazineId(request);
             }
         } catch (ServiceException e) {
             throw new CommandException("exception in execute method at " +
@@ -75,7 +76,6 @@ public class SubscriptionCommand implements Command {
         }
 
         cleanSessionSubscriptionList(request);
-        cleanSessionMagazineId(request);
 
         log.debug("Command finished");
         return Path.REDIRECT__USER_CABINET;
@@ -129,9 +129,9 @@ public class SubscriptionCommand implements Command {
     private void cleanSessionMagazineId(HttpServletRequest request) {
         if (request.getSession().getAttribute("magazineId") != null) {
             request.getSession().removeAttribute("magazineId");
-//            request.getSession().removeAttribute("pre_sub_sort");
-//            request.getSession().removeAttribute("pre_sub_filter");
-//            request.getSession().removeAttribute("pre_sub_page");
+            request.getSession().removeAttribute("pre_sub_sort");
+            request.getSession().removeAttribute("pre_sub_filter");
+            request.getSession().removeAttribute("pre_sub_page");
         }
     }
 

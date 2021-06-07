@@ -91,57 +91,57 @@ public class IndexCommand extends AbstractCommand {
     private void resetCheckedIfRequested(HttpServletRequest request) {
         if (request.getParameter("reset_checked") != null) {
             request.getSession().removeAttribute("magazineId");
-//            request.getSession().removeAttribute("pre_sub_sort");
-//            request.getSession().removeAttribute("pre_sub_filter");
-//            request.getSession().removeAttribute("pre_sub_page");
+            request.getSession().removeAttribute("pre_sub_sort");
+            request.getSession().removeAttribute("pre_sub_filter");
+            request.getSession().removeAttribute("pre_sub_page");
         }
     }
 
     private String getSort(HttpServletRequest request) {
         String sort = "";
-//        if (request.getSession().getAttribute("pre_sub_sort") != null) {
-//                sort = (String) request.getSession().getAttribute("pre_sub_sort");
-////                request.getSession().removeAttribute("pre_sub_sort");
-//        } else {
+        if (request.getSession().getAttribute("pre_sub_sort") != null) {
+            sort = (String) request.getSession().getAttribute("pre_sub_sort");
+            request.getSession().removeAttribute("pre_sub_sort");
+        } else {
             if (request.getSession().getAttribute("pre_sort") != null) {
                 sort = (String) request.getSession().getAttribute("pre_sort");
                 request.getSession().removeAttribute("pre_sort");
             } else {
                 sort = request.getParameter("sort");
             }
-//        }
+        }
         return sort;
     }
 
     private String getFilter(HttpServletRequest request) {
         String filter = "";
-//        if (request.getSession().getAttribute("pre_sub_filter") != null) {
-//            filter = (String) request.getSession().getAttribute("pre_sub_filter");
-////            request.getSession().removeAttribute("pre_sub_sort");
-//        } else {
+        if (request.getSession().getAttribute("pre_sub_filter") != null) {
+            filter = (String) request.getSession().getAttribute("pre_sub_filter");
+            request.getSession().removeAttribute("pre_sub_filter");
+        } else {
             if (request.getSession().getAttribute("pre_filter") != null) {
                 filter = (String) request.getSession().getAttribute("pre_filter");
                 request.getSession().removeAttribute("pre_filter");
             } else {
                 filter = request.getParameter("filter");
             }
-//        }
+        }
         return filter;
     }
 
     private String getPage(HttpServletRequest request) {
         String page = "";
-//        if (request.getSession().getAttribute("pre_sub_page") != null) {
-//            page = (String) request.getSession().getAttribute("pre_sub_page");
-////            request.getSession().removeAttribute("pre_sub_page");
-//        } else {
+        if (request.getSession().getAttribute("pre_sub_page") != null) {
+            page = (String) request.getSession().getAttribute("pre_sub_page");
+            request.getSession().removeAttribute("pre_sub_page");
+        } else {
             if (request.getSession().getAttribute("pre_page") != null) {
                 page = (String) request.getSession().getAttribute("pre_page");
                 request.getSession().removeAttribute("pre_page");
             } else {
                 page = request.getParameter("page");
             }
-//        }
+        }
         return page;
     }
 
@@ -273,7 +273,8 @@ public class IndexCommand extends AbstractCommand {
         return Path.PAGE_INDEX;
     }
 
-    private String showFilteredSorted(HttpServletRequest request, String sort, String filter, String page) throws CommandException {
+    private String showFilteredSorted(HttpServletRequest request, String sort, String filter, String page) throws
+            CommandException {
         String sortSubQuery = getFilterSortSubQuery(sort);
         String filterName = getFilterName(filter);
 
@@ -327,7 +328,8 @@ public class IndexCommand extends AbstractCommand {
         return filteredPaginated;
     }
 
-    private List<Magazine> getMagazinesFilteredSortedPaginates(String filterName, String sortSubQuery, int currentPage) {
+    private List<Magazine> getMagazinesFilteredSortedPaginates(String filterName, String sortSubQuery,
+                                                               int currentPage) {
         List<Magazine> filteredSortedPaginated = new ArrayList<>();
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
@@ -406,7 +408,8 @@ public class IndexCommand extends AbstractCommand {
         return sorted;
     }
 
-    private void setMagazinesByThemes(HttpServletRequest request, Map<Theme, List<Magazine>> map) throws CommandException {
+    private void setMagazinesByThemes(HttpServletRequest request, Map<Theme, List<Magazine>> map) throws
+            CommandException {
         request.getSession().setAttribute("magazinesByThemes", map);
         log.trace("Set the request attribute: menuByCategoryItems --> " + map);
     }
@@ -492,7 +495,8 @@ public class IndexCommand extends AbstractCommand {
         }
     }
 
-    private void setToJspPaginationBar(HttpServletRequest request, int currentPage, int pageAmount) throws CommandException {
+    private void setToJspPaginationBar(HttpServletRequest request, int currentPage, int pageAmount) throws
+            CommandException {
         List<Integer> baseList = getBaseList(pageAmount);
 
         if (pageAmount > 6) {
