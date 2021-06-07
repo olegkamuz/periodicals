@@ -83,6 +83,10 @@ a {
     display: flex;
 }
 
+.main-container.user {
+    padding-top: 20px;
+}
+
 .wrapper {
     width: 1165px;
     background-color: white;

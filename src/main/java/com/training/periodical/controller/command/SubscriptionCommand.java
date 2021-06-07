@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,9 @@ public class SubscriptionCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
+
+        setPreviousParameters(request);
+
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
         List<String> magazineIds = new ArrayList<>();
         Object obj = request.getSession().getAttribute("magazineId");
@@ -62,8 +66,9 @@ public class SubscriptionCommand implements Command {
         }
 
         try {
-            if (isEnoughMoney(String.valueOf(userId), magazineIds)) subscriptionService.
-                    createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
+            if (isEnoughMoney(String.valueOf(userId), magazineIds)) {
+                subscriptionService.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
+            }
         } catch (ServiceException e) {
             throw new CommandException("exception in execute method at " +
                     this.getClass().getSimpleName(), e);
@@ -76,7 +81,23 @@ public class SubscriptionCommand implements Command {
         return Path.REDIRECT__USER_CABINET;
     }
 
-    private List<String> checkForAlreadyAdded(SubscriptionService subscriptionService,Long userId, List<String> magazineIds) throws CommandException {
+    private void setPreviousParameters(HttpServletRequest request) {
+        if (request.getParameterValues("magazineId") != null) {
+            List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
+            request.getSession().setAttribute("pre_sub_magazineId", list);
+        }
+        if (request.getParameter("pre_sort") != null) {
+            request.getSession().setAttribute("pre_sub_sort", request.getParameter("pre_sort"));
+        }
+        if (request.getParameter("pre_filter") != null) {
+            request.getSession().setAttribute("pre_sub_filter", request.getParameter("pre_filter"));
+        }
+        if (request.getParameter("pre_page") != null) {
+            request.getSession().setAttribute("pre_sub_page", request.getParameter("pre_page"));
+        }
+    }
+
+    private List<String> checkForAlreadyAdded(SubscriptionService subscriptionService, Long userId, List<String> magazineIds) throws CommandException {
         try {
             List<String> temp = new ArrayList<>();
             for (String magId : magazineIds) {
@@ -85,14 +106,14 @@ public class SubscriptionCommand implements Command {
                 }
             }
             return temp;
-        } catch (ServiceException e){
+        } catch (ServiceException e) {
             throw new CommandException(e);
         }
     }
 
     private List<String> removePossibleMagIdsDuplication(List<String> magazineIds) {
         List<String> magId = new ArrayList<>();
-        if(!magazineIds.isEmpty()){
+        if (!magazineIds.isEmpty()) {
             magId = new ArrayList<>(
                     new HashSet<>(magazineIds));
         }
@@ -100,13 +121,17 @@ public class SubscriptionCommand implements Command {
     }
 
     private void cleanSessionSubscriptionList(HttpServletRequest request) {
-        if (request.getSession().getAttribute("subscriptionList") != null){
+        if (request.getSession().getAttribute("subscriptionList") != null) {
             request.getSession().removeAttribute("subscriptionList");
         }
     }
+
     private void cleanSessionMagazineId(HttpServletRequest request) {
-        if (request.getSession().getAttribute("magazineId") != null){
+        if (request.getSession().getAttribute("magazineId") != null) {
             request.getSession().removeAttribute("magazineId");
+//            request.getSession().removeAttribute("pre_sub_sort");
+//            request.getSession().removeAttribute("pre_sub_filter");
+//            request.getSession().removeAttribute("pre_sub_page");
         }
     }
 

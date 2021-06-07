@@ -20,33 +20,15 @@
 
 
             <select class="lang_select" name="localeToSet">
-                <c:choose>
-                    <c:when test="${not empty defaultLocale}">
-                        <c:if test="${defaultLocale eq ru}">
-                            <option value="${defaultLocale}">
-                                <fmt:message key="settings_jsp.label.language.russian"/>
-                            </option>
-                        </c:if>
-                        <c:if test="${defaultLocale eq en}">
-                            <option value="${defaultLocale}">
-                                <fmt:message key="settings_jsp.label.language.english"/>
-                            </option>
-                        </c:if>
-
-                    </c:when>
-                    <c:otherwise>
-                        <option value=""/>
-                    </c:otherwise>
-                </c:choose>
 
                 <c:forEach var="localeName" items="${locales}">
                     <c:if test="${localeName eq ru}">
-                        <option value="${localeName}">
+                        <option value="${localeName}" <c:if test="${not empty defaultLocale}"><c:if test="${localeName eq defaultLocale}">selected</c:if> </c:if>>
                             <fmt:message key="settings_jsp.label.language.russian"/>
                         </option>
                     </c:if>
                     <c:if test="${localeName eq en}">
-                        <option value="${localeName}">
+                        <option value="${localeName}" <c:if test="${not empty defaultLocale}"><c:if test="${localeName eq defaultLocale}">selected</c:if> </c:if>>
                             <fmt:message key="settings_jsp.label.language.english"/>
                         </option>
                     </c:if>

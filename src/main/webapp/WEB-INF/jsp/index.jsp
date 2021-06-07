@@ -26,9 +26,6 @@
                     <c:if test="${empty user}">
                     <h3>LOGIN TO SUBSCRIBE</h3>
                     </c:if>
-                    <c:if test="${not empty user}">
-                        <h3>REPLENISH AT YOUR PERSONAL CABINET TO SUBSCRIBE</h3>
-                    </c:if>
                 </div>
             </section>
 

@@ -17,6 +17,13 @@
                 <table class="table table-bordered table_custom">
                     <thead>
                     <tr>
+                        <th style="text-align: center; color: rgb(217 205 185)" colspan="5">
+                            <h3>
+                                <fmt:message key="admin-cabinet_jsp.label.user.block"/>
+                            </h3>
+                        </th>
+                    </tr>
+                    <tr>
                         <th scope="col"><fmt:message key="admin-cabinet_jsp.label.user.login"/></th>
                         <th scope="col"><fmt:message key="admin-cabinet_jsp.label.user.first_name"/></th>
                         <th scope="col"><fmt:message key="admin-cabinet_jsp.label.user.last_name"/></th>
@@ -50,6 +57,13 @@
         <table class="table table-bordered table_custom">
             <thead>
             <tr>
+                <th style="text-align: center; color: rgb(217 205 185)" colspan="5">
+                    <h3>
+                        <fmt:message key="admin-cabinet_jsp.label.magazine.add"/>
+                    </h3>
+                </th>
+            </tr>
+            <tr>
                 <th scope="col"><fmt:message key="admin-cabinet_jsp.label.magazine.name"/></th>
                 <th scope="col"><fmt:message key="admin-cabinet_jsp.label.magazine.price"/></th>
                 <th scope="col"><fmt:message key="admin-cabinet_jsp.label.magazine.image"/></th>
@@ -57,11 +71,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td style="text-align: center" colspan="5">
-                    <fmt:message key="admin-cabinet_jsp.label.magazine.add"/>
-                </td>
-            </tr>
             <tr>
                 <form action="admin-cabinet" method="post">
                     <td><input name="magazine_name_add_value"/></td>
@@ -84,6 +93,13 @@
             <c:otherwise>
                 <table class="table table-bordered table_custom">
                     <thead>
+                    <tr>
+                        <th style="text-align: center; color: rgb(217 205 185)" colspan="6">
+                            <h3>
+                                <fmt:message key="admin-cabinet_jsp.label.magazine.edit"/>
+                            </h3>
+                        </th>
+                    </tr>
                     <tr>
                         <th scope="col"><fmt:message key="admin-cabinet_jsp.label.magazine.name"/></th>
                         <th scope="col"><fmt:message key="admin-cabinet_jsp.label.magazine.price"/></th>

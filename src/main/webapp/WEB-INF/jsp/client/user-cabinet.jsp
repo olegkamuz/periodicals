@@ -11,7 +11,7 @@
 <div>
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
-<div class="main-container">
+<div class="main-container user">
     <div class="wrapper wrapper-cabinet">
         <section class="jumbotron text-center">
             <div class="container">
