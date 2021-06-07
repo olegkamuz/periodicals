@@ -11,7 +11,7 @@ public class CheckInRange extends ChainValidator {
 
     @Override
     public boolean isValid() throws ValidatorException{
-        if (isCast()) {
+        if (inRange()) {
             return true;
         } else if (next != null) {
             return next.isValid();
@@ -19,7 +19,7 @@ public class CheckInRange extends ChainValidator {
         return false;
     }
 
-    private boolean isCast() throws ValidatorException{
+    private boolean inRange() throws ValidatorException{
         if (range_to == null) {
             throw new ValidatorException("exception in isValidate method at" +
                     CheckInRange.class.getSimpleName() + " ranges not set");

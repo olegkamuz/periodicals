@@ -19,12 +19,13 @@
         <div class="wrapper">
             <section class="jumbotron text-center">
                 <div class="container">
-                    <h1 class="jumbotron-heading">Periodicals subscription</h1>
-                    <p class="lead text-muted">Here you can find some interesting stuff to read, so don't hesitate
-                        subscribe to few magazines and you'll like it.Spend some time with new knowledge sweet as cake,
-                        healthy as apple.</p>
+                    <h1 class="jumbotron-heading"><fmt:message key="index_jsp.h1.periodicals_subscription"/></h1>
+                    <p class="lead text-muted"><fmt:message key="index_jsp.p.inspiring_text"/></p>
                     <c:if test="${empty user}">
-                    <h3>LOGIN TO SUBSCRIBE</h3>
+                        <h3><fmt:message key="index_jsp.h3.login_to_subscribe"/></h3>
+                    </c:if>
+                    <c:if test="${not empty user}">
+                        <h3><fmt:message key="index_jsp.h3.replenish_to_subscribe"/></h3>
                     </c:if>
                 </div>
             </section>
@@ -33,7 +34,7 @@
                 <div class="row">
                     <div class="subscription_submit">
                         <input class="btn btn-primary my-2" type="submit"
-                               value='<fmt:message key="list_menu_jsp.button.make_an_order"/>'/>
+                               value='<fmt:message key="index_jsp.button.buy_subscription"/>'/>
                         <c:url var="reset_url" value="">
                             <c:forEach items="${param}" var="entry">
                                 <c:if test="${
@@ -578,7 +579,12 @@
                 <div class="container container_by_themes">
                     <c:forEach var="theme" items="${magazinesByThemes}">
                         <div class="row">
-                            <div class="theme-name"><h3>${theme.key.name}</h3></div>
+                            <div class="theme-name"><h3>
+                                <c:if test="${theme.key.name eq 'Sport'}"><fmt:message key="index_jsp.h3.sport"/></c:if>
+                                <c:if test="${theme.key.name eq 'IT world'}"><fmt:message key="index_jsp.h3.it"/></c:if>
+                                <c:if test="${theme.key.name eq 'Music'}"><fmt:message key="index_jsp.h3.music"/></c:if>
+                                <c:if test="${theme.key.name eq 'Interior'}"><fmt:message key="index_jsp.h3.interior"/></c:if>
+                            </h3></div>
                             <c:forEach var="magazine" items="${theme.value}" end="2">
                                 <div class="col">
                                     <div class="mag_image">
