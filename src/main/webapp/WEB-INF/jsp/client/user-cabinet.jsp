@@ -15,8 +15,8 @@
     <div class="wrapper wrapper-cabinet">
         <section class="jumbotron text-center">
             <div class="container">
-                <p class="lead text-muted">Hello, ${user.login}</p>
-                <p class="lead text-muted">your balance is: ${user.balance}</p>
+                <p class="lead text-muted"><fmt:message key="user-cabinet_jsp.p.hello"/> ${user.login}</p>
+                <p class="lead text-muted"><fmt:message key="user-cabinet_jsp.p.your_balance"/> ${user.balance}</p>
                 <form id="login_form" action="user-cabinet" method="post">
                     <input type="hidden" name="user-id" value="${user.id}"/>
                     <fieldset>
@@ -28,12 +28,12 @@
                     <br/>
                     <input type="submit" value='<fmt:message key="user-cabinet_jsp.label.replenish"/>'>
                 </form>
-                <p class="lead text-muted">here is your subscriptions:</p>
+                <p class="lead text-muted"><fmt:message key="user-cabinet_jsp.p.your_subscription"/></p>
             </div>
         </section>
         <c:choose>
             <c:when test="${fn:length(subscriptionList) == 0}">
-                <div style="text-align:center">No subscriptions yet</div>
+                <div style="text-align:center"><fmt:message key="user-cabinet_jsp.div.no_subscription"/></div>
             </c:when>
             <c:otherwise>
                 <div class="container">

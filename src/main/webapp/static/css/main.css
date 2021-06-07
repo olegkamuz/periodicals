@@ -109,6 +109,7 @@ a {
     width: 1300px;
     background-color: burlywood;
 }
+
 table.table.table-bordered.table_custom {
     background-color: #627a97;
 }
@@ -164,7 +165,8 @@ a.disabled {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    align-content: center;
+    align-content: stretch;
+    align-items: center;
 }
 
 .login_form {

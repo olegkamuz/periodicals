@@ -133,11 +133,11 @@ VALUES (DEFAULT, 'Horses And Hound', 185, 'horses-and-hound.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Sail The British Isles', 170, 'sail-the-british-isles.jpg', 2);
 INSERT INTO `magazine`
-VALUES (DEFAULT, 'Legends Of The Nfl', 115, 'legends-of-the-nfl.jpg', 2);
+VALUES (DEFAULT, 'Legends Of The NBA', 115, 'legends-of-the-nba.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Ultimate Guide To The Masters', 125, 'ultimate-guide-to-the-masters.jpg', 2);
 INSERT INTO `magazine`
-VALUES (DEFAULT, 'Legend Of Tho Nfl', 205, 'legend-of-tho-nfl.jpg', 2);
+VALUES (DEFAULT, 'Legends Of Tho NFL', 205, 'legends-of-the-nfl.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'The Modern Home', 295, 'the-modern-home.jpg', 1);
 INSERT INTO `magazine`

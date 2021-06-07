@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class UserCabinetCommand implements Command {
+public class UserCabinetCommand extends AbstractCommand {
     private static final long serialVersionUID = 5034889545771020837L;
     private static final Logger log = Logger.getLogger(UserCabinetCommand.class);
     private final UserSubscriptionService UserSubService;
@@ -29,6 +29,8 @@ public class UserCabinetCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("User cabinet command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         long userId = ((User) request.getSession().getAttribute("user")).getId();
         User user = getUser(userId);
