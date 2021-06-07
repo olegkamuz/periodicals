@@ -24,7 +24,7 @@ body {
     margin-right: 10px;
     color: wheat;
     padding: 6px 6px 0px;
-    width: 310px;
+    width: 430px;
 
     display: flex;
     flex-direction: row;
@@ -91,6 +91,10 @@ a {
     width: 1165px;
     background-color: white;
     padding-bottom: 15px;
+}
+
+.settings_sub_button {
+    padding-top: 40px;
 }
 
 .wrapper-cabinet {

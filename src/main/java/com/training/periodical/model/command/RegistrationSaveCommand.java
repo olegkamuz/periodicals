@@ -32,16 +32,9 @@ public class RegistrationSaveCommand implements Command {
         String firstName = request.getParameter("first-name");
         String lastName = request.getParameter("last-name");
 
-        try {
-            if(!Valid.notNullNotEmpty(login) ||
-            !Valid.notNullNotEmpty(password) ||
-            !Valid.notNullNotEmpty(firstName) ||
-            !Valid.notNullNotEmpty(lastName)
-            ) {
-                return Path.REDIRECT__INDEX;
-            }
-        } catch (ValidatorException e) {
-            throw new CommandException("Not valid data at RegistrationSameCommand in execution method");
+        if (!validateAllFields(login, password, firstName, lastName, request)){
+            setError(request, "All fields required", "error_reg");
+            return Path.PAGE__REGISTRATION;
         }
 
         if (isExistedUser(request)) {
@@ -57,6 +50,22 @@ public class RegistrationSaveCommand implements Command {
 
         log.info("User registered successfully");
         return Path.REDIRECT__LOGIN;
+    }
+    private void setError(HttpServletRequest request, String errorMessage, String attributeName) {
+        request.getSession().setAttribute(attributeName, errorMessage);
+        log.error("errorMessage --> " + errorMessage);
+    }
+
+    private boolean validateAllFields(String login, String password, String firstName, String lastName, HttpServletRequest request) throws CommandException {
+        try {
+            if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)
+            && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName)){
+                return true;
+            }
+        } catch (ValidatorException e) {
+            throw createCommandException("execute", e);
+        }
+        return false;
     }
 
     private User buildUser(String login, String password, String firstName, String lastName) {

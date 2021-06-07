@@ -78,7 +78,7 @@ public class UserDao extends AbstractDao<User> {
 
     public int create(User user) throws DaoException {
         Object[] parameters = userBuilder.unBuildStrippedUser(user);
-        return executeUpdate(connection, UserQuery.SQL__CREATE_USER, parameters);
+        return executeUpdateNow(connection, UserQuery.SQL__CREATE_USER, parameters);
     }
 
     public int update(String userId, String column, String value) throws DaoException {
