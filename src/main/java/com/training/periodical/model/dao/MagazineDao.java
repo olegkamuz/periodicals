@@ -1,6 +1,7 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.Magazine;
+import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 
@@ -131,69 +132,47 @@ public class MagazineDao extends AbstractDao<Magazine> {
      * @return List of theme entities.
      */
     public List<Magazine> findMagazineByThemeName(String themeName) throws DaoException {
+        Object[] parameters = {themeName};
+        return find(MagazineQuery.
+                SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, parameters);
+    }
+
+    private List<Magazine> find(String query, Object[] parameters) throws DaoException {
         try {
-            Object[] parameters = {themeName};
-            return executeQuery(connection, MagazineQuery.
-                    SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, builder, parameters);
-        } catch (SQLException ex) {
-            rollback(connection);
-            throw new DaoException(ex);
-        } finally {
-            commit(connection);
+            return executeQuery(connection, query, builder, parameters);
+        } catch (SQLException e) {
+            throw new DaoException(e);
         }
     }
 
     public List<Magazine> findSorted(String sortSubQuery) throws DaoException {
         Object[] parameters = {};
-        try {
-            return executeQuery(connection, MagazineQuery.SQL_FIND_SORT + sortSubQuery, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return find(MagazineQuery.SQL_FIND_SORT + sortSubQuery, parameters);
     }
 
     public List<Magazine> findSortedPaginated(String sortSubQuery, int limit, int offset) throws DaoException {
         Object[] parameters = {limit, offset};
-        try {
-            return executeQuery(connection, MagazineQuery.SQL_FIND_SORT +
-                            sortSubQuery +
-                            MagazineQuery.SQL__FIND_SUB_PAGINATED
-                    , builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return find(MagazineQuery.SQL_FIND_SORT +
+                sortSubQuery +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
 
     public List<Magazine> findFiltered(String filterName) throws DaoException {
         Object[] parameters = {filterName};
-        try {
-            return executeQuery(connection, MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return find(MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, parameters);
     }
 
     public List<Magazine> findFilteredPaginated(String filterName, int limit, int offset) throws DaoException {
         Object[] parameters = {filterName, limit, offset};
-        try {
-            return executeQuery(connection,
-                    MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
-                            MagazineQuery.SQL__FIND_SUB_PAGINATED, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return find(MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
 
     public List<Magazine> findFilteredSortedPaginated(String filterName, String sortSubQuery, int limit, int offset) throws DaoException {
         Object[] parameters = {filterName, limit, offset};
-        try {
-            return executeQuery(connection,
-                    MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
-                            sortSubQuery +
-                            MagazineQuery.SQL__FIND_SUB_PAGINATED, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return find(MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
+                sortSubQuery +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
 
 
