@@ -1,11 +1,11 @@
 package com.training.periodical.model.dao;
 
-import com.training.periodical.model.service.SubscriptionService;
+import com.training.periodical.model.repository.SubscriptionRepository;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractDaoFactory implements IDaoFactory  {
 
-    private static final Logger log = Logger.getLogger(SubscriptionService.class);
+    private static final Logger log = Logger.getLogger(SubscriptionRepository.class);
     private static IDaoFactory daoFactory;
 
     public static IDaoFactory getInstance() {

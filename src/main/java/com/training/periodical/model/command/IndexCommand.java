@@ -1,9 +1,9 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
 import com.training.periodical.model.dao.query.MagazineQuery;
-import com.training.periodical.model.service.MagazineService;
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.ThemeService;
+import com.training.periodical.model.repository.MagazineRepository;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.ThemeRepository;
 import com.training.periodical.util.constants.ThemeConstants;
 import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
@@ -15,7 +15,6 @@ import com.training.periodical.entity.Theme;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,11 +31,11 @@ public class IndexCommand extends AbstractCommand {
     private static final long serialVersionUID = -650070544358974520L;
 
     private static final Logger log = Logger.getLogger(IndexCommand.class);
-    private final ThemeService themeService;
-    private final MagazineService magazineService;
+    private final ThemeRepository themeService;
+    private final MagazineRepository magazineService;
     private final int PAGE_SIZE = 5;
 
-    public IndexCommand(ThemeService themeService, MagazineService magazineService) {
+    public IndexCommand(ThemeRepository themeService, MagazineRepository magazineService) {
         this.themeService = themeService;
         this.magazineService = magazineService;
     }
@@ -73,7 +72,7 @@ public class IndexCommand extends AbstractCommand {
 
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +
@@ -311,7 +310,7 @@ public class IndexCommand extends AbstractCommand {
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
             return magazineService.findPage(PAGE_SIZE, offset);
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             e.printStackTrace();
         }
         return page;
@@ -322,7 +321,7 @@ public class IndexCommand extends AbstractCommand {
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
             return magazineService.findFilteredPaginated(filterName, PAGE_SIZE, offset);
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             e.printStackTrace();
         }
         return filteredPaginated;
@@ -334,7 +333,7 @@ public class IndexCommand extends AbstractCommand {
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
             return magazineService.findFilteredSortedPaginated(filterName, sortSubQuery, PAGE_SIZE, offset);
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             e.printStackTrace();
         }
         return filteredSortedPaginated;
@@ -402,7 +401,7 @@ public class IndexCommand extends AbstractCommand {
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
             return magazineService.findSortedPaginated(sortSubQuery, PAGE_SIZE, offset);
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             e.printStackTrace();
         }
         return sorted;
@@ -429,7 +428,7 @@ public class IndexCommand extends AbstractCommand {
                 map.put(theme, magazineService.
                         findMagazineByThemeName(theme.getName()));
             }
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
 
@@ -469,7 +468,7 @@ public class IndexCommand extends AbstractCommand {
     private int getAllMagazineAmount() throws CommandException {
         try {
             return magazineService.getCount();
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
     }
@@ -477,7 +476,7 @@ public class IndexCommand extends AbstractCommand {
     private int getFilteredMagazineAmount(String filterName) throws CommandException {
         try {
             return magazineService.getCountFiltered(filterName);
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
     }

@@ -1,10 +1,10 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
 import com.training.periodical.Path;
 import com.training.periodical.model.dao.Role;
 import com.training.periodical.entity.User;
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.UserService;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
@@ -26,13 +26,13 @@ import java.util.Optional;
 public class LoginCheckCommand implements Command {
 
     private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
-    private final UserService userService;
+    private final UserRepository userRepository;
     private String forward;
     private Role userRole;
     private HttpSession session;
 
-    public LoginCheckCommand(UserService userService) {
-        this.userService = userService;
+    public LoginCheckCommand(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -109,13 +109,13 @@ public class LoginCheckCommand implements Command {
 
     private User getUser(String login) throws CommandException{
         try {
-            Optional<User> optionalUser = userService.findUserByLogin(login);
+            Optional<User> optionalUser = userRepository.findUserByLogin(login);
             if (optionalUser.isPresent()) {
                 return optionalUser.get();
             } else {
                 throw new CommandException("exception in getUser method at " + this.getClass().getSimpleName());
             }
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
     }
@@ -197,7 +197,7 @@ public class LoginCheckCommand implements Command {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

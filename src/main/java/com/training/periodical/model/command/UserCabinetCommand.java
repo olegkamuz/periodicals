@@ -1,11 +1,11 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
 import com.training.periodical.Path;
 import com.training.periodical.bean.UserSubscriptionBean;
 import com.training.periodical.entity.User;
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.UserService;
-import com.training.periodical.model.service.UserSubscriptionService;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.UserRepository;
+import com.training.periodical.model.repository.UserSubscriptionRepository;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
@@ -18,12 +18,12 @@ import java.util.Optional;
 public class UserCabinetCommand extends AbstractCommand {
     private static final long serialVersionUID = 5034889545771020837L;
     private static final Logger log = Logger.getLogger(UserCabinetCommand.class);
-    private final UserSubscriptionService UserSubService;
-    private final UserService userService;
+    private final UserSubscriptionRepository userSubscriptionRepository;
+    private final UserRepository userRepository;
 
-    public UserCabinetCommand(UserSubscriptionService usService, UserService userService) {
-        this.UserSubService = usService;
-        this.userService = userService;
+    public UserCabinetCommand(UserSubscriptionRepository usService, UserRepository userRepository) {
+        this.userSubscriptionRepository = usService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,9 +42,9 @@ public class UserCabinetCommand extends AbstractCommand {
             try {
                 BigDecimal newBalance = (new BigDecimal(replenish))
                         .add(user.getBalance());
-                userService.updateBalance(newBalance, user.getId());
+                userRepository.updateBalance(newBalance, user.getId());
                 showBalance(userId, request);
-            } catch (ServiceException e) {
+            } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
         }
@@ -69,14 +69,14 @@ public class UserCabinetCommand extends AbstractCommand {
     private User getUser(long userId) throws CommandException{
         User user;
         try {
-            Optional<User> optionalUser = userService.findById(userId);
+            Optional<User> optionalUser = userRepository.findById(userId);
             if(optionalUser.isPresent()){
                 user = optionalUser.get();
             } else {
                 throw new CommandException("exception in getUser" +
                          UserCabinetCommand.class.getSimpleName());
             }
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
         return user;
@@ -85,8 +85,8 @@ public class UserCabinetCommand extends AbstractCommand {
     private void setSessionSubscriptionList(HttpServletRequest request) throws CommandException {
         List<UserSubscriptionBean> subscriptionList = null;
         try {
-            subscriptionList = UserSubService.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
-        } catch (ServiceException e) {
+            subscriptionList = userSubscriptionRepository.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
         request.getSession().setAttribute("subscriptionList", subscriptionList);
@@ -97,7 +97,7 @@ public class UserCabinetCommand extends AbstractCommand {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

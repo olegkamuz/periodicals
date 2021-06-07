@@ -1,4 +1,4 @@
-package com.training.periodical.model.service;
+package com.training.periodical.model.repository;
 
 import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.AbstractDaoFactory;
@@ -11,93 +11,93 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class UserService extends AbstractService<User> {
+public class UserRepository extends AbstractRepository<User> {
     private static final long serialVersionUID = 8200073681069516742L;
-    private static final Logger log = Logger.getLogger(UserService.class);
+    private static final Logger log = Logger.getLogger(UserRepository.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    public void updateBalance(BigDecimal userBalance, long userId) throws ServiceException {
+    public void updateBalance(BigDecimal userBalance, long userId) throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             userDao.updateBalance(userBalance, userId);
         } catch (DaoException e) {
-            throw createServiceException("updateBalance", e);
+            throw createRepositoryException("updateBalance", e);
         }
     }
 
-    public int update(String userId, String column, String value) throws ServiceException{
+    public int update(String userId, String column, String value) throws RepositoryException {
         try(UserDao userDao = daoFactory.createUserDao()) {
             return userDao.update(userId, column, value);
         } catch (DaoException e) {
-           throw createServiceException("update", e);
+           throw createRepositoryException("update", e);
         }
     }
 
-    public int updateNow(User user) throws ServiceException{
+    public int updateNow(User user) throws RepositoryException {
         try(UserDao userDao = daoFactory.createUserDao()) {
             return userDao.updateNow(user);
         } catch (DaoException e) {
-            throw createServiceException("update", e);
+            throw createRepositoryException("update", e);
         }
     }
 
-    public Optional<User> findUserByLogin(String login) throws ServiceException {
+    public Optional<User> findUserByLogin(String login) throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findUserByLogin(login);
         } catch (DaoException e) {
-            throw createServiceException("findUserByLogin", e);
+            throw createRepositoryException("findUserByLogin", e);
         }
     }
 
     @Override
-    public List<User> findAll() throws ServiceException {
+    public List<User> findAll() throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findAll();
         } catch (DaoException e) {
-            throw createServiceException("findAll", e);
+            throw createRepositoryException("findAll", e);
         }
     }
 
-    public List<User> findAllClients() throws ServiceException {
+    public List<User> findAllClients() throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findAllClients();
         } catch (DaoException e) {
-            throw createServiceException("findAll", e);
+            throw createRepositoryException("findAll", e);
         }
     }
 
     @Override
-    public int update(User entity) throws ServiceException {
+    public int update(User entity) throws RepositoryException {
         return 0;
     }
 
     @Override
-    public int delete(long id) throws ServiceException {
+    public int delete(long id) throws RepositoryException {
         return 0;
     }
 
     @Override
-    public int create(User user) throws ServiceException{
+    public int create(User user) throws RepositoryException {
         try(UserDao userDao = daoFactory.createUserDao()){
             return userDao.create(user);
         } catch (DaoException e) {
-            throw createServiceException("create", e);
+            throw createRepositoryException("create", e);
         }
     }
 
     @Override
-    public Optional<User> findById(long id) throws ServiceException {
+    public Optional<User> findById(long id) throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.findById(id);
         } catch (DaoException e) {
-            throw createServiceException("getById", e);
+            throw createRepositoryException("getById", e);
         }
     }
 
     @Override
-    protected ServiceException createServiceException(
+    protected RepositoryException createRepositoryException(
             String methodName,
             DaoException e) {
-        return new ServiceException("exception in " +
+        return new RepositoryException("exception in " +
                 methodName + " method at " +
                 this.getClass().getSimpleName(), e);
     }

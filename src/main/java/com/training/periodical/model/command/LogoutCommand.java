@@ -1,14 +1,11 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.training.periodical.Path;
-import com.training.periodical.model.service.ServiceException;
+import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
@@ -35,7 +32,7 @@ public class LogoutCommand extends AbstractCommand {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

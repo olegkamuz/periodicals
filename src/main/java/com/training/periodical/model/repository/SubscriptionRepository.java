@@ -1,4 +1,4 @@
-package com.training.periodical.model.service;
+package com.training.periodical.model.repository;
 
 import com.training.periodical.entity.Subscription;
 import com.training.periodical.model.dao.AbstractDaoFactory;
@@ -14,32 +14,32 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class SubscriptionService extends AbstractService<Subscription> {
+public class SubscriptionRepository extends AbstractRepository<Subscription> {
     private static final long serialVersionUID = -1935724741540882617L;
-    private static final Logger log = Logger.getLogger(SubscriptionService.class);
+    private static final Logger log = Logger.getLogger(SubscriptionRepository.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    public void createSubscriptionPurchase(Long userId, List<String> magazineIds, BigDecimal userBalance) throws ServiceException {
+    public void createSubscriptionPurchase(Long userId, List<String> magazineIds, BigDecimal userBalance) throws RepositoryException {
         try (SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao();
              Connection connection = subscriptionDao.getConnection();
              UserDao userDao = daoFactory.createUserDao(connection)) {
             subscriptionDao.createSubscription(userId, magazineIds, userDao, userBalance);
             log.info(this.getClass().getSimpleName() + " creating subscription using Daos");
         } catch (DaoException | SQLException e) {
-            throw createServiceException("createSubscriptionPurchase", e);
+            throw createRepositoryException("createSubscriptionPurchase", e);
         }
     }
 
-    public int countByCompositeKey(long userId, long magazineId) throws ServiceException{
+    public int countByCompositeKey(long userId, long magazineId) throws RepositoryException {
         try(SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao()) {
             return subscriptionDao.countByCompositeKey(userId, magazineId);
         } catch (DaoException e){
-            throw createServiceException("countByCompositeKey", e);
+            throw createRepositoryException("countByCompositeKey", e);
         }
     }
 
     @Override
-    public int create(Subscription entity) throws ServiceException {
+    public int create(Subscription entity) throws RepositoryException {
         return 0;
     }
 
@@ -49,30 +49,30 @@ public class SubscriptionService extends AbstractService<Subscription> {
     }
 
     @Override
-    public List<Subscription> findAll() throws ServiceException {
+    public List<Subscription> findAll() throws RepositoryException {
         return null;
     }
 
     @Override
-    public int update(Subscription entity) throws ServiceException {
+    public int update(Subscription entity) throws RepositoryException {
         return 0;
     }
 
     @Override
-    public int delete(long id) throws ServiceException {
+    public int delete(long id) throws RepositoryException {
         return 0;
     }
 
     @Override
-    protected ServiceException createServiceException(String methodName, DaoException e) {
-        return new ServiceException("exception in " +
+    protected RepositoryException createRepositoryException(String methodName, DaoException e) {
+        return new RepositoryException("exception in " +
                 methodName +
                 " method at " +
                 this.getClass().getSimpleName(), e);
     }
 
-    protected ServiceException createServiceException(String methodName, Exception e) {
-        return new ServiceException("exception in " +
+    protected RepositoryException createRepositoryException(String methodName, Exception e) {
+        return new RepositoryException("exception in " +
                 methodName +
                 " method at " +
                 this.getClass().getSimpleName(), e);

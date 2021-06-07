@@ -1,10 +1,10 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
 import com.training.periodical.Path;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.UserBuilder;
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.UserService;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
@@ -16,11 +16,11 @@ import java.util.Optional;
 public class RegistrationSaveCommand implements Command {
     private static final long serialVersionUID = 584824241835000931L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final UserBuilder userBuilder;
 
-    public RegistrationSaveCommand(UserService userService, UserBuilder userBuilder) {
-        this.userService = userService;
+    public RegistrationSaveCommand(UserRepository userRepository, UserBuilder userBuilder) {
+        this.userRepository = userRepository;
         this.userBuilder = userBuilder;
     }
 
@@ -51,8 +51,8 @@ public class RegistrationSaveCommand implements Command {
 
         User user = buildUser(login, password, firstName, lastName);
         try {
-            userService.create(user);
-        } catch (ServiceException e) {
+            userRepository.create(user);
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
 
@@ -71,15 +71,15 @@ public class RegistrationSaveCommand implements Command {
 
     private boolean isExistedUser(HttpServletRequest request) throws CommandException {
         try {
-            Optional<User> optionalUser = userService.findUserByLogin(request.getParameter("login"));
+            Optional<User> optionalUser = userRepository.findUserByLogin(request.getParameter("login"));
             return optionalUser.isPresent();
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

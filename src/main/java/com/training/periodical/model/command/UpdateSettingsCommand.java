@@ -1,7 +1,7 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.UserService;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
@@ -19,10 +19,10 @@ import javax.servlet.jsp.jstl.core.Config;
 public class UpdateSettingsCommand implements Command {
     private static final long serialVersionUID = 3553552307337644253L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UpdateSettingsCommand(UserService userService) {
-        this.userService = userService;
+    public UpdateSettingsCommand(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class UpdateSettingsCommand implements Command {
 
         if (updateUser) {
             try {
-                userService.updateNow(user);
-            } catch (ServiceException e) {
+                userRepository.updateNow(user);
+            } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
         }
@@ -99,7 +99,7 @@ public class UpdateSettingsCommand implements Command {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

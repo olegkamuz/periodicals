@@ -3,7 +3,6 @@ package com.training.periodical.model.dao;
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
-import com.training.periodical.model.service.ServiceException;
 
 import java.math.BigDecimal;
 import java.sql.*;

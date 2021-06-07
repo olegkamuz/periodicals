@@ -1,11 +1,9 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
-import com.training.periodical.model.service.ServiceException;
 import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 

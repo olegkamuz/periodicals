@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.training.periodical.Path;
-import com.training.periodical.controller.command.CommandContainer;
-import com.training.periodical.controller.command.CommandException;
+import com.training.periodical.model.command.CommandContainer;
+import com.training.periodical.model.command.CommandException;
 import org.apache.log4j.Logger;
 
 /**
@@ -62,8 +62,6 @@ public class Servlet extends HttpServlet {
             request.getRequestDispatcher(result).forward(request, response);
         }
     }
-
-
 }
 
 

@@ -1,7 +1,6 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.model.builder.Builder;
-import com.training.periodical.model.service.ServiceException;
 
 import java.io.Serializable;
 import java.sql.Connection;

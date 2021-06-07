@@ -1,13 +1,13 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
-import com.training.periodical.model.service.MagazineService;
-import com.training.periodical.model.service.ServiceException;
-import com.training.periodical.model.service.UserService;
+import com.training.periodical.model.repository.MagazineRepository;
+import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 import com.training.periodical.entity.User;
-import com.training.periodical.model.service.SubscriptionService;
+import com.training.periodical.model.repository.SubscriptionRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,17 +24,17 @@ import java.util.Optional;
 public class SubscriptionCommand implements Command {
     private static final long serialVersionUID = 4085515554426545356L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
-    private final SubscriptionService subscriptionService;
-    private final UserService userService;
-    private final MagazineService magazineService;
+    private final SubscriptionRepository subscriptionRepository;
+    private final UserRepository userRepository;
+    private final MagazineRepository magazineRepository;
 
     private BigDecimal sumPriceMagazines;
     private BigDecimal userBalance;
 
-    public SubscriptionCommand(SubscriptionService subscriptionService, UserService userService, MagazineService magazineService) {
-        this.subscriptionService = subscriptionService;
-        this.userService = userService;
-        this.magazineService = magazineService;
+    public SubscriptionCommand(SubscriptionRepository subscriptionRepository, UserRepository userRepository, MagazineRepository magazineRepository) {
+        this.subscriptionRepository = subscriptionRepository;
+        this.userRepository = userRepository;
+        this.magazineRepository = magazineRepository;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SubscriptionCommand implements Command {
 
         magazineIds = removePossibleMagIdsDuplication(magazineIds);
 
-        magazineIds = checkForAlreadyAdded(subscriptionService, userId, magazineIds);
+        magazineIds = checkForAlreadyAdded(subscriptionRepository, userId, magazineIds);
 
 
         if (magazineIds.size() == 0) {
@@ -67,10 +67,10 @@ public class SubscriptionCommand implements Command {
 
         try {
             if (isEnoughMoney(String.valueOf(userId), magazineIds)) {
-                subscriptionService.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
+                subscriptionRepository.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
                 cleanSessionMagazineId(request);
             }
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException("exception in execute method at " +
                     this.getClass().getSimpleName(), e);
         }
@@ -97,7 +97,7 @@ public class SubscriptionCommand implements Command {
         }
     }
 
-    private List<String> checkForAlreadyAdded(SubscriptionService subscriptionService, Long userId, List<String> magazineIds) throws CommandException {
+    private List<String> checkForAlreadyAdded(SubscriptionRepository subscriptionService, Long userId, List<String> magazineIds) throws CommandException {
         try {
             List<String> temp = new ArrayList<>();
             for (String magId : magazineIds) {
@@ -106,7 +106,7 @@ public class SubscriptionCommand implements Command {
                 }
             }
             return temp;
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
     }
@@ -149,20 +149,20 @@ public class SubscriptionCommand implements Command {
 
             userBalance = getUserBalance(userId);
             if (userBalance == null) return false;
-        } catch (ServiceException e) {
+        } catch (RepositoryException e) {
             throw new CommandException(e);
         }
 
         return userBalance.compareTo(sumPriceMagazines) >= 0;
     }
 
-    private BigDecimal getSumPriceMagazines(List<String> magazineIds) throws ServiceException {
-        return magazineService.findSumPriceByIds(magazineIds);
+    private BigDecimal getSumPriceMagazines(List<String> magazineIds) throws RepositoryException {
+        return magazineRepository.findSumPriceByIds(magazineIds);
     }
 
-    private BigDecimal getUserBalance(String userId) throws ServiceException {
+    private BigDecimal getUserBalance(String userId) throws RepositoryException {
         BigDecimal userBalance;
-        Optional<User> optionalUser = userService.findById(Long.parseLong(userId));
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(userId));
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             userBalance = user.getBalance();
@@ -174,7 +174,7 @@ public class SubscriptionCommand implements Command {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, ServiceException e) {
+    public CommandException createCommandException(String methodName, RepositoryException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

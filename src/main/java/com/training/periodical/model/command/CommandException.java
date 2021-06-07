@@ -1,4 +1,4 @@
-package com.training.periodical.controller.command;
+package com.training.periodical.model.command;
 
 public class CommandException  extends Exception {
         public CommandException() {

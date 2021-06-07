@@ -89,7 +89,7 @@ public class ContextListener implements ServletContextListener, Serializable {
 		// initialize commands container
 		// just load class to JVM
 		try {
-			Class.forName("com.training.periodical.controller.command.CommandContainer");
+			Class.forName("com.training.periodical.model.command.CommandContainer");
 		} catch (ClassNotFoundException ex) {
 			throw new RuntimeException(ex);
 		}
