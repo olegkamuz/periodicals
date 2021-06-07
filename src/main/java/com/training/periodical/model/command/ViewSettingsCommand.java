@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 /**
  * View settings command.
  */
-public class ViewSettingsCommand implements Command {
+public class ViewSettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = -8183706805970306137L;
     private static final Logger log = Logger.getLogger(ViewSettingsCommand.class);
 
@@ -19,6 +19,8 @@ public class ViewSettingsCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws CommandException {
         log.debug("Command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         log.debug("Command finished");
         return Path.PAGE__SETTINGS;

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class AdminCabinetCommand implements Command {
+public class AdminCabinetCommand extends AbstractCommand {
     private static final Logger log = Logger.getLogger(AdminCabinetCommand.class);
     private final UserRepository userService;
     private final MagazineRepository magazineService;
@@ -32,6 +32,8 @@ public class AdminCabinetCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         User user = getUserById(request);
         changeUser(request, user);

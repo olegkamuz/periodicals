@@ -19,7 +19,7 @@
             </legend>
 
 
-            <select class="lang_select" name="localeToSet">
+            <select class="lang_select" name="localeToSetUser">
 
                 <c:forEach var="localeName" items="${locales}">
                     <c:if test="${localeName eq ru}">

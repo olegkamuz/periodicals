@@ -16,7 +16,7 @@ import javax.servlet.jsp.jstl.core.Config;
 /**
  * Update settings items.
  */
-public class UpdateSettingsCommand implements Command {
+public class UpdateSettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = 3553552307337644253L;
     private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final UserRepository userRepository;
@@ -29,6 +29,8 @@ public class UpdateSettingsCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
+
+        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
 
         User user = (User) request.getSession().getAttribute("user");
         boolean updateUser = false;
@@ -43,7 +45,7 @@ public class UpdateSettingsCommand implements Command {
             updateUser = true;
         }
 
-        String localeToSet = request.getParameter("localeToSet");
+        String localeToSet = request.getParameter("localeToSetUser");
         if(isUpdateLocale(localeToSet, user, request)) {
             updateUser = true;
         }
@@ -55,6 +57,7 @@ public class UpdateSettingsCommand implements Command {
                 throw new CommandException(e);
             }
         }
+
 
         log.debug("Command finished");
         return Path.PAGE__SETTINGS;
