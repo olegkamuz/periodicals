@@ -5,7 +5,7 @@ import com.training.periodical.model.dao.Role;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.Valid;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
@@ -125,7 +125,7 @@ public class LoginCheckCommand implements Command {
         log.trace("userLocalName --> " + userLocaleName);
 
         try{
-            if(Validator.isValid(userLocaleName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)){
+            if(Valid.notNullNotEmpty(userLocaleName)){
                 Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
 
                 session.setAttribute("defaultLocale", userLocaleName);
@@ -186,8 +186,7 @@ public class LoginCheckCommand implements Command {
 
     private boolean validateLoginPassword(String login, String password, HttpServletRequest request) throws CommandException {
         try {
-            if (Validator.isValid(login, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) &&
-                    Validator.isValid(password, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+            if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)){
                 return true;
             }
         } catch (ValidatorException e) {

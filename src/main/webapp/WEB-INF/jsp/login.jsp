@@ -17,16 +17,16 @@
                         <legend style="color: #6e614c !important">
                             <fmt:message key="login_jsp.label.login"/>
                         </legend>
-                        <input name="login"autocomplete="off" /><br/>
+                        <input name="login"autocomplete="off" />
                     </fieldset>
-                    <br/>
+
                     <fieldset>
                         <legend style="color: #6e614c !important">
                             <fmt:message key="login_jsp.label.password"/>
                         </legend>
                         <input type="password" name="password" autocomplete="off"/>
                     </fieldset>
-                    <br/>
+
                     <div class="error">
                         <c:if test="${not empty error_logPass}">
                             <fmt:message key="login_jsp.label.error_logpass"/>

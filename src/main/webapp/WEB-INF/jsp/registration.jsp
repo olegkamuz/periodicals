@@ -20,8 +20,8 @@
 						<legend>
 							<fmt:message key="login_jsp.label.login"/>
 						</legend>
-						<input name="login"/><br/>
-					</fieldset><br/>
+						<input name="login"/>
+					</fieldset>
 					<fieldset>
 						<legend>
 							<fmt:message key="login_jsp.label.password"/>
@@ -32,16 +32,15 @@
                         <legend>
                             <fmt:message key="settings_jsp.label.first_name"/>
                         </legend>
-                        <input name="first-name"/><br/>
-                    </fieldset><br/>
+                        <input name="first-name"/>
+                    </fieldset>
                     <fieldset>
                         <legend>
                             <fmt:message key="settings_jsp.label.last_name"/>
                         </legend>
                         <input name="last-name"/>
                     </fieldset>
-                    <br/>
-					
+
 					<input type="submit" value='<fmt:message key="login_jsp.label.registration"/>'>
 				</form>
 			</td>

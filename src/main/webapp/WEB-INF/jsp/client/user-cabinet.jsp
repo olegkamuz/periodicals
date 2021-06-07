@@ -23,9 +23,7 @@
                         <legend>
                             <fmt:message key="user-cabinet_jsp.label.replenish"/>
                         </legend>
-                        <input name="replenish"/><br/>
-                    </fieldset>
-                    <br/>
+                        <input name="replenish"/>
                     <input type="submit" value='<fmt:message key="user-cabinet_jsp.label.replenish"/>'>
                 </form>
                 <p class="lead text-muted"><fmt:message key="user-cabinet_jsp.p.your_subscription"/></p>

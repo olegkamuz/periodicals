@@ -5,7 +5,7 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.Valid;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
@@ -33,10 +33,10 @@ public class RegistrationSaveCommand implements Command {
         String lastName = request.getParameter("last-name");
 
         try {
-            if (!Validator.isValid(login, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
-                    !Validator.isValid(password, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
-                    !Validator.isValid(firstName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY) ||
-                    !Validator.isValid(lastName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)
+            if(!Valid.notNullNotEmpty(login) ||
+            !Valid.notNullNotEmpty(password) ||
+            !Valid.notNullNotEmpty(firstName) ||
+            !Valid.notNullNotEmpty(lastName)
             ) {
                 return Path.REDIRECT__INDEX;
             }
@@ -46,7 +46,6 @@ public class RegistrationSaveCommand implements Command {
 
         if (isExistedUser(request)) {
             throw new CommandException("Such user already registered");
-//            return Path.REDIRECT__INDEX;
         }
 
         User user = buildUser(login, password, firstName, lastName);

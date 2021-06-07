@@ -4,8 +4,8 @@ import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.ThemeRepository;
+import com.training.periodical.util.Valid;
 import com.training.periodical.util.constants.ThemeConstants;
-import com.training.periodical.util.validator.Validator;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
@@ -437,12 +437,8 @@ public class IndexCommand extends AbstractCommand {
 
     private boolean validateFilterOrSort(String data) throws CommandException {
         try {
-            if (Validator.isValid(data,
-                    Validator.Check.NOT_NULL,
-                    Validator.Check.NOT_EMPTY,
-                    Validator.Check.URL_DECODE,
-                    Validator.Check.ALL
-            )) return true;
+            if(Valid.notNullNotEmptyUrlDecodeAll(data))
+             return true;
         } catch (ValidatorException e) {
             throw new CommandException(e);
         }
@@ -451,14 +447,9 @@ public class IndexCommand extends AbstractCommand {
 
     private boolean validatePage(String data, int range_to)
             throws CommandException {
-        Validator.range_int_to = range_to;
         try {
-            if (Validator.isValid(data,
-                    Validator.Check.NOT_NULL,
-                    Validator.Check.NOT_EMPTY,
-                    Validator.Check.IS_CAST_TO_INT,
-                    Validator.Check.IN_INT_RANGE_INCLUSIVE_INCLUSIVE
-            )) return true;
+            if(Valid.notNullNotEmptyCastToIntInRange(data, range_to))
+             return true;
         } catch (ValidatorException e) {
             throw new CommandException(e);
         }

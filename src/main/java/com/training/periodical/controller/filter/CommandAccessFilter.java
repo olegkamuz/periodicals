@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.StringTokenizer;
 
 import javax.servlet.Filter;
@@ -20,10 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.training.periodical.entity.User;
 import com.training.periodical.model.dao.AbstractDaoFactory;
-import com.training.periodical.model.dao.DaoException;
-import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.Valid;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
@@ -108,7 +105,7 @@ public class CommandAccessFilter implements Filter, Serializable {
         AbstractDaoFactory.getInstance();
 
         try {
-            if (!Validator.isValid(commandName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)){
+            if(!Valid.notNullNotEmpty(commandName)){
                 return false;
             }
         } catch (ValidatorException e) {

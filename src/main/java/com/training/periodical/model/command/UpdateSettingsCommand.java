@@ -2,7 +2,7 @@ package com.training.periodical.model.command;
 
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.validator.Validator;
+import com.training.periodical.util.Valid;
 import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 import com.training.periodical.Path;
@@ -62,7 +62,7 @@ public class UpdateSettingsCommand implements Command {
 
     private boolean isUpdateFirstName(String firstName,User user) throws CommandException {
         try {
-            if (Validator.isValid(firstName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+            if (Valid.notNullNotEmpty(firstName)) {
                 user.setFirstName(firstName);
                 return true;
             }
@@ -73,7 +73,7 @@ public class UpdateSettingsCommand implements Command {
     }
     private boolean isUpdateLastName(String lastName,User user) throws CommandException {
         try {
-            if (Validator.isValid(lastName, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+            if (Valid.notNullNotEmpty(lastName)) {
                 user.setLastName(lastName);
                 return true;
             }
@@ -84,7 +84,7 @@ public class UpdateSettingsCommand implements Command {
     }
     private boolean isUpdateLocale(String localeToSet, User user, HttpServletRequest request) throws CommandException {
         try {
-            if(Validator.isValid(localeToSet, Validator.Check.NOT_NULL, Validator.Check.NOT_EMPTY)) {
+            if (Valid.notNullNotEmpty(localeToSet)) {
                 HttpSession session = request.getSession();
                 Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
                 session.setAttribute("defaultLocale", localeToSet);

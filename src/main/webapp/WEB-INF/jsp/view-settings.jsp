@@ -35,15 +35,12 @@
                 </c:forEach>
             </select>
         </fieldset>
-
-
         <fieldset>
             <legend style="color: #6e614c !important">
                 <fmt:message key="settings_jsp.label.first_name"/>
             </legend>
-            <input name="firstName" value="<c:out value="${user.firstName}"/>"/><br/>
+            <input name="firstName" value="<c:out value="${user.firstName}"/>"/>
         </fieldset>
-        <br/>
         <fieldset>
             <legend style="color: #6e614c !important">
                 <fmt:message key="settings_jsp.label.last_name"/>
@@ -51,9 +48,8 @@
             <input name="lastName" value="<c:out value="${user.lastName}"/>"/>
 
         </fieldset>
-        <br/>
 
-        <input type="submit" value='<fmt:message key="settings_jsp.button.update"/>'><br/>
+        <input type="submit" value='<fmt:message key="settings_jsp.button.update"/>'>
     </form>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
