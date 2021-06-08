@@ -8,15 +8,19 @@
 <%@ include file="/WEB-INF/jspf/head.jspf" %>
 
 <body>
+<c:if test="${not empty fieldToSort}">
+    <c:set var="sort" value="${fieldToSort}"/>
+</c:if>
+<c:if test="${not empty fieldToFilter}">
+    <c:set var="filter" value="${fieldToFilter}"/>
+</c:if>
 <div>
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
     <form class="form-custom" id="make_order" action="create-subscription">
-        <input type="hidden" value="${param['sort']}" name="pre_sort">
-        <input type="hidden" value="${param['filter']}" name="pre_filter">
-        <input type="hidden" value="${param['page']}" name="pre_page">
         <div class="wrapper">
+            <%-- GREETINGS --%>
             <section class="jumbotron text-center">
                 <div class="container">
                     <h1 class="jumbotron-heading"><fmt:message key="index_jsp.h1.periodicals_subscription"/></h1>
@@ -31,7 +35,7 @@
             </section>
 
             <div class="container container-custom">
-<%--            magazines by pages  --%>
+<%-- MAGAZINES BY PAGES --%>
                 <div class="row row-custom">
                     <div class="subscription_submit">
                         <input class="btn btn-primary my-2" type="submit"
@@ -56,7 +60,9 @@
                             </span>
                         </a>
                     </div>
+
                     <div class="sorting">
+<%-- FILTERING --%>
                         <div class="dropdown show dropdown-filtering">
                             <c:url var="url_filter" value="">
                                 <c:forEach items="${param}" var="entry">
@@ -207,13 +213,14 @@
                                 </a>
                             </div>
                         </div>
-
+<%-- SORTING --%>
                         <div class="dropdown show dropdown-custom">
+
                             <c:url var="url_sort" value="">
                                 <c:forEach items="${param}" var="entry">
                                     <c:if test="${
                                          entry.key != 'magazineId' &&
-                                                            entry.key != 'reset_checked' &&
+                                         entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
@@ -360,6 +367,7 @@
                             </div>
                         </div>
                     </div>
+<%-- PAGE --%>
                     <c:choose>
                         <c:when test="${fn:length(magazinesPage) == 0}">No magazines in filtered theme</c:when>
                         <c:otherwise>
@@ -384,7 +392,7 @@
                             <c:if test="${item eq magazine.id}">col-active</c:if></c:forEach>">
                                     <a href="${check_url}">
                                         <div class="mag_image">
-                                        <img
+                                            <img
                                                     src="<c:url value="/static/images/${magazine.image}"/>"
                                                     width="100%"/>
                                         </div>
@@ -397,6 +405,7 @@
                                     </a>
                                 </div>
                             </c:forEach>
+<%-- PAGINATION--%>
                             <div class="page_bar">
                                 <c:if test="${firstPage != null}">
                                     <a style="padding: 0 3px"
@@ -413,7 +422,11 @@
                                                     </c:if>
                                                 </c:forEach>
                                                 <c:param name="page" value="${firstPage}"/>
+                                                <c:param name="sort" value="${sort}"/>
+                                                <c:param name="filter" value="${filter}"/>
                                             </c:url>
+
+
                                        <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
                                        <c:if test="${currentPage != firstPage}">href="<c:out value='${first_url}'/>"
                                     </c:if>
@@ -433,6 +446,8 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:param name="page" value="${previousPage}"/>
+                                        <c:param name="sort" value="${sort}"/>
+                                        <c:param name="filter" value="${filter}"/>
                                     </c:url>
                                     <a style="padding: 0 3px"
                                        <c:if test="${currentPage == firstPage}">class="disabled"</c:if>
@@ -461,6 +476,8 @@
                                                             </c:if>
                                                         </c:forEach>
                                                         <c:param name="page" value="1"/>
+                                                        <c:param name="sort" value="${sort}"/>
+                                                        <c:param name="filter" value="${filter}"/>
                                                     </c:url>
                                                href="<c:out value='${first_url}'/>">1</a>
                                             <span>...</span>
@@ -479,6 +496,8 @@
                                                     </c:if>
                                                 </c:forEach>
                                                 <c:param name="page" value="${page}"/>
+                                                <c:param name="sort" value="${sort}"/>
+                                                <c:param name="filter" value="${filter}"/>
                                             </c:url>
                                             <a style="padding: 0 3px"
                                                <c:if test="${currentPage == page}">class="active"</c:if>
@@ -500,6 +519,8 @@
                                                     </c:if>
                                                 </c:forEach>
                                                 <c:param name="page" value="${lastPage}"/>
+                                                <c:param name="sort" value="${sort}"/>
+                                                <c:param name="filter" value="${filter}"/>
                                             </c:url>
                                             <a style="padding: 0 3px"
                                                href="<c:out value='${url}'/>">${lastPage}</a>
@@ -521,6 +542,8 @@
                                                     </c:if>
                                                 </c:forEach>
                                                 <c:param name="page" value="${page}"/>
+                                                <c:param name="sort" value="${sort}"/>
+                                                <c:param name="filter" value="${filter}"/>
                                             </c:url>
                                             <a style="padding: 0 3px"
                                                <c:if test="${currentPage == page}">class="active"</c:if>
@@ -543,6 +566,8 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:param name="page" value="${nextPage}"/>
+                                        <c:param name="sort" value="${sort}"/>
+                                        <c:param name="filter" value="${filter}"/>
                                     </c:url>
                                     <a style="padding: 0 3px"
                                        <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
@@ -564,6 +589,8 @@
                                             </c:if>
                                         </c:forEach>
                                         <c:param name="page" value="${lastPage}"/>
+                                        <c:param name="sort" value="${sort}"/>
+                                        <c:param name="filter" value="${filter}"/>
                                     </c:url>
                                     <a style="padding: 0 3px"
                                        <c:if test="${currentPage == lastPage}">class="disabled"</c:if>
@@ -576,7 +603,7 @@
                     </c:choose>
                 </div>
 
-<%--            magazine by themes--%>
+<%-- MAGAZINE BY THEMES  --%>
                 <div class="container container_by_themes">
                     <c:forEach var="theme" items="${magazinesByThemes}">
                         <div class="row">

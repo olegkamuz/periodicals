@@ -1,8 +1,5 @@
 package com.training.periodical.model.command;
 
-import com.training.periodical.model.repository.RepositoryException;
-import com.training.periodical.util.validator.ValidatorException;
-import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 
 import javax.servlet.http.HttpServletRequest;

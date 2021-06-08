@@ -3,7 +3,6 @@ package com.training.periodical.model.command;
 import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.validator.ValidatorException;
 import com.training.periodical.Path;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.SubscriptionRepository;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +39,7 @@ public class SubscriptionCommand extends AbstractCommand {
         log.debug("Command starts");
         this.request = request;
 
-        setPreviousParameters();
+//        setPreviousParameters();
 
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
         List<String> magazineIds = new ArrayList<>();
@@ -80,22 +78,6 @@ public class SubscriptionCommand extends AbstractCommand {
         return Path.REDIRECT__USER_CABINET;
     }
 
-    private void setPreviousParameters() {
-        if (request.getParameterValues("magazineId") != null) {
-            List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
-            request.getSession().setAttribute("pre_sub_magazineId", list);
-        }
-        if (request.getParameter("pre_sort") != null) {
-            request.getSession().setAttribute("pre_sub_sort", request.getParameter("pre_sort"));
-        }
-        if (request.getParameter("pre_filter") != null) {
-            request.getSession().setAttribute("pre_sub_filter", request.getParameter("pre_filter"));
-        }
-        if (request.getParameter("pre_page") != null) {
-            request.getSession().setAttribute("pre_sub_page", request.getParameter("pre_page"));
-        }
-    }
-
     private List<String> checkForAlreadyAdded(SubscriptionRepository subscriptionService, Long userId, List<String> magazineIds) throws CommandException {
         try {
             List<String> temp = new ArrayList<>();
@@ -128,9 +110,6 @@ public class SubscriptionCommand extends AbstractCommand {
     private void cleanSessionMagazineId() {
         if (request.getSession().getAttribute("magazineId") != null) {
             request.getSession().removeAttribute("magazineId");
-            request.getSession().removeAttribute("pre_sub_sort");
-            request.getSession().removeAttribute("pre_sub_filter");
-            request.getSession().removeAttribute("pre_sub_page");
         }
     }
 

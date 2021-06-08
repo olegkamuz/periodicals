@@ -5,9 +5,7 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.Valid;
-import com.training.periodical.util.validator.ValidatorException;
-import org.apache.log4j.Logger;
+import com.training.periodical.util.validator.Valid;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,14 +46,10 @@ public class RegistrationSaveCommand extends AbstractCommand {
     }
 
     private boolean validateAllFields(String login, String password, String firstName, String lastName) throws CommandException {
-        try {
             if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)
             && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName)){
                 return true;
             }
-        } catch (ValidatorException e) {
-            throw createCommandException("execute", e);
-        }
         return false;
     }
 

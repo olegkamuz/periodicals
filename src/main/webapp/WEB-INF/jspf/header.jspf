@@ -7,7 +7,7 @@
 <c:url var="url_clean" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}/">
 </c:url>
 <div id="header">
-    <a class="home" href="${url_clean}index<c:if test='${not empty pre_sub_sort or not empty pre_sub_filter or not empty pre_sub_page}'>?</c:if><c:if test='${not empty pre_sub_sort}'>&sort=${pre_sub_sort}</c:if><c:if test='${not empty pre_sub_filter}'>&filter=${pre_sub_filter}</c:if><c:if test='${not empty pre_sub_page}'>&page=${pre_sub_page}</c:if>">
+    <a class="home" href="${url_clean}index">
         <fmt:message key="header_jspf.anchor.home"/>
     </a>
 
@@ -56,7 +56,16 @@
                                          entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password' &&
-                                         entry.key != 'localeToSet'
+                                         entry.key != 'localeToSet' &&
+
+
+                                      entry.key != 'magazine_name_change_value' &&
+                                      entry.key != 'magazine_image_change_value' &&
+                                      entry.key != 'magazine_price_change_value' &&
+                                      entry.key != 'magazine_theme_id_change_value' &&
+                                      entry.key != 'magazine_id' &&
+                                      entry.key != 'delete_magazine'
+
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -75,7 +84,15 @@
                                          entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password' &&
-                                         entry.key != 'localeToSet'
+                                         entry.key != 'localeToSet' &&
+
+
+                                      entry.key != 'magazine_name_change_value' &&
+                                      entry.key != 'magazine_image_change_value' &&
+                                      entry.key != 'magazine_price_change_value' &&
+                                      entry.key != 'magazine_theme_id_change_value' &&
+                                      entry.key != 'magazine_id' &&
+                                      entry.key != 'delete_magazine'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -151,7 +168,15 @@
                                          entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password' &&
-                                         entry.key != 'localeToSet'
+                                         entry.key != 'localeToSet' &&
+
+
+                                      entry.key != 'magazine_name_change_value' &&
+                                      entry.key != 'magazine_image_change_value' &&
+                                      entry.key != 'magazine_price_change_value' &&
+                                      entry.key != 'magazine_theme_id_change_value' &&
+                                      entry.key != 'magazine_id' &&
+                                      entry.key != 'delete_magazine'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -170,7 +195,15 @@
                                          entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'password' &&
-                                         entry.key != 'localeToSet'
+                                         entry.key != 'localeToSet' &&
+
+
+                                      entry.key != 'magazine_name_change_value' &&
+                                      entry.key != 'magazine_image_change_value' &&
+                                      entry.key != 'magazine_price_change_value' &&
+                                      entry.key != 'magazine_theme_id_change_value' &&
+                                      entry.key != 'magazine_id' &&
+                                      entry.key != 'delete_magazine'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>

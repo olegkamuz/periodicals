@@ -12,13 +12,13 @@ public class CheckUrlDecode extends ChainValidator {
     }
 
     @Override
-    public boolean isValid() throws ValidatorException{
-        if(isUrlDecode()) {
-            return true;
+    public boolean isValid(){
+        if(!isUrlDecode()) {
+            return false;
         } else if (next != null){
             return next.isValid();
         }
-        return false;
+        return true;
     }
 
     private boolean isUrlDecode(){

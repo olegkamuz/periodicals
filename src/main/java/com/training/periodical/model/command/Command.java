@@ -1,7 +1,6 @@
 package com.training.periodical.model.command;
 
 import com.training.periodical.model.repository.RepositoryException;
-import com.training.periodical.util.validator.ValidatorException;
 
 import java.io.Serializable;
 
@@ -22,5 +21,4 @@ public interface Command extends Serializable{
 
     CommandException createCommandException(String methodName, RepositoryException e);
     CommandException createCommandException(String methodName);
-    CommandException createCommandException(String methodName, ValidatorException e);
 }

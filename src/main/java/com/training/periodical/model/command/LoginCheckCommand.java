@@ -5,9 +5,7 @@ import com.training.periodical.model.dao.Role;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.Valid;
-import com.training.periodical.util.validator.ValidatorException;
-import org.apache.log4j.Logger;
+import com.training.periodical.util.validator.Valid;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +22,7 @@ import java.util.Optional;
  * Log user in
  */
 public class LoginCheckCommand extends AbstractCommand {
-
-//    private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
+    private static final long serialVersionUID = 7629970801615724477L;
     private final UserRepository userRepository;
     private String forward;
     private HttpSession session;
@@ -71,7 +68,6 @@ public class LoginCheckCommand extends AbstractCommand {
             return Path.REDIRECT__INDEX;
         } else {
             Role userRole = getUserRole(user);
-            String previousParameters = getPreviousParameters();
             toCabinet(userRole);
 
             setUserToSession(user, userRole);
@@ -114,11 +110,10 @@ public class LoginCheckCommand extends AbstractCommand {
         }
     }
 
-    private void setLocaleToSession(User user) throws CommandException {
+    private void setLocaleToSession(User user) {
         String userLocaleName = user.getLocale();
         log.trace("userLocalName --> " + userLocaleName);
 
-        try{
             if(Valid.notNullNotEmpty(userLocaleName)){
                 Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
 
@@ -127,9 +122,6 @@ public class LoginCheckCommand extends AbstractCommand {
 
                 log.info("Locale for user: defaultLocale --> " + userLocaleName);
             }
-        } catch (ValidatorException e){
-            throw createCommandException("setLocaleToSession", e);
-        }
     }
 
     private void setUserToSession(User user, Role userRole) {
@@ -158,14 +150,10 @@ public class LoginCheckCommand extends AbstractCommand {
     }
 
 
-    private boolean validateLoginPassword(String login, String password) throws CommandException {
-        try {
+    private boolean validateLoginPassword(String login, String password) {
             if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)){
                 return true;
             }
-        } catch (ValidatorException e) {
-            throw createCommandException("execute", e);
-        }
         return false;
     }
 

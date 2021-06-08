@@ -6,7 +6,6 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.model.repository.UserSubscriptionRepository;
-import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,8 +31,6 @@ public class ClientCabinetCommand extends AbstractCommand {
         this.request = request;
 
         updateLocaleIfRequested(request.getParameter("localeToSet"));
-
-        setPreviousParametersToSession(getPreviousParameters());
 
         long userId = ((User) request.getSession().getAttribute("user")).getId();
         User user = getUser(userId);

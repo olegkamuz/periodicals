@@ -8,7 +8,7 @@ public class CheckNotEmpty extends ChainValidator {
     }
 
     @Override
-    public boolean isValid() throws ValidatorException{
+    public boolean isValid(){
         if(data.equals("")) {
             return false;
         } else if (next != null){

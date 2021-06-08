@@ -4,9 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.training.periodical.Path;
-import com.training.periodical.model.repository.RepositoryException;
-import com.training.periodical.util.validator.ValidatorException;
-import org.apache.log4j.Logger;
 
 /**
  * View settings command.

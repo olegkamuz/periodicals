@@ -8,7 +8,6 @@ import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
-import com.training.periodical.util.validator.ValidatorException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,7 @@ public class AdminCabinetCommand extends AbstractCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
+        this.request = request;
 
         updateLocaleIfRequested(request.getParameter("localeToSet"));
 
@@ -206,14 +206,6 @@ public class AdminCabinetCommand extends AbstractCommand {
 
     @Override
     public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +

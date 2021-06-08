@@ -8,7 +8,7 @@ public class CheckNotNull extends ChainValidator {
     }
 
     @Override
-    public boolean isValid() throws ValidatorException{
+    public boolean isValid(){
         if(data == null) {
             return false;
         } else if (next != null){

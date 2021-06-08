@@ -7,13 +7,13 @@ public class CheckIsCastToInt extends ChainValidator {
     }
 
     @Override
-    public boolean isValid() throws ValidatorException {
-        if (isCast()) {
-            return true;
+    public boolean isValid(){
+        if (!isCast()) {
+            return false;
         } else if (next != null) {
             return next.isValid();
         }
-        return false;
+        return true;
     }
 
     private boolean isCast(){

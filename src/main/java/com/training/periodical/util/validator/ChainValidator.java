@@ -8,9 +8,9 @@ public abstract class ChainValidator {
         return next;
     }
 
-    public abstract boolean isValid() throws ValidatorException;
+    public abstract boolean isValid() ;
 
-    public boolean checkNext() throws ValidatorException{
+    public boolean checkNext() {
         if(next == null){
             return true;
         }

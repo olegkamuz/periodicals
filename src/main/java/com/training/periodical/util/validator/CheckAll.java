@@ -9,12 +9,13 @@ public class CheckAll extends ChainValidator{
 
 
     @Override
-    public boolean isValid() throws ValidatorException{
-        if(!data.equals("all")) {
-            return true;
+    public boolean isValid(){
+        if(data.equals("all")) {
+            return false;
         } else if (next != null){
             return next.isValid();
         }
-        return false;
+        return true;
     }
+
 }

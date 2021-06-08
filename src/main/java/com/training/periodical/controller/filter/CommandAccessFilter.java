@@ -3,7 +3,6 @@ package com.training.periodical.controller.filter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.training.periodical.model.dao.AbstractDaoFactory;
-import com.training.periodical.util.Valid;
-import com.training.periodical.util.validator.ValidatorException;
+import com.training.periodical.util.validator.Valid;
 import org.apache.log4j.Logger;
 
 import com.training.periodical.Path;
@@ -56,60 +54,19 @@ public class CommandAccessFilter implements Filter, Serializable {
             chain.doFilter(request, response);
         } else {
             log.error("Error in do filter method at CommandAccessFilter");
-            setPreviousParameters(httpRequest);
             httpResponse.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
-        }
-    }
-
-    private void setPreviousParameters(HttpServletRequest request){
-        if(request.getParameterValues("magazineId") != null){
-            List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
-            request.getSession().setAttribute("magazineId", list);
-        }
-        if(request.getParameter("pre_sort") != null){
-            request.getSession().setAttribute("pre_sort", request.getParameter("pre_sort"));
-        }
-        if(request.getParameter("pre_filter") != null){
-            request.getSession().setAttribute("pre_filter", request.getParameter("pre_filter"));
-        }
-        if(request.getParameter("pre_page") != null){
-            request.getSession().setAttribute("pre_page", request.getParameter("pre_page"));
         }
     }
 
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-//        // todo Just for DEVELOPMENT purposes, remove on prod
-
-//        try {
-//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("admin");
-//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.ADMIN);
-//        } catch (DaoException e) {
-//            e.printStackTrace();
-//        }
-
-//        try {
-//            Optional<User> user = (AbstractDaoFactory.getInstance().createUserDao()).findUserByLogin("петров");
-//            ((HttpServletRequest) request).getSession().setAttribute("user", user.get());
-//            ((HttpServletRequest) request).getSession().setAttribute("userRole", Role.CLIENT);
-//        } catch (DaoException e) {
-//            e.printStackTrace();
-//        }
-
-//        // todo remove on prod
-
         String commandName = ((HttpServletRequest) request).getServletPath().replace("/", "");
 
         AbstractDaoFactory.getInstance();
 
-        try {
-            if(!Valid.notNullNotEmpty(commandName)){
-                return false;
-            }
-        } catch (ValidatorException e) {
-            log.error(e);
+        if (!Valid.notNullNotEmpty(commandName)) {
+            return false;
         }
 
         if (outOfControl.contains(commandName))
