@@ -14,6 +14,8 @@ public final class Fields {
 
     public static final String THEME_NAME = "name";
 
+    public static final String BEAN_THEME_NAME = "theme_name";
+
 	public static final String USER__LOGIN = "login";
 	public static final String USER__PASSWORD = "password";
     public static final String USER__BALANCE = "balance";

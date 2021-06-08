@@ -13,32 +13,16 @@ import org.apache.log4j.Logger;
  */
 public class ViewSettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = -8183706805970306137L;
-    private static final Logger log = Logger.getLogger(ViewSettingsCommand.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws CommandException {
         log.debug("Command starts");
+        this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
+        updateLocaleIfRequested(request.getParameter("localeToSet"));
 
         log.debug("Command finished");
         return Path.PAGE__SETTINGS;
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

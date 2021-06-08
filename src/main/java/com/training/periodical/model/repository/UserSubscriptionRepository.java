@@ -49,6 +49,11 @@ public class UserSubscriptionRepository extends AbstractRepository<UserSubscript
     }
 
     @Override
+    public List<UserSubscriptionBean> findPage(int pageSize, int offSet) throws RepositoryException {
+        return null;
+    }
+
+    @Override
     protected RepositoryException createRepositoryException(
             String methodName,
             DaoException e) {

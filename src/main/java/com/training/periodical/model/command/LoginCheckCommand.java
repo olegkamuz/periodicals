@@ -23,12 +23,11 @@ import java.util.Optional;
  * From error messages if needed
  * Log user in
  */
-public class LoginCheckCommand implements Command {
+public class LoginCheckCommand extends AbstractCommand {
 
-    private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
+//    private static final Logger log = Logger.getLogger(LoginCheckCommand.class);
     private final UserRepository userRepository;
     private String forward;
-    private Role userRole;
     private HttpSession session;
 
     public LoginCheckCommand(UserRepository userRepository) {
@@ -40,8 +39,10 @@ public class LoginCheckCommand implements Command {
                           HttpServletResponse response) throws CommandException {
 
         log.debug("Command starts");
+        this.request= request;
 
         session = request.getSession();
+        resetErrorMassages(session);
 
         String login = request.getParameter("login");
         log.trace("Request parameter: loging --> " + login);
@@ -50,7 +51,7 @@ public class LoginCheckCommand implements Command {
 
         forward = Path.PAGE__ERROR_PAGE;
 
-        if (!validateLoginPassword(login, password, request)){
+        if (!validateLoginPassword(login, password)){
             setError("Login/password cannot be empty", "error_logPass");
             return Path.PAGE__LOGIN;
         }
@@ -69,12 +70,11 @@ public class LoginCheckCommand implements Command {
             log.error("errorMessage --> " + "Cannot find user with such login/password");
             return Path.REDIRECT__INDEX;
         } else {
-            ifAdminToCabinet(user);
+            Role userRole = getUserRole(user);
+            String previousParameters = getPreviousParameters();
+            toCabinet(userRole);
 
-            String previousParameters = getPreviousParameters(request);
-            ifClientToCabinet(previousParameters);
-
-            setUserToSession(user);
+            setUserToSession(user, userRole);
             setLocaleToSession(user);
         }
 
@@ -82,19 +82,13 @@ public class LoginCheckCommand implements Command {
         return forward;
     }
 
-    private void setError(String errorMessage, String attributeName) {
-        session.setAttribute(attributeName, errorMessage);
-        log.error("errorMessage --> " + errorMessage);
-    }
 
     private void resetErrorMassages(HttpSession session) {
-        Enumeration attributes = session.getAttributeNames();
+        Enumeration<String> attributes = session.getAttributeNames();
         while(attributes.hasMoreElements()){
-            Object o = attributes.nextElement();
-            if(o instanceof String){
-                if(((String)(((String) o).split("_"))[0]).equals("error")){
-                    session.removeAttribute((String)o);
-                }
+            String o = attributes.nextElement();
+            if(((o.split("_"))[0]).equals("error")){
+                session.removeAttribute(o);
             }
         }
     }
@@ -138,7 +132,7 @@ public class LoginCheckCommand implements Command {
         }
     }
 
-    private void setUserToSession(User user) {
+    private void setUserToSession(User user, Role userRole) {
         session.setAttribute("user", user);
         log.trace("Set the session attribute: user --> " + user);
 
@@ -148,43 +142,23 @@ public class LoginCheckCommand implements Command {
         log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
     }
 
-    private void ifClientToCabinet(String previousParameters) {
-        if (userRole == Role.CLIENT) {
-            if (session.getAttribute("magazineId") != null) {
-                forward = Path.REDIRECT__INDEX + previousParameters;
-            } else {
-                forward = Path.FORWARD__INDEX;
-            }
-        }
+    private Role getUserRole(User user){
+        Role role = Role.getRole(user);
+        log.trace("userRole --> " + role);
+        return role;
     }
 
-    private void ifAdminToCabinet(User user) {
-        userRole = Role.getRole(user);
-        log.trace("userRole --> " + userRole);
-
-        if (userRole == Role.ADMIN) {
+    private void toCabinet(Role role) {
+        if (role == Role.ADMIN) {
             forward = Path.REDIRECT__ADMIN_CABINET;
         }
+        if (role == Role.CLIENT) {
+            forward = Path.REDIRECT__USER_CABINET;
+        }
     }
 
-    private String getPreviousParameters(HttpServletRequest request) {
-        StringBuilder sb = new StringBuilder();
-        if (request.getSession().getAttribute("pre_sort") != null) {
-            sb.append("?sort=");
-            sb.append(request.getSession().getAttribute("pre_sort"));
-        }
-        if (request.getSession().getAttribute("pre_filter") != null) {
-            sb.append("&filter=");
-            sb.append(request.getSession().getAttribute("pre_filter"));
-        }
-        if (request.getSession().getAttribute("pre_page") != null) {
-            sb.append("&page=");
-            sb.append(request.getSession().getAttribute("pre_page"));
-        }
-        return sb.toString();
-    }
 
-    private boolean validateLoginPassword(String login, String password, HttpServletRequest request) throws CommandException {
+    private boolean validateLoginPassword(String login, String password) throws CommandException {
         try {
             if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)){
                 return true;
@@ -195,20 +169,4 @@ public class LoginCheckCommand implements Command {
         return false;
     }
 
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
 }

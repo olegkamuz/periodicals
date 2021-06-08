@@ -10,4 +10,5 @@ public interface Repository<T> extends Serializable {
     List<T> findAll() throws RepositoryException;
     int update(T entity) throws RepositoryException;
     int delete(long id) throws RepositoryException;
+    List<T> findPage(int pageSize, int offSet) throws RepositoryException;
 }

@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
  */
 public class LogoutCommand extends AbstractCommand {
     private static final long serialVersionUID = -2785976616686657267L;
-    private static final Logger log = Logger.getLogger(LogoutCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
@@ -29,21 +28,5 @@ public class LogoutCommand extends AbstractCommand {
 
         log.debug("Command finished");
         return Path.REDIRECT__INDEX;
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

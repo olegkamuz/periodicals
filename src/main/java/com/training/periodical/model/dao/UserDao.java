@@ -16,6 +16,7 @@ import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.builder.UserSubscriptionsBuilder;
 import com.training.periodical.model.dao.query.Query;
 import com.training.periodical.model.dao.query.UserQuery;
+import com.training.periodical.model.dao.query.UserSubscriptionBeanQuery;
 import org.apache.log4j.Logger;
 
 /**
@@ -66,7 +67,7 @@ public class UserDao extends AbstractDao<User> {
     protected List<UserSubscriptionBean> executeBeanQuery(Object... parameters) throws SQLException {
         ResultSet resultSet;
         List<UserSubscriptionBean> entity = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(UserQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID);
+        PreparedStatement preparedStatement = connection.prepareStatement(UserSubscriptionBeanQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID);
         prepareStatement(preparedStatement, parameters);
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {

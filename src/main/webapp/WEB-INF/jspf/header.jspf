@@ -96,7 +96,7 @@
                             admin-cabinet
                         </c:if>
                         <c:if test="${userRole.name eq 'client'}">
-                            user-cabinet
+                            client-cabinet
                         </c:if>
                     </c:if>
 

@@ -37,7 +37,7 @@ public class CommandContainer implements Serializable {
         commands.put("registration-save", new RegistrationSaveCommand(new UserRepository(), new UserBuilder()));
 
 		// client commands
-		commands.put("user-cabinet", new UserCabinetCommand(new UserSubscriptionRepository(),new UserRepository()));
+		commands.put("client-cabinet", new ClientCabinetCommand(new UserSubscriptionRepository(),new UserRepository()));
         commands.put("create-subscription",
                 new SubscriptionCommand(
                         new SubscriptionRepository(),

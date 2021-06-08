@@ -40,6 +40,11 @@ public class ThemeRepository extends AbstractRepository<Theme> {
     }
 
     @Override
+    public List<Theme> findPage(int pageSize, int offSet) throws RepositoryException {
+        return null;
+    }
+
+    @Override
     protected RepositoryException createRepositoryException(
             String methodName, DaoException e) {
         return new RepositoryException("exception in " +

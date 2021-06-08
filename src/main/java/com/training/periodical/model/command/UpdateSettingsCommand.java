@@ -18,7 +18,6 @@ import javax.servlet.jsp.jstl.core.Config;
  */
 public class UpdateSettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = 3553552307337644253L;
-    private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final UserRepository userRepository;
 
     public UpdateSettingsCommand(UserRepository userRepository) {
@@ -30,7 +29,7 @@ public class UpdateSettingsCommand extends AbstractCommand {
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
+        updateLocaleIfRequested(request.getParameter("localeToSet"));
 
         User user = (User) request.getSession().getAttribute("user");
         boolean updateUser = false;
@@ -99,21 +98,5 @@ public class UpdateSettingsCommand extends AbstractCommand {
         }
 
         return false;
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

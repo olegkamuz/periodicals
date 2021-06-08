@@ -30,8 +30,9 @@
                 </div>
             </section>
 
-            <div class="container">
-                <div class="row">
+            <div class="container container-custom">
+<%--            magazines by pages  --%>
+                <div class="row row-custom">
                     <div class="subscription_submit">
                         <input class="btn btn-primary my-2" type="submit"
                                value='<fmt:message key="index_jsp.button.buy_subscription"/>'/>
@@ -379,11 +380,11 @@
                                     </c:forEach>
                                     <c:param name="magazineId" value="${magazine.id}"/>
                                 </c:url>
-                                <div class="col <c:forEach var="item" items="${magazineId}">
-                            <c:if test="${item eq magazine.id}">col-custom</c:if></c:forEach>">
+                                <div class="col-xl-3 col-custom col-custom-index<c:forEach var="item" items="${magazineId}">
+                            <c:if test="${item eq magazine.id}">col-active</c:if></c:forEach>">
                                     <a href="${check_url}">
                                         <div class="mag_image">
-                                            <img
+                                        <img
                                                     src="<c:url value="/static/images/${magazine.image}"/>"
                                                     width="100%"/>
                                         </div>
@@ -575,7 +576,7 @@
                     </c:choose>
                 </div>
 
-
+<%--            magazine by themes--%>
                 <div class="container container_by_themes">
                     <c:forEach var="theme" items="${magazinesByThemes}">
                         <div class="row">

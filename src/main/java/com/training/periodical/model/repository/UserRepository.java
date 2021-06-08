@@ -76,6 +76,11 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     @Override
+    public List<User> findPage(int pageSize, int offSet) throws RepositoryException {
+        return null;
+    }
+
+    @Override
     public int create(User user) throws RepositoryException {
         try(UserDao userDao = daoFactory.createUserDao()){
             return userDao.create(user);

@@ -23,12 +23,6 @@ public class UserQuery implements Serializable {
     public static final String SQL__UPDATE_BALANCE_WHERE_ID =
             "UPDATE `user` SET balance=? WHERE id=?";
 
-    public static final String SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID =
-    "SELECT m.name, m.price, m.image, t.name FROM subscription s" +
-            " JOIN magazine m ON m.id = s.magazine_id" +
-            " JOIN theme t ON t.id = m.theme_id" +
-            " WHERE user_id=?";
-
     public static String getUpdateColumnQuery(String userId, String column) {
         return "UPDATE `user` SET `" + column + "`=? WHERE `id`=?";
     }

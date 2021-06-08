@@ -14,18 +14,19 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class AdminCabinetCommand extends AbstractCommand {
     private static final Logger log = Logger.getLogger(AdminCabinetCommand.class);
-    private final UserRepository userService;
-    private final MagazineRepository magazineService;
+    private final UserRepository userRepository;
+    private final MagazineRepository magazineRepository;
     private final MagazineBuilder magazineBuilder;
 
-    public AdminCabinetCommand(UserRepository userService, MagazineRepository magazineService, MagazineBuilder magazineBuilder) {
-        this.userService = userService;
-        this.magazineService = magazineService;
+    public AdminCabinetCommand(UserRepository userRepository, MagazineRepository magazineRepository, MagazineBuilder magazineBuilder) {
+        this.userRepository = userRepository;
+        this.magazineRepository = magazineRepository;
         this.magazineBuilder = magazineBuilder;
     }
 
@@ -33,7 +34,7 @@ public class AdminCabinetCommand extends AbstractCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Admin cabinet command starts");
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
+        updateLocaleIfRequested(request.getParameter("localeToSet"));
 
         User user = getUserById(request);
         changeUser(request, user);
@@ -47,7 +48,7 @@ public class AdminCabinetCommand extends AbstractCommand {
 
         if (isMagazineDataComplete(request)) {
             try {
-                magazineService.create(buildMagazine(request));
+                magazineRepository.create(buildMagazine(request));
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -84,7 +85,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         Optional<User> user;
         if (userId != null && !userId.equals("")) {
             try {
-                user = userService.findById(Long.parseLong(userId));
+                user = userRepository.findById(Long.parseLong(userId));
                 if (user.isPresent()) {
                     return user.get();
                 }
@@ -97,7 +98,7 @@ public class AdminCabinetCommand extends AbstractCommand {
 
     private void showMagazinesList(HttpServletRequest request) throws CommandException {
         try {
-            List<Magazine> magazineList = magazineService.findAll();
+            List<Magazine> magazineList = magazineRepository.findAll();
             request.getSession().setAttribute("magazineList", magazineList);
         } catch (RepositoryException e) {
             throw new CommandException(e);
@@ -116,7 +117,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         if (deleteMagazine != null) {
             Long magazineId = Long.parseLong(request.getParameter("magazine_id"));
             try {
-                magazineService.deleteNow(magazineId);
+                magazineRepository.deleteNow(magazineId);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -136,7 +137,7 @@ public class AdminCabinetCommand extends AbstractCommand {
             int changed = Integer.parseInt(block) == 0 ? 1 : 0;
             user.setBlocked(changed);
             try {
-                userService.updateNow(user);
+                userRepository.updateNow(user);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -146,7 +147,7 @@ public class AdminCabinetCommand extends AbstractCommand {
 
     private void showUsersList(HttpServletRequest request) throws CommandException {
         try {
-            List<User> userList = userService.findAllClients();
+            List<User> userList = userRepository.findAllClients();
             request.getSession().setAttribute("userList", userList);
         } catch (RepositoryException e) {
             throw new CommandException(e);
@@ -155,7 +156,7 @@ public class AdminCabinetCommand extends AbstractCommand {
 
     private void updateMagazine(Magazine magazine) throws CommandException {
         try {
-            magazineService.updateNow(magazine);
+            magazineRepository.updateNow(magazine);
         } catch (RepositoryException e) {
             throw new CommandException(e);
         }
@@ -181,7 +182,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         Optional<Magazine> optionalMagazine;
         if (magazineId != null && !magazineId.equals("")) {
             try {
-                optionalMagazine = magazineService.findById(Long.parseLong(magazineId));
+                optionalMagazine = magazineRepository.findById(Long.parseLong(magazineId));
                 if (optionalMagazine.isPresent()) {
                     return optionalMagazine.get();
                 }
@@ -190,6 +191,17 @@ public class AdminCabinetCommand extends AbstractCommand {
             }
         }
         return null;
+    }
+
+    private List<Magazine> getMagazinesPage(int currentPage) {
+        List<Magazine> page = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findPage(PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return page;
     }
 
     @Override

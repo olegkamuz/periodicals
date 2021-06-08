@@ -57,11 +57,23 @@ a {
     text-decoration: none;
 }
 
-.col {
+.col-custom {
     background-color: #cbcbd5;
     margin: 5px;
     border-radius: 5px;
     border: black 1px solid;
+}
+
+.col-custom-index {
+    max-width: 19.1% !important;
+}
+
+.col-custom-cabinet {
+    max-width: 15.7% !important;
+}
+
+.col-active {
+    background-color: #9a7264;
 }
 
 .row {
@@ -180,9 +192,6 @@ a.disabled {
     justify-content: center;
 }
 
-.col-custom {
-    background-color: #9a7264;
-}
 
 .mag_image img {
     border-radius: 5px;
@@ -255,3 +264,17 @@ body div#error_wrapper {
     padding-bottom: 35px;
 }
 
+/*client-cabinet*/
+.get_back {
+    width: 400px;
+    text-align: center
+}
+.get_back a{
+    text-decoration: #005cbf underline;
+    color: #005cbf;
+}
+
+.get_back_wrapper {
+    display: flex;
+    justify-content: center;
+}

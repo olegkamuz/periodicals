@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-public class RegistrationSaveCommand implements Command {
+public class RegistrationSaveCommand extends AbstractCommand {
     private static final long serialVersionUID = 584824241835000931L;
-    private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final UserRepository userRepository;
     private final UserBuilder userBuilder;
 
@@ -26,22 +25,18 @@ public class RegistrationSaveCommand implements Command {
 
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("Executing Registration command");
+        this.request = request;
 
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String firstName = request.getParameter("first-name");
-        String lastName = request.getParameter("last-name");
-
-        if (!validateAllFields(login, password, firstName, lastName, request)){
-            setError(request, "All fields required", "error_reg");
+        if (!validateAllFields(getLogin(), getPassword(), getFirstName(), getLastName())){
+            setError("All fields required", "error_reg");
             return Path.PAGE__REGISTRATION;
         }
 
-        if (isExistedUser(request)) {
+        if (isExistedUser()) {
             throw new CommandException("Such user already registered");
         }
 
-        User user = buildUser(login, password, firstName, lastName);
+        User user = buildUser(getLogin(), getPassword(), getFirstName(), getLastName());
         try {
             userRepository.create(user);
         } catch (RepositoryException e) {
@@ -51,12 +46,8 @@ public class RegistrationSaveCommand implements Command {
         log.info("User registered successfully");
         return Path.REDIRECT__LOGIN;
     }
-    private void setError(HttpServletRequest request, String errorMessage, String attributeName) {
-        request.getSession().setAttribute(attributeName, errorMessage);
-        log.error("errorMessage --> " + errorMessage);
-    }
 
-    private boolean validateAllFields(String login, String password, String firstName, String lastName, HttpServletRequest request) throws CommandException {
+    private boolean validateAllFields(String login, String password, String firstName, String lastName) throws CommandException {
         try {
             if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)
             && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName)){
@@ -77,28 +68,12 @@ public class RegistrationSaveCommand implements Command {
                 .build();
     }
 
-    private boolean isExistedUser(HttpServletRequest request) throws CommandException {
+    private boolean isExistedUser() throws CommandException {
         try {
             Optional<User> optionalUser = userRepository.findUserByLogin(request.getParameter("login"));
             return optionalUser.isPresent();
         } catch (RepositoryException e) {
             throw new CommandException(e);
         }
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

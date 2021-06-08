@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-public class UserCabinetCommand extends AbstractCommand {
+public class ClientCabinetCommand extends AbstractCommand {
     private static final long serialVersionUID = 5034889545771020837L;
-    private static final Logger log = Logger.getLogger(UserCabinetCommand.class);
+    private static final Logger log = Logger.getLogger(ClientCabinetCommand.class);
     private final UserSubscriptionRepository userSubscriptionRepository;
     private final UserRepository userRepository;
 
-    public UserCabinetCommand(UserSubscriptionRepository usService, UserRepository userRepository) {
+    public ClientCabinetCommand(UserSubscriptionRepository usService, UserRepository userRepository) {
         this.userSubscriptionRepository = usService;
         this.userRepository = userRepository;
     }
@@ -29,12 +29,15 @@ public class UserCabinetCommand extends AbstractCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         log.info("User cabinet command starts");
+        this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"), request);
+        updateLocaleIfRequested(request.getParameter("localeToSet"));
+
+        setPreviousParametersToSession(getPreviousParameters());
 
         long userId = ((User) request.getSession().getAttribute("user")).getId();
         User user = getUser(userId);
-        showBalance(userId, request);
+        showBalance(userId);
 
         String replenish = request.getParameter("replenish");
 
@@ -43,21 +46,25 @@ public class UserCabinetCommand extends AbstractCommand {
                 BigDecimal newBalance = (new BigDecimal(replenish))
                         .add(user.getBalance());
                 userRepository.updateBalance(newBalance, user.getId());
-                showBalance(userId, request);
+                showBalance(userId);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
         }
 
-        if (!isAttributeSet(request, "subscriptionList")) {
-            setSessionSubscriptionList(request);
+        if (!isAttributeSet("subscriptionList")) {
+            setSessionSubscriptionList(getSubscriptions());
         }
 
         log.info("User cabinet command finish");
-        return Path.PAGE__USER_CABINET;
+        return Path.PAGE__CLIENT_CABINET;
     }
 
-    private void showBalance(long userId, HttpServletRequest request) {
+    private void setPreviousParametersToSession(String previousParameters) {
+        request.getSession().setAttribute("backWithPreviousParameters", previousParameters);
+    }
+
+    private void showBalance(long userId) {
         try {
             BigDecimal balanceFromDB = getUser(userId).getBalance();
             ((User) request.getSession().getAttribute("user")).setBalance(balanceFromDB);
@@ -73,8 +80,7 @@ public class UserCabinetCommand extends AbstractCommand {
             if(optionalUser.isPresent()){
                 user = optionalUser.get();
             } else {
-                throw new CommandException("exception in getUser" +
-                         UserCabinetCommand.class.getSimpleName());
+                throw createCommandException("exception in getUser");
             }
         } catch (RepositoryException e) {
             throw new CommandException(e);
@@ -82,33 +88,19 @@ public class UserCabinetCommand extends AbstractCommand {
         return user;
     }
 
-    private void setSessionSubscriptionList(HttpServletRequest request) throws CommandException {
-        List<UserSubscriptionBean> subscriptionList = null;
+    private List<UserSubscriptionBean> getSubscriptions() throws CommandException{
         try {
-            subscriptionList = userSubscriptionRepository.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
+            return userSubscriptionRepository.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
         } catch (RepositoryException e) {
             throw new CommandException(e);
         }
+    }
+
+    private void setSessionSubscriptionList(List<UserSubscriptionBean> subscriptionList) throws CommandException {
         request.getSession().setAttribute("subscriptionList", subscriptionList);
     }
 
-    private boolean isAttributeSet(HttpServletRequest request, String attributeName) {
+    private boolean isAttributeSet( String attributeName) {
         return request.getSession().getAttribute(attributeName) != null;
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

@@ -45,7 +45,7 @@ public class UserSubscriptionsBuilder implements Builder<UserSubscriptionBean>{
         usb.setMagazineName(rs.getString(Fields.MAGAZINE__NAME));
         usb.setMagazinePrice(rs.getBigDecimal(Fields.MAGAZINE__PRICE));
         usb.setMagazineImage(rs.getString(Fields.MAGAZINE__IMAGE));
-        usb.setThemeName(rs.getString(Fields.THEME_NAME));
+        usb.setThemeName(rs.getString(Fields.BEAN_THEME_NAME));
         return usb;
     }
 }

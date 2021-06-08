@@ -50,7 +50,7 @@
         <url-pattern>/login-check</url-pattern>
         <url-pattern>/registration</url-pattern>
         <url-pattern>/registration-save</url-pattern>
-        <url-pattern>/user-cabinet</url-pattern>
+        <url-pattern>/client-cabinet</url-pattern>
         <url-pattern>/admin-cabinet</url-pattern>
         <url-pattern>/view-settings</url-pattern>
         <url-pattern>/update-settings</url-pattern>
@@ -98,7 +98,7 @@
         </init-param>
         <init-param>
             <param-name>client</param-name>
-            <param-value>user-cabinet create-subscription</param-value>
+            <param-value>client-cabinet create-subscription</param-value>
         </init-param>
         <init-param>
             <param-name>common</param-name>

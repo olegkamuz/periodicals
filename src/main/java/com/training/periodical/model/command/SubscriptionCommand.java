@@ -4,7 +4,6 @@ import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.util.validator.ValidatorException;
-import org.apache.log4j.Logger;
 import com.training.periodical.Path;
 import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.SubscriptionRepository;
@@ -21,9 +20,8 @@ import java.util.Optional;
 /**
  * Create Subscription.
  */
-public class SubscriptionCommand implements Command {
+public class SubscriptionCommand extends AbstractCommand {
     private static final long serialVersionUID = 4085515554426545356L;
-    private static final Logger log = Logger.getLogger(SubscriptionCommand.class);
     private final SubscriptionRepository subscriptionRepository;
     private final UserRepository userRepository;
     private final MagazineRepository magazineRepository;
@@ -41,8 +39,9 @@ public class SubscriptionCommand implements Command {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Command starts");
+        this.request = request;
 
-        setPreviousParameters(request);
+        setPreviousParameters();
 
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
         List<String> magazineIds = new ArrayList<>();
@@ -68,20 +67,20 @@ public class SubscriptionCommand implements Command {
         try {
             if (isEnoughMoney(String.valueOf(userId), magazineIds)) {
                 subscriptionRepository.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
-                cleanSessionMagazineId(request);
+                cleanSessionMagazineId();
             }
         } catch (RepositoryException e) {
             throw new CommandException("exception in execute method at " +
                     this.getClass().getSimpleName(), e);
         }
 
-        cleanSessionSubscriptionList(request);
+        cleanSessionSubscriptionList();
 
         log.debug("Command finished");
         return Path.REDIRECT__USER_CABINET;
     }
 
-    private void setPreviousParameters(HttpServletRequest request) {
+    private void setPreviousParameters() {
         if (request.getParameterValues("magazineId") != null) {
             List<String> list = new ArrayList<>(Arrays.asList(request.getParameterValues("magazineId")));
             request.getSession().setAttribute("pre_sub_magazineId", list);
@@ -120,13 +119,13 @@ public class SubscriptionCommand implements Command {
         return magId;
     }
 
-    private void cleanSessionSubscriptionList(HttpServletRequest request) {
+    private void cleanSessionSubscriptionList() {
         if (request.getSession().getAttribute("subscriptionList") != null) {
             request.getSession().removeAttribute("subscriptionList");
         }
     }
 
-    private void cleanSessionMagazineId(HttpServletRequest request) {
+    private void cleanSessionMagazineId() {
         if (request.getSession().getAttribute("magazineId") != null) {
             request.getSession().removeAttribute("magazineId");
             request.getSession().removeAttribute("pre_sub_sort");
@@ -171,21 +170,5 @@ public class SubscriptionCommand implements Command {
             return null;
         }
         return userBalance;
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    @Override
-    public CommandException createCommandException(String methodName, ValidatorException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }

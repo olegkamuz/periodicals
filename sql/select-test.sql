@@ -65,7 +65,7 @@ UPDATE `user` SET balance=9785.00 WHERE id=3
 
 select * from user u where role_id=1
 
-
+SELECT m.name AS name, m.price, m.image, t.name AS theme_name FROM subscription s JOIN magazine m ON m.id = s.magazine_id JOIN theme t ON t.id = m.theme_id WHERE user_id='3'
 
 
 
