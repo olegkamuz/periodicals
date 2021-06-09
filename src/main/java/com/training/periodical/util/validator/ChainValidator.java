@@ -10,10 +10,4 @@ public abstract class ChainValidator {
 
     public abstract boolean isValid() ;
 
-    public boolean checkNext() {
-        if(next == null){
-            return true;
-        }
-        return next.isValid();
-    }
 }

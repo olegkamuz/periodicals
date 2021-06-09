@@ -5,9 +5,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class Valid {
-    public static boolean notNull(String data) {
-        ChainValidator notNull = new CheckNotNull(data);
-        return notNull.isValid();
+
+    public static boolean notNull(String... data) {
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isMagazineIdEmpty(HttpServletRequest request) {
@@ -20,42 +26,83 @@ public class Valid {
         }
         return true;
     }
+
     public static boolean isAttributeNull(HttpServletRequest request, String attributeName) {
         return request.getSession().getAttribute(attributeName) != null;
     }
 
 
-
-    public static boolean notNullNotEmpty(String data) {
-        ChainValidator notNull = new CheckNotNull(data);
-        ChainValidator notEmpty = new CheckNotEmpty(data);
-        notNull.chainWith(notEmpty);
-        return notNull.isValid();
+    public static boolean notNullNotEmpty(String... data) {
+//        ChainValidator notNull = new CheckNotNull(data);
+//        ChainValidator notEmpty = new CheckNotEmpty(data);
+//        notNull.chainWith(notEmpty);
+//        return notNull.isValid();
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            notNull.chainWith(notEmpty);
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static boolean notNullNotEmptyUrlDecodeAll(String data) {
-        ChainValidator notNull = new CheckNotNull(data);
-        ChainValidator notEmpty = new CheckNotEmpty(data);
-        ChainValidator urlDecode = new CheckUrlDecode(data);
-        ChainValidator all = new CheckAll(data);
+    public static boolean notNullNotEmptyUrlDecodeAll(String... data) {
+//        ChainValidator notNull = new CheckNotNull(data);
+//        ChainValidator notEmpty = new CheckNotEmpty(data);
+//        ChainValidator urlDecode = new CheckUrlDecode(data);
+//        ChainValidator all = new CheckAll(data);
+//
+//        notNull.chainWith(notEmpty);
+//        notEmpty.chainWith(urlDecode);
+//        urlDecode.chainWith(all);
+//
+//        return notNull.isValid();
 
-        notNull.chainWith(notEmpty);
-        notEmpty.chainWith(urlDecode);
-        urlDecode.chainWith(all);
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            ChainValidator urlDecode = new CheckUrlDecode(s);
+            ChainValidator all = new CheckAll(s);
 
-        return notNull.isValid();
+            notNull.chainWith(notEmpty);
+            notEmpty.chainWith(urlDecode);
+            urlDecode.chainWith(all);
+
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static boolean notNullNotEmptyCastToIntInRange(String data, int range_to) {
-        ChainValidator notNull = new CheckNotNull(data);
-        ChainValidator notEmpty = new CheckNotEmpty(data);
-        ChainValidator isCastToInt = new CheckIsCastToInt(data);
-        ChainValidator inRange = new CheckInRange(data, range_to);
+    public static boolean notNullNotEmptyCastToIntInRange(int range_to, String... data) {
+//        ChainValidator notNull = new CheckNotNull(data);
+//        ChainValidator notEmpty = new CheckNotEmpty(data);
+//        ChainValidator isCastToInt = new CheckIsCastToInt(data);
+//        ChainValidator inRange = new CheckInRange(data, range_to);
+//
+//        notNull.chainWith(notEmpty);
+//        notEmpty.chainWith(isCastToInt);
+//        isCastToInt.chainWith(inRange);
+//
+//        return notNull.isValid();
 
-        notNull.chainWith(notEmpty);
-        notEmpty.chainWith(isCastToInt);
-        isCastToInt.chainWith(inRange);
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            ChainValidator isCastToInt = new CheckIsCastToInt(s);
+            ChainValidator inRange = new CheckInRange(s, range_to);
 
-        return notNull.isValid();
+            notNull.chainWith(notEmpty);
+            notEmpty.chainWith(isCastToInt);
+            isCastToInt.chainWith(inRange);
+
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

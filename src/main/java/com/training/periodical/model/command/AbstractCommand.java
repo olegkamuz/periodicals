@@ -82,7 +82,7 @@ public abstract class AbstractCommand implements Command {
     }
 
     private boolean validatePage(String data, int range_to) {
-        return Valid.notNullNotEmptyCastToIntInRange(data, range_to);
+        return Valid.notNullNotEmptyCastToIntInRange(range_to, data);
     }
 
     int getNumberOfPages(int magazineAmount) {
