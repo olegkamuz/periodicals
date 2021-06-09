@@ -1,20 +1,18 @@
 package com.training.periodical.model.command;
 
 import com.training.periodical.entity.Magazine;
-import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.Repository;
 import com.training.periodical.model.repository.RepositoryException;
+import com.training.periodical.util.encoder.EncoderException;
 import com.training.periodical.util.validator.Valid;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class AbstractCommand implements Command {
     private static final long serialVersionUID = 22379153150765607L;
@@ -63,12 +61,13 @@ public abstract class AbstractCommand implements Command {
     }
 
     @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
+    public CommandException createCommandException(String methodName, Exception e) {
         return new CommandException("exception in " +
                 methodName +
                 " method at " +
                 getClass().getSimpleName(), e);
     }
+
 
     @Override
     public CommandException createCommandException(String methodName) {

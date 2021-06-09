@@ -5,6 +5,8 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
+import com.training.periodical.util.encoder.Encoder;
+import com.training.periodical.util.encoder.EncoderException;
 import com.training.periodical.util.validator.Valid;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,13 +52,17 @@ public class RegistrationSaveCommand extends AbstractCommand {
                 && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName);
     }
 
-    private User buildUser(String login, String password, String firstName, String lastName) {
-        return userBuilder
-                .setLogin(login)
-                .setPassword(password)
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .build();
+    private User buildUser(String login, String password, String firstName, String lastName) throws CommandException{
+        try {
+            return userBuilder
+                    .setLogin(login)
+                    .setPassword(Encoder.encrypt(password))
+                    .setFirstName(firstName)
+                    .setLastName(lastName)
+                    .build();
+        } catch (EncoderException e) {
+            throw createCommandException("buildUser", e);
+        }
     }
 
     private boolean isExistedUser() throws CommandException {

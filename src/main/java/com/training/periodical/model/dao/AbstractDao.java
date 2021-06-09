@@ -86,17 +86,6 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-//    protected int executeUpdateNow(String query, Object... parameters) throws DaoException {
-//        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-//            prepareStatement(preparedStatement, parameters);
-//            int result = preparedStatement.executeUpdate();
-//            connection.commit();
-//            return result;
-//        } catch (SQLException e) {
-//            throw new DaoException(e);
-//        }
-//    }
-
     protected Optional<T> executeSingleResponseQuery(String query, Builder<T> builder, Object... parameters) {
         List<T> list = executeQuery(query, builder, parameters);
         if (list.size() == 1) {

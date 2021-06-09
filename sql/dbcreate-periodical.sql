@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS `periodical`.`user`
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_ru_0900_ai_ci;
 INSERT INTO `user`
-VALUES (DEFAULT, 'admin', 'admin', DEFAULT, 'Ivanov', 'Ivan', NULL, 0, 0);
+VALUES (DEFAULT, 'admin', 'c4ca4238a0b923820dcc509a6f75849b', DEFAULT, 'Ivanov', 'Ivan', NULL, 0, 0);
 INSERT INTO `user`
-VALUES (DEFAULT, 'client', 'client', DEFAULT, 'Петр', 'Петров', NULL, 1, 0);
+VALUES (DEFAULT, 'client', 'c4ca4238a0b923820dcc509a6f75849b', DEFAULT, 'Петр', 'Петров', NULL, 1, 0);
 INSERT INTO `user`
-VALUES (DEFAULT, 'петров', 'петров', 10000.00, 'Иван', 'Петров', NULL, 1, 0);
+VALUES (DEFAULT, 'Олег', 'c4ca4238a0b923820dcc509a6f75849b', 10000.00, 'Олег', 'Олег', NULL, 1, 0);
 
 CREATE TABLE IF NOT EXISTS `periodical`.`theme`
 (
@@ -212,10 +212,3 @@ CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
     COLLATE = utf8mb4_ru_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-
-
-
-
-
-SELECT sum(price) AS total FROM magazine WHERE id IN ('2','3','4','5','6')

@@ -19,6 +19,6 @@ public interface Command extends Serializable{
 	 */
 	String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException;
 
-    CommandException createCommandException(String methodName, RepositoryException e);
+    CommandException createCommandException(String methodName, Exception e);
     CommandException createCommandException(String methodName);
 }

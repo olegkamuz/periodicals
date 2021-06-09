@@ -204,12 +204,4 @@ public class AdminCabinetCommand extends AbstractCommand {
         }
         return page;
     }
-
-    @Override
-    public CommandException createCommandException(String methodName, RepositoryException e) {
-        return new CommandException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
 }

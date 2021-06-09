@@ -6,6 +6,8 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
+import com.training.periodical.util.encoder.Encoder;
+import com.training.periodical.util.encoder.EncoderException;
 import com.training.periodical.util.validator.Valid;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,15 +67,19 @@ public class LoginCheckCommand extends AbstractCommand {
         request.setAttribute("user", user);
         log.trace("Found in DB: user --> " + user);
 
-        if (!password.equals(user.getPassword())) {
-            log.error("errorMessage --> " + "Cannot find user with such login/password");
-            return Path.REDIRECT__INDEX;
-        } else {
-            Role userRole = getUserRole(user);
-            toCabinet(userRole, user.getId());
+        try {
+            if (!Encoder.encrypt(password).equals(user.getPassword())) {
+                log.error("errorMessage --> " + "Cannot find user with such login/password");
+                return Path.REDIRECT__INDEX;
+            } else {
+                Role userRole = getUserRole(user);
+                toCabinet(userRole, user.getId());
 
-            setUserToSession(user, userRole);
-            setLocaleToSession(user);
+                setUserToSession(user, userRole);
+                setLocaleToSession(user);
+            }
+        } catch (EncoderException e) {
+            throw createCommandException("execute", e);
         }
 
         log.debug("Command finished");
