@@ -1,4 +1,4 @@
-package com.training.periodical.model.builder;
+package com.training.periodical.model.mapper;
 
 import com.training.periodical.entity.Theme;
 import com.training.periodical.model.dao.Fields;
@@ -6,8 +6,7 @@ import com.training.periodical.model.dao.Fields;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ThemeBuilder implements Builder<Theme> {
-    private static final long serialVersionUID = 2312353289307871299L;
+public class ThemeMapper implements Mapper<Theme> {
 
     public Theme build (ResultSet rs)  throws SQLException {
         Theme theme = new Theme();

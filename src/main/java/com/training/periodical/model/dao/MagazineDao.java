@@ -3,6 +3,7 @@ package com.training.periodical.model.dao;
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
+import com.training.periodical.model.mapper.MagazineMapper;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -14,16 +15,18 @@ import java.util.Optional;
  */
 public class MagazineDao extends AbstractDao<Magazine> {
     private static final long serialVersionUID = -1560516295484382753L;
+    private final MagazineMapper mapper;
     private final MagazineBuilder builder;
 
-    public MagazineDao(Connection connection, MagazineBuilder magazineBuilder) {
+    public MagazineDao(Connection connection, MagazineMapper magazineMapper, MagazineBuilder builder) {
+        this.builder = builder;
         this.connection = connection;
-        this.builder = magazineBuilder;
+        this.mapper = magazineMapper;
         tableName = "magazine";
     }
 
     public List<Magazine> findAll() throws DaoException {
-        return findAll(builder);
+        return findAll(mapper);
     }
 
     public int getCount() throws DaoException {
@@ -94,12 +97,6 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return executeUpdate(query, parameters);
     }
 
-//    public int updateNow(Magazine magazine) throws DaoException {
-//        String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
-//        Object[] parameters = builder.unBuild(magazine);
-//        return executeUpdate(query, parameters);
-//    }
-
     @Override
     public int delete(long id) throws DaoException {
         String query = MagazineQuery.SQL__DELETE_MAGAZINE;
@@ -120,7 +117,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     private List<Magazine> find(String query, Object[] parameters) {
-        return executeQuery(query, builder, parameters);
+        return executeQuery(query, mapper, parameters);
     }
 
     public List<Magazine> findSorted(String sortSubQuery) throws DaoException {
@@ -155,11 +152,11 @@ public class MagazineDao extends AbstractDao<Magazine> {
 
 
     public List<Magazine> findPage(int limit, int offset) throws DaoException {
-        return findAll(builder, limit, offset);
+        return findAll(mapper, limit, offset);
     }
 
     @Override
     public Optional<Magazine> findById(long id) throws DaoException {
-        return executeSingleResponseQuery(MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
+        return executeSingleResponseQuery(MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, mapper, id);
     }
 }

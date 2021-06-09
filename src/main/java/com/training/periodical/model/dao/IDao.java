@@ -1,9 +1,8 @@
 package com.training.periodical.model.dao;
 
-import com.training.periodical.model.builder.Builder;
+import com.training.periodical.model.mapper.Mapper;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +12,7 @@ public interface IDao<T> extends AutoCloseable, Serializable {
 
     Optional<T> findById(long id) throws DaoException;
 
-    List<T> findAll(Builder<T> builder) throws DaoException;
+    List<T> findAll(Mapper<T> mapper) throws DaoException;
 
     int update(T entity) throws DaoException;
 

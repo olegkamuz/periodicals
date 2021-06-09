@@ -1,7 +1,6 @@
-package com.training.periodical.model.builder;
+package com.training.periodical.model.mapper;
 
 import com.training.periodical.entity.Subscription;
-import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.Fields;
 
 import java.sql.ResultSet;
@@ -10,8 +9,7 @@ import java.sql.SQLException;
 /**
  * Extracts a subscription from the result set row.
  */
-public class SubscriptionBuilder implements Builder<Subscription> {
-    private static final long serialVersionUID = -1808634560539486042L;
+public class SubscriptionMapper implements Mapper<Subscription> {
 
     @Override
     public Subscription build(ResultSet rs) throws SQLException {

@@ -13,38 +13,42 @@ import java.util.List;
 import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
-import com.training.periodical.model.builder.UserSubscriptionsBuilder;
 import com.training.periodical.model.dao.query.UserQuery;
 import com.training.periodical.model.dao.query.UserSubscriptionBeanQuery;
+import com.training.periodical.model.mapper.UserMapper;
+import com.training.periodical.model.mapper.UserSubscriptionsMapper;
 
 /**
  * Data access object for User entity.
  */
 public class UserDao extends AbstractDao<User> {
     private static final long serialVersionUID = 8896652975777115207L;
+    private final UserMapper userMapper;
+    private UserSubscriptionsMapper userSubscriptionsMapper;
     private final UserBuilder userBuilder;
-    private UserSubscriptionsBuilder USBuilder;
 
-    public UserDao(Connection connection, UserBuilder userBuilder, UserSubscriptionsBuilder usBuilder) {
-        this.connection = connection;
+    public UserDao(Connection connection, UserMapper userMapper, UserSubscriptionsMapper userSubscriptionsMapper, UserBuilder userBuilder) {
         this.userBuilder = userBuilder;
-        USBuilder = usBuilder;
+        this.connection = connection;
+        this.userMapper = userMapper;
+        this.userSubscriptionsMapper = userSubscriptionsMapper;
         tableName = "user";
     }
 
-    public UserDao(Connection connection, UserBuilder userBuilder) {
-        this.connection = connection;
+    public UserDao(Connection connection, UserMapper userMapper, UserBuilder userBuilder) {
         this.userBuilder = userBuilder;
+        this.connection = connection;
+        this.userMapper = userMapper;
         tableName = "user";
     }
 
     public List<User> findAll() throws DaoException {
-        return findAll(userBuilder);
+        return findAll(userMapper);
     }
 
     public List<User> findAllClients() throws DaoException {
         Object[] parameters = {};
-        return executeQuery(UserQuery.SQL__FIND_ALL_CLIENTS, userBuilder, parameters);
+        return executeQuery(UserQuery.SQL__FIND_ALL_CLIENTS, userMapper, parameters);
     }
 
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
@@ -63,7 +67,7 @@ public class UserDao extends AbstractDao<User> {
             prepareStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                UserSubscriptionBean build = USBuilder.build(resultSet);
+                UserSubscriptionBean build = userSubscriptionsMapper.build(resultSet);
                 entity.add(build);
             }
             return entity;
@@ -103,7 +107,7 @@ public class UserDao extends AbstractDao<User> {
      */
     @Override
     public Optional<User> findById(long id) throws DaoException {
-        return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_ID, userBuilder, id);
+        return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_ID, userMapper, id);
     }
 
     /**
@@ -113,7 +117,7 @@ public class UserDao extends AbstractDao<User> {
      * @return User entity.
      */
     public Optional<User> findUserByLogin(String login) throws DaoException {
-        return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_LOGIN, userBuilder, login);
+        return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_LOGIN, userMapper, login);
     }
 
     public void updateUser(long userId, BigDecimal userBalance) throws DaoException {

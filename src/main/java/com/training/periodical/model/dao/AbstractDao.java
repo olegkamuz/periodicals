@@ -1,8 +1,8 @@
 package com.training.periodical.model.dao;
 
-import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.Query;
+import com.training.periodical.model.mapper.Mapper;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -23,9 +23,9 @@ public abstract class AbstractDao<T> implements IDao<T> {
         return this.tableName;
     }
 
-    public List<T> findAll(Builder<T> builder) throws DaoException {
+    public List<T> findAll(Mapper<T> mapper) throws DaoException {
         Object[] parameters = {};
-        return executeQuery(Query.findAllFromTable(tableName), builder, parameters);
+        return executeQuery(Query.findAllFromTable(tableName), mapper, parameters);
     }
 
 
@@ -51,20 +51,20 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    public List<T> findAll(Builder<T> builder, int limit, int offset) throws DaoException {
+    public List<T> findAll(Mapper<T> mapper, int limit, int offset) throws DaoException {
         Object[] parameters = {limit, offset};
-        return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
+        return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, mapper, parameters);
     }
 
 
-    protected List<T> executeQuery(String query, Builder<T> builder, Object... parameters) {
+    protected List<T> executeQuery(String query, Mapper<T> mapper, Object... parameters) {
         ResultSet resultSet = null;
         List<T> entity = new ArrayList<>();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             prepareStatement(preparedStatement, parameters);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                T build = builder.build(resultSet);
+                T build = mapper.build(resultSet);
                 entity.add(build);
             }
             return entity;
@@ -86,8 +86,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected Optional<T> executeSingleResponseQuery(String query, Builder<T> builder, Object... parameters) {
-        List<T> list = executeQuery(query, builder, parameters);
+    protected Optional<T> executeSingleResponseQuery(String query, Mapper<T> mapper, Object... parameters) {
+        List<T> list = executeQuery(query, mapper, parameters);
         if (list.size() == 1) {
             return Optional.of(list.get(0));
         } else {

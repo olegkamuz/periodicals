@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class ThemeRepository extends AbstractRepository<Theme> {
     private static final long serialVersionUID = 7039501575798690288L;
-
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
     /**

@@ -4,7 +4,7 @@ import com.training.periodical.model.repository.SubscriptionRepository;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractDaoFactory implements IDaoFactory  {
-
+    private static final long serialVersionUID = -8758810611945335453L;
     private static final Logger log = Logger.getLogger(SubscriptionRepository.class);
     private static IDaoFactory daoFactory;
 

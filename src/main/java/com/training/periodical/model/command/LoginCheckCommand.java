@@ -20,7 +20,7 @@ import java.util.Optional;
 
 /**
  * Login check command.
- * <p>
+ *
  * Validate login/password
  * Form error messages if needed
  * Logs user in

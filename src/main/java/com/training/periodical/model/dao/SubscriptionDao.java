@@ -1,8 +1,8 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.Subscription;
-import com.training.periodical.model.builder.SubscriptionBuilder;
 import com.training.periodical.model.dao.query.SubscriptionQuery;
+import com.training.periodical.model.mapper.SubscriptionMapper;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -11,18 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 
 /**
  * Data access object for Order entity and UserOrderBean bean.
  */
 public class SubscriptionDao extends AbstractDao<Subscription> {
     private static final long serialVersionUID = -6448380123363743542L;
-    private final SubscriptionBuilder builder;
+    private final SubscriptionMapper mapper;
 
-    public SubscriptionDao(Connection connection, SubscriptionBuilder subscriptionBuilder) {
+    public SubscriptionDao(Connection connection, SubscriptionMapper subscriptionMapper) {
         this.connection = connection;
-        builder = subscriptionBuilder;
+        mapper = subscriptionMapper;
         tableName = "subscription";
     }
 
@@ -42,7 +41,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     public List<Subscription> findAll() throws DaoException {
-        return findAll( builder);
+        return findAll(mapper);
     }
 
     public int countByCompositeKey(long userId, long magazineId) throws DaoException{

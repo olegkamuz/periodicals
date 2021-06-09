@@ -1,10 +1,12 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.model.builder.MagazineBuilder;
-import com.training.periodical.model.builder.SubscriptionBuilder;
-import com.training.periodical.model.builder.ThemeBuilder;
 import com.training.periodical.model.builder.UserBuilder;
-import com.training.periodical.model.builder.UserSubscriptionsBuilder;
+import com.training.periodical.model.mapper.MagazineMapper;
+import com.training.periodical.model.mapper.SubscriptionMapper;
+import com.training.periodical.model.mapper.ThemeMapper;
+import com.training.periodical.model.mapper.UserMapper;
+import com.training.periodical.model.mapper.UserSubscriptionsMapper;
 
 import java.sql.Connection;
 
@@ -14,26 +16,26 @@ public class JDBCDaoFactory extends AbstractDaoFactory{
 
     @Override
     public UserDao createUserDao() {
-        return new UserDao(dbManager.getConnection(), new UserBuilder(), new UserSubscriptionsBuilder());
+        return new UserDao(dbManager.getConnection(), new UserMapper(), new UserSubscriptionsMapper(), new UserBuilder());
     }
 
     @Override
     public UserDao createUserDao(Connection connection) {
-        return new UserDao(connection, new UserBuilder());
+        return new UserDao(connection, new UserMapper(), new UserBuilder());
     }
 
     @Override
     public SubscriptionDao createSubscriptionDao() {
-        return new SubscriptionDao(dbManager.getConnection(), new SubscriptionBuilder());
+        return new SubscriptionDao(dbManager.getConnection(), new SubscriptionMapper());
     }
 
     @Override
     public MagazineDao createMagazineDao() {
-        return new MagazineDao(dbManager.getConnection(), new MagazineBuilder());
+        return new MagazineDao(dbManager.getConnection(), new MagazineMapper(), new MagazineBuilder());
     }
 
     @Override
     public ThemeDao createThemeDao(){
-        return new ThemeDao(dbManager.getConnection(), new ThemeBuilder());
+        return new ThemeDao(dbManager.getConnection(), new ThemeMapper());
     }
 }
