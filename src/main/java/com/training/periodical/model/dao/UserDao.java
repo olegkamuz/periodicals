@@ -14,18 +14,15 @@ import java.util.Optional;
 
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.builder.UserSubscriptionsBuilder;
-import com.training.periodical.model.dao.query.Query;
 import com.training.periodical.model.dao.query.UserQuery;
 import com.training.periodical.model.dao.query.UserSubscriptionBeanQuery;
-import org.apache.log4j.Logger;
 
 /**
  * Data access object for User entity.
  */
 public class UserDao extends AbstractDao<User> {
     private static final long serialVersionUID = 8896652975777115207L;
-    private static final Logger log = Logger.getLogger(UserDao.class);
-    private UserBuilder userBuilder;
+    private final UserBuilder userBuilder;
     private UserSubscriptionsBuilder USBuilder;
 
     public UserDao(Connection connection, UserBuilder userBuilder, UserSubscriptionsBuilder usBuilder) {
@@ -46,12 +43,8 @@ public class UserDao extends AbstractDao<User> {
     }
 
     public List<User> findAllClients() throws DaoException {
-        try {
-            Object[] parameters = {};
-            return executeQuery(UserQuery.SQL__FIND_ALL_CLIENTS, userBuilder, parameters);
-        } catch (SQLException e) {
-            throw createDaoException("findAllClients", e);
-        }
+        Object[] parameters = {};
+        return executeQuery(UserQuery.SQL__FIND_ALL_CLIENTS, userBuilder, parameters);
     }
 
     public List<UserSubscriptionBean> getSubscriptionsByUserId(long userId) throws DaoException {
@@ -64,16 +57,19 @@ public class UserDao extends AbstractDao<User> {
     }
 
     protected List<UserSubscriptionBean> executeBeanQuery(Object... parameters) throws SQLException {
-        ResultSet resultSet;
+        ResultSet resultSet = null;
         List<UserSubscriptionBean> entity = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(UserSubscriptionBeanQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID);
-        prepareStatement(preparedStatement, parameters);
-        resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            UserSubscriptionBean build = USBuilder.build(resultSet);
-            entity.add(build);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UserSubscriptionBeanQuery.SQL__FIND_SUBSCRIPTIONS_WHERE_USER_ID)) {
+            prepareStatement(preparedStatement, parameters);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                UserSubscriptionBean build = USBuilder.build(resultSet);
+                entity.add(build);
+            }
+            return entity;
+        } finally {
+            close(resultSet);
         }
-        return entity;
     }
 
     public int create(User user) throws DaoException {
@@ -111,11 +107,7 @@ public class UserDao extends AbstractDao<User> {
      */
     @Override
     public Optional<User> findById(long id) throws DaoException {
-        try {
-            return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_ID, userBuilder, id);
-        } catch (SQLException e) {
-            throw createDaoException("findById", e);
-        }
+        return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_ID, userBuilder, id);
     }
 
     /**
@@ -126,11 +118,7 @@ public class UserDao extends AbstractDao<User> {
      */
     public Optional<User> findUserByLogin(String login) throws DaoException {
         try {
-            String[] parameters = {login};
-            return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_LOGIN, userBuilder, parameters);
-        } catch (SQLException e) {
-            rollback();
-            throw createDaoException("findUserByLogin", e);
+            return executeSingleResponseQuery(UserQuery.SQL__FIND_USER_BY_LOGIN, userBuilder, login);
         } finally {
             commit();
         }
@@ -145,7 +133,5 @@ public class UserDao extends AbstractDao<User> {
         Object[] parameters = {balance, userId};
         executeUpdateNow(UserQuery.SQL__UPDATE_BALANCE_WHERE_ID, parameters);
     }
-
-
 }
 

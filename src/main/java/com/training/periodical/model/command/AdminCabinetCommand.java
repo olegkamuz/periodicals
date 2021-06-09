@@ -8,6 +8,7 @@ import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.repository.MagazineRepository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
+import com.training.periodical.util.validator.Valid;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,31 +37,31 @@ public class AdminCabinetCommand extends AbstractCommand {
 
         updateLocaleIfRequested(request.getParameter("localeToSet"));
 
-        User user = getUserById(request);
+        User user = getUserById();
         changeUser(request, user);
         showUsersList(request);
 
         Magazine magazine = getMagazineById(request);
-        changeMagazine(request, magazine);
+        changeMagazine(magazine);
         if (magazine != null || request.getSession().getAttribute("magazineList") == null) {
-            showMagazinesList(request);
+            showMagazinesList();
         }
 
-        if (isMagazineDataComplete(request)) {
+        if (isMagazineDataComplete()) {
             try {
-                magazineRepository.create(buildMagazine(request));
+                magazineRepository.create(buildMagazine());
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
         }
 
-        showMagazinesList(request);
+        showMagazinesList();
 
         log.debug("Admin cabinet command finish");
         return Path.PAGE__ADMIN_CABINET;
     }
 
-    private Magazine buildMagazine(HttpServletRequest request) {
+    private Magazine buildMagazine() {
         return magazineBuilder
                 .setName(request.getParameter("magazine_name_add_value"))
                 .setPrice(new BigDecimal(request.getParameter("magazine_price_add_value")))
@@ -69,7 +70,7 @@ public class AdminCabinetCommand extends AbstractCommand {
                 .build();
     }
 
-    private boolean isMagazineDataComplete(HttpServletRequest request) {
+    private boolean isMagazineDataComplete() {
         String magazineName = request.getParameter("magazine_name_add_value");
         String magazinePrice = request.getParameter("magazine_price_add_value");
         String magazineImage = request.getParameter("magazine_price_add_value");
@@ -80,7 +81,7 @@ public class AdminCabinetCommand extends AbstractCommand {
                 magazineThemeId != null;
     }
 
-    private User getUserById(HttpServletRequest request) throws CommandException {
+    private User getUserById() throws CommandException {
         String userId = request.getParameter("user_id");
         Optional<User> user;
         if (userId != null && !userId.equals("")) {
@@ -96,7 +97,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         return null;
     }
 
-    private void showMagazinesList(HttpServletRequest request) throws CommandException {
+    private void showMagazinesList() throws CommandException {
         try {
             List<Magazine> magazineList = magazineRepository.findAll();
             request.getSession().setAttribute("magazineList", magazineList);
@@ -105,12 +106,12 @@ public class AdminCabinetCommand extends AbstractCommand {
         }
     }
 
-    private void changeMagazine(HttpServletRequest request, Magazine magazine) throws CommandException {
+    private void changeMagazine(Magazine magazine) throws CommandException {
         if (magazine == null) return;
 
         Object updateMagazine = request.getParameter("update_magazine");
         if (updateMagazine != null) {
-            updateMagazine(request, magazine);
+            updateMagazine(magazine);
         }
 
         Object deleteMagazine = request.getParameter("delete_magazine");
@@ -124,10 +125,13 @@ public class AdminCabinetCommand extends AbstractCommand {
         }
     }
 
-    private void updateMagazine(HttpServletRequest request,
-                                @NotNull Magazine magazine) throws CommandException {
-        setParameters(request, magazine);
-        updateMagazine(magazine);
+    private void updateMagazine(Magazine magazine) throws CommandException {
+        setParameters(magazine);
+        try {
+            magazineRepository.updateNow(magazine);
+        } catch (RepositoryException e) {
+            throw new CommandException(e);
+        }
     }
 
     private void changeUser(HttpServletRequest request, User user) throws CommandException {
@@ -154,26 +158,23 @@ public class AdminCabinetCommand extends AbstractCommand {
         }
     }
 
-    private void updateMagazine(Magazine magazine) throws CommandException {
-        try {
-            magazineRepository.updateNow(magazine);
-        } catch (RepositoryException e) {
-            throw new CommandException(e);
-        }
-    }
 
-    private void setParameters(HttpServletRequest request, Magazine magazine) {
+    private void setParameters(Magazine magazine) {
         String magazineName = request.getParameter("magazine_name_change_value");
-        if (magazineName != null && !magazineName.equals("")) {
+        if(Valid.notNullNotEmpty(magazineName)){
             magazine.setName(magazineName);
         }
         String magazinePrice = request.getParameter("magazine_price_change_value");
-        if (magazinePrice != null && !magazinePrice.equals("")) {
+        if(Valid.notNullNotEmpty(magazinePrice)){
             magazine.setPrice(new BigDecimal(magazinePrice));
         }
         String magazineImage = request.getParameter("magazine_image_change_value");
-        if (magazineImage != null && !magazinePrice.equals("")) {
+        if(Valid.notNullNotEmpty(magazineImage)){
             magazine.setImage(magazineImage);
+        }
+        String magazineTheme = request.getParameter("magazine_theme_id_change_value");
+        if(Valid.notNullNotEmpty(magazineTheme)){
+            magazine.setThemeId(Long.parseLong(magazineTheme));
         }
     }
 

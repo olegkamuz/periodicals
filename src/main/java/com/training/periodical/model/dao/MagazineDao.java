@@ -126,12 +126,8 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, parameters);
     }
 
-    private List<Magazine> find(String query, Object[] parameters) throws DaoException {
-        try {
-            return executeQuery(query, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+    private List<Magazine> find(String query, Object[] parameters) {
+        return executeQuery(query, builder, parameters);
     }
 
     public List<Magazine> findSorted(String sortSubQuery) throws DaoException {
@@ -171,10 +167,6 @@ public class MagazineDao extends AbstractDao<Magazine> {
 
     @Override
     public Optional<Magazine> findById(long id) throws DaoException {
-        try {
-            return executeSingleResponseQuery(MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
+        return executeSingleResponseQuery(MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
     }
 }

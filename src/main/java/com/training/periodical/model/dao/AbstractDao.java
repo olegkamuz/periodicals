@@ -24,12 +24,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> findAll(Builder<T> builder) throws DaoException {
-        try {
-            Object[] parameters = {};
-            return executeQuery(Query.findAllFromTable(tableName), builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException();
-        }
+        Object[] parameters = {};
+        return executeQuery(Query.findAllFromTable(tableName), builder, parameters);
     }
 
 
@@ -56,45 +52,42 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> findAll(Builder<T> builder, int limit, int offset) throws DaoException {
-        try {
-            Object[] parameters = {limit, offset};
-            return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
-        } catch (SQLException e) {
-            throw new DaoException();
-        }
+        Object[] parameters = {limit, offset};
+        return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
     }
 
 
-    protected List<T> executeQuery(String query, Builder<T> builder, Object... parameters) throws SQLException {
-        ResultSet resultSet;
+    protected List<T> executeQuery(String query, Builder<T> builder, Object... parameters) {
+        ResultSet resultSet = null;
         List<T> entity = new ArrayList<>();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        prepareStatement(preparedStatement, parameters);
-        resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            T build = builder.build(resultSet);
-            entity.add(build);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            prepareStatement(preparedStatement, parameters);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                T build = builder.build(resultSet);
+                entity.add(build);
+            }
+            return entity;
+        } catch (SQLException e) {
+            log.error("exception in executeQuery at " + getClass());
+        } finally {
+            close(resultSet);
         }
         return entity;
     }
 
 
     protected int executeUpdate(String query, Object... parameters) throws DaoException {
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement(query);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             prepareStatement(preparedStatement, parameters);
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
-
         }
     }
 
     protected int executeUpdateNow(String query, Object... parameters) throws DaoException {
-        PreparedStatement preparedStatement;
-        try {
-            preparedStatement = connection.prepareStatement(query);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             prepareStatement(preparedStatement, parameters);
             int result = preparedStatement.executeUpdate();
             connection.commit();
@@ -104,7 +97,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected Optional<T> executeSingleResponseQuery( String query, Builder<T> builder, Object... parameters) throws SQLException {
+    protected Optional<T> executeSingleResponseQuery(String query, Builder<T> builder, Object... parameters) {
         List<T> list = executeQuery(query, builder, parameters);
         if (list.size() == 1) {
             return Optional.of(list.get(0));
@@ -132,17 +125,17 @@ public abstract class AbstractDao<T> implements IDao<T> {
         try {
             connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("exception in close connection");
         }
     }
 
     @Override
-    public void close(ResultSet rs) throws DaoException {
+    public void close(ResultSet rs) {
         if (rs == null) return;
         try {
             rs.close();
         } catch (SQLException e) {
-            throw new DaoException(e);
+            log.error("exception in close result set");
         }
     }
 }

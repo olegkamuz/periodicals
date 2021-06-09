@@ -3,7 +3,6 @@ package com.training.periodical.model.dao;
 import com.training.periodical.entity.Subscription;
 import com.training.periodical.model.builder.SubscriptionBuilder;
 import com.training.periodical.model.dao.query.SubscriptionQuery;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -66,8 +65,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     public void createSubscription(Long userId, List<String> magazineIds, UserDao userDao, BigDecimal userBalance) throws DaoException {
         try {
             for (String magazineId : magazineIds) {
-                Object[] parameters = {userId, magazineId};
-                executeUpdate( SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, parameters);
+                executeUpdate( SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, userId, magazineId);
             }
             userDao.updateUser(userId, userBalance);
         } catch (DaoException e) {
