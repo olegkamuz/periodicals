@@ -50,12 +50,17 @@ public class ClientCabinetCommand extends AbstractCommand {
             }
         }
 
-        if (!isAttributeSet("subscriptionList")) {
-            setSessionSubscriptionList(getSubscriptions());
-        }
+        refreshSubscriptionsCacheIfNewBought();
+
 
         log.info("User cabinet command finish");
         return Path.PAGE__CLIENT_CABINET;
+    }
+
+    private void refreshSubscriptionsCacheIfNewBought() throws CommandException{
+        if (!isAttributeSet("subscriptionList")) {
+            setSessionSubscriptionList(getSubscriptions());
+        }
     }
 
     private void showBalance(long userId) {

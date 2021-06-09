@@ -38,7 +38,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         updateLocaleIfRequested(request.getParameter("localeToSet"));
 
         User user = getUserById();
-        changeUser(request, user);
+        changeUser(user);
         showUsersList(request);
 
         Magazine magazine = getMagazineById(request);
@@ -134,7 +134,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         }
     }
 
-    private void changeUser(HttpServletRequest request, User user) throws CommandException {
+    private void changeUser(User user) throws CommandException {
         String block = request.getParameter("change_block");
         String userId = request.getParameter("user_id");
         if (block != null && userId != null) {

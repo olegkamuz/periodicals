@@ -68,8 +68,16 @@
                                       entry.key != 'magazine_price_change_value' &&
                                       entry.key != 'magazine_theme_id_change_value' &&
                                       entry.key != 'magazine_id' &&
-                                      entry.key != 'delete_magazine'
+                                      entry.key != 'delete_magazine' &&
 
+                                          entry.key != 'change_block' &&
+                                          entry.key != 'user_id' &&
+
+                                       entry.key != 'magazine_name_add_value' &&
+                                       entry.key != 'magazine_price_add_value' &&
+                                       entry.key != 'magazine_image_add_value' &&
+                                       entry.key != 'magazine_theme_id_add_value' &&
+                                       entry.key != 'magazine_theme_id_change_value'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -96,7 +104,15 @@
                                       entry.key != 'magazine_price_change_value' &&
                                       entry.key != 'magazine_theme_id_change_value' &&
                                       entry.key != 'magazine_id' &&
-                                      entry.key != 'delete_magazine'
+                                      entry.key != 'delete_magazine' &&
+                                          entry.key != 'change_block' &&
+                                          entry.key != 'user_id' &&
+
+                                       entry.key != 'magazine_name_add_value' &&
+                                       entry.key != 'magazine_price_add_value' &&
+                                       entry.key != 'magazine_image_add_value' &&
+                                       entry.key != 'magazine_theme_id_add_value' &&
+                                       entry.key != 'magazine_theme_id_change_value'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -180,7 +196,15 @@
                                       entry.key != 'magazine_price_change_value' &&
                                       entry.key != 'magazine_theme_id_change_value' &&
                                       entry.key != 'magazine_id' &&
-                                      entry.key != 'delete_magazine'
+                                      entry.key != 'delete_magazine' &&
+                                          entry.key != 'change_block' &&
+                                          entry.key != 'user_id' &&
+
+                                       entry.key != 'magazine_name_add_value' &&
+                                       entry.key != 'magazine_price_add_value' &&
+                                       entry.key != 'magazine_image_add_value' &&
+                                       entry.key != 'magazine_theme_id_add_value' &&
+                                       entry.key != 'magazine_theme_id_change_value'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>
@@ -207,7 +231,15 @@
                                       entry.key != 'magazine_price_change_value' &&
                                       entry.key != 'magazine_theme_id_change_value' &&
                                       entry.key != 'magazine_id' &&
-                                      entry.key != 'delete_magazine'
+                                      entry.key != 'delete_magazine' &&
+                                          entry.key != 'change_block' &&
+                                          entry.key != 'user_id' &&
+
+                                       entry.key != 'magazine_name_add_value' &&
+                                       entry.key != 'magazine_price_add_value' &&
+                                       entry.key != 'magazine_image_add_value' &&
+                                       entry.key != 'magazine_theme_id_add_value' &&
+                                       entry.key != 'magazine_theme_id_change_value'
                                          }">
                                     <c:param name="${entry.key}" value="${entry.value}"/>
                                 </c:if>

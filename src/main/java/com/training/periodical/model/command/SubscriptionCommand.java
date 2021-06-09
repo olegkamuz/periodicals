@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +59,7 @@ public class SubscriptionCommand extends AbstractCommand {
                     this.getClass().getSimpleName(), e);
         }
 
-        cleanSessionSubscriptionList();
+        refreshCacheSubscriptions();
 
         log.debug("Command finished");
         return Path.REDIRECT__USER_CABINET;
@@ -81,7 +80,7 @@ public class SubscriptionCommand extends AbstractCommand {
     }
 
 
-    private void cleanSessionSubscriptionList() {
+    private void refreshCacheSubscriptions() {
         if (request.getSession().getAttribute("subscriptionList") != null) {
             request.getSession().removeAttribute("subscriptionList");
         }

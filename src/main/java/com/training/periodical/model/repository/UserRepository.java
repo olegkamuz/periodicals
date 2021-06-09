@@ -23,20 +23,21 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     public int update(String userId, String column, String value) throws RepositoryException {
-        try(UserDao userDao = daoFactory.createUserDao()) {
+        try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.update(userId, column, value);
         } catch (DaoException e) {
-           throw createRepositoryException("update", e);
+            throw createRepositoryException("update", e);
         }
     }
 
-//    public int updateNow(User user) throws RepositoryException {
-//        try(UserDao userDao = daoFactory.createUserDao()) {
-//            return userDao.updateNow(user);
-//        } catch (DaoException e) {
-//            throw createRepositoryException("update", e);
-//        }
-//    }
+    @Override
+    public int update(User user) throws RepositoryException {
+        try (UserDao userDao = daoFactory.createUserDao()) {
+            return userDao.update(user);
+        } catch (DaoException e) {
+            throw createRepositoryException("update", e);
+        }
+    }
 
     public Optional<User> findUserByLogin(String login) throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
@@ -63,10 +64,6 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
-    @Override
-    public int update(User entity) throws RepositoryException {
-        return 0;
-    }
 
     @Override
     public int delete(long id) throws RepositoryException {
@@ -80,7 +77,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     @Override
     public int create(User user) throws RepositoryException {
-        try(UserDao userDao = daoFactory.createUserDao()){
+        try (UserDao userDao = daoFactory.createUserDao()) {
             return userDao.create(user);
         } catch (DaoException e) {
             throw createRepositoryException("create", e);

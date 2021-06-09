@@ -83,15 +83,11 @@ public class UserDao extends AbstractDao<User> {
         return executeUpdate(query, parameters);
     }
 
-//    public int updateNow(User user) throws DaoException {
-//        String query = UserQuery.SQL__UPDATE_USER;
-//        Object[] parameters = userBuilder.unBuild(user);
-//        return executeUpdateNow(query, parameters);
-//    }
-
     @Override
     public int update(User user) throws DaoException {
-        return 0;
+        String query = UserQuery.SQL__UPDATE_USER;
+        Object[] parameters = userBuilder.unBuild(user);
+        return executeUpdate(query, parameters);
     }
 
     @Override
