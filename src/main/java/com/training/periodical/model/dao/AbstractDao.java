@@ -3,6 +3,7 @@ package com.training.periodical.model.dao;
 import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.dao.query.Query;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,16 +15,18 @@ import java.util.Optional;
 
 public abstract class AbstractDao<T> implements IDao<T> {
     private static final long serialVersionUID = 6242682689824341676L;
+    private final Logger log = Logger.getLogger(getClass());
     protected String tableName;
+    Connection connection;
 
     public String getTableName() {
         return this.tableName;
     }
 
-    public List<T> findAll(Connection connection, Builder<T> builder) throws DaoException {
+    public List<T> findAll(Builder<T> builder) throws DaoException {
         try {
             Object[] parameters = {};
-            return executeQuery(connection, Query.findAllFromTable(tableName), builder, parameters);
+            return executeQuery(Query.findAllFromTable(tableName), builder, parameters);
         } catch (SQLException e) {
             throw new DaoException();
         }
@@ -33,7 +36,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     /**
      * Commits given connection.
      */
-    public void commit(Connection connection) throws DaoException {
+    public void commit() throws DaoException {
         try {
             connection.commit();
         } catch (SQLException ex) {
@@ -44,7 +47,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     /**
      * Rollbacks given connection.
      */
-    public void rollback(Connection connection) throws DaoException {
+    public void rollback() throws DaoException {
         try {
             connection.rollback();
         } catch (SQLException ex) {
@@ -52,17 +55,17 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    public List<T> findAll(Connection connection, Builder<T> builder, int limit, int offset) throws DaoException {
+    public List<T> findAll(Builder<T> builder, int limit, int offset) throws DaoException {
         try {
             Object[] parameters = {limit, offset};
-            return executeQuery(connection, MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
+            return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, builder, parameters);
         } catch (SQLException e) {
             throw new DaoException();
         }
     }
 
 
-    protected List<T> executeQuery(Connection connection, String query, Builder<T> builder, Object... parameters) throws SQLException {
+    protected List<T> executeQuery(String query, Builder<T> builder, Object... parameters) throws SQLException {
         ResultSet resultSet;
         List<T> entity = new ArrayList<>();
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -76,7 +79,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
 
-    protected int executeUpdate(Connection connection, String query, Object... parameters) throws DaoException {
+    protected int executeUpdate(String query, Object... parameters) throws DaoException {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -88,7 +91,7 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected int executeUpdateNow(Connection connection, String query, Object... parameters) throws DaoException {
+    protected int executeUpdateNow(String query, Object... parameters) throws DaoException {
         PreparedStatement preparedStatement;
         try {
             preparedStatement = connection.prepareStatement(query);
@@ -101,8 +104,8 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected Optional<T> executeSingleResponseQuery(Connection connection, String query, Builder<T> builder, Object... parameters) throws SQLException {
-        List<T> list = executeQuery(connection, query, builder, parameters);
+    protected Optional<T> executeSingleResponseQuery( String query, Builder<T> builder, Object... parameters) throws SQLException {
+        List<T> list = executeQuery(query, builder, parameters);
         if (list.size() == 1) {
             return Optional.of(list.get(0));
         } else {
@@ -116,5 +119,41 @@ public abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    protected abstract DaoException createDaoException(String methodName, Exception e);
+    @Override
+    public DaoException createDaoException(String methodName, Exception e) {
+        return new DaoException("exception in " +
+                methodName +
+                " method at " +
+                getClass().getSimpleName(), e);
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void close(ResultSet rs) throws DaoException {
+        if (rs == null) return;
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+
+

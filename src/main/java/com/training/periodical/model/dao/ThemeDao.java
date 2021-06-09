@@ -11,7 +11,6 @@ import java.util.Optional;
 public class ThemeDao extends AbstractDao<Theme> {
     private static final long serialVersionUID = -4329084276299458939L;
     private final ThemeBuilder builder;
-    private final Connection connection;
 
     public ThemeDao(Connection connection, ThemeBuilder themeBuilder) {
         this.connection = connection;
@@ -22,24 +21,17 @@ public class ThemeDao extends AbstractDao<Theme> {
     public int create(Theme theme) {
         return 0;
     }
-    public int update(Theme theme) throws DaoException{
+
+    public int update(Theme theme) throws DaoException {
         return 0;
     }
-    public int delete(long id){
+
+    public int delete(long id) {
         return 0;
     }
 
     public List<Theme> findAll() throws DaoException {
-        return findAll(connection, builder);
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return findAll(builder);
     }
 
     @Override
@@ -47,11 +39,4 @@ public class ThemeDao extends AbstractDao<Theme> {
         return Optional.empty();
     }
 
-    @Override
-    protected DaoException createDaoException(String methodName, Exception e) {
-        return new DaoException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
 }

@@ -18,9 +18,7 @@ import java.util.Optional;
  */
 public class SubscriptionDao extends AbstractDao<Subscription> {
     private static final long serialVersionUID = -6448380123363743542L;
-    private static final Logger log = Logger.getLogger(UserDao.class);
     private final SubscriptionBuilder builder;
-    private final Connection connection;
 
     public SubscriptionDao(Connection connection, SubscriptionBuilder subscriptionBuilder) {
         this.connection = connection;
@@ -44,7 +42,7 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
     }
 
     public List<Subscription> findAll() throws DaoException {
-        return findAll(connection, builder);
+        return findAll( builder);
     }
 
     public int countByCompositeKey(long userId, long magazineId) throws DaoException{
@@ -69,29 +67,20 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
         try {
             for (String magazineId : magazineIds) {
                 Object[] parameters = {userId, magazineId};
-                executeUpdate(connection, SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, parameters);
+                executeUpdate( SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, parameters);
             }
-            userDao.updateUser(connection, userId, userBalance);
+            userDao.updateUser(userId, userBalance);
         } catch (DaoException e) {
-            rollback(connection);
+            rollback();
             throw new DaoException(e);
         } finally {
-            commit(connection);
+            commit();
         }
     }
 
     @Override
     public Optional<Subscription> findById(long id) throws DaoException {
         return Optional.empty();
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public Connection getConnection() {
@@ -102,22 +91,6 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
         return tableName;
     }
 
-    private static void close(ResultSet rs) throws DaoException {
-        if (rs == null) return;
-        try {
-            rs.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    protected DaoException createDaoException(String methodName, Exception e) {
-        return new DaoException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
 }
 
 

@@ -50,7 +50,7 @@ public class SubscriptionCommand extends AbstractCommand {
                     magazineIds.add((String) ob);
                 }
             }
-        }
+        } // todo separate method
 
         magazineIds = removePossibleMagIdsDuplication(magazineIds);
 

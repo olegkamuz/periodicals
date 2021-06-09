@@ -1,7 +1,6 @@
 package com.training.periodical.model.dao;
 
 import com.training.periodical.entity.Magazine;
-import com.training.periodical.model.builder.Builder;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.dao.query.MagazineQuery;
 
@@ -15,7 +14,6 @@ import java.util.Optional;
  */
 public class MagazineDao extends AbstractDao<Magazine> {
     private static final long serialVersionUID = -1560516295484382753L;
-    private final Connection connection;
     private final MagazineBuilder builder;
 
     public MagazineDao(Connection connection, MagazineBuilder magazineBuilder) {
@@ -25,7 +23,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     public List<Magazine> findAll() throws DaoException {
-        return findAll(connection, builder);
+        return findAll(builder);
     }
 
     public int getCount() throws DaoException {
@@ -64,15 +62,6 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return 0;
     }
 
-    protected static void close(ResultSet rs) throws DaoException {
-        if (rs == null) return;
-        try {
-            rs.close();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-    }
-
     public BigDecimal findSumPriceByIds(List<String> ids) throws DaoException {
         ResultSet rs = null;
         try {
@@ -86,10 +75,10 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 return null;
             }
         } catch (SQLException ex) {
-            rollback(connection);
+            rollback();
             throw new DaoException(ex);
         } finally {
-            commit(connection);
+            commit();
             close(rs);
         }
     }
@@ -98,19 +87,19 @@ public class MagazineDao extends AbstractDao<Magazine> {
     @Override
     public int create(Magazine magazine) throws DaoException {
         Object[] parameters = builder.unBuildStrippedMagazine(magazine);
-        return executeUpdateNow(connection, MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
+        return executeUpdateNow(MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
     }
 
     public int update(Magazine magazine) throws DaoException {
         String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
         Object[] parameters = builder.unBuild(magazine);
-        return executeUpdate(connection, query, parameters);
+        return executeUpdate(query, parameters);
     }
 
     public int updateNow(Magazine magazine) throws DaoException {
         String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
         Object[] parameters = builder.unBuild(magazine);
-        return executeUpdateNow(connection, query, parameters);
+        return executeUpdateNow(query, parameters);
     }
 
     @Override
@@ -122,7 +111,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     public int deleteNow(long id) throws DaoException {
         String query = MagazineQuery.SQL__DELETE_MAGAZINE;
         Object[] parameters = {id};
-        return executeUpdateNow(connection, query, parameters);
+        return executeUpdateNow(query, parameters);
     }
 
     /**
@@ -139,7 +128,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
 
     private List<Magazine> find(String query, Object[] parameters) throws DaoException {
         try {
-            return executeQuery(connection, query, builder, parameters);
+            return executeQuery(query, builder, parameters);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
@@ -177,32 +166,15 @@ public class MagazineDao extends AbstractDao<Magazine> {
 
 
     public List<Magazine> findPage(int limit, int offset) throws DaoException {
-        return findAll(connection, builder, limit, offset);
+        return findAll(builder, limit, offset);
     }
 
     @Override
     public Optional<Magazine> findById(long id) throws DaoException {
         try {
-            return executeSingleResponseQuery(connection, MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
+            return executeSingleResponseQuery(MagazineQuery.SQL__FIND_MAGAZINE_BY_ID, builder, id);
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    protected DaoException createDaoException(String methodName, Exception e) {
-        return new DaoException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
     }
 }
