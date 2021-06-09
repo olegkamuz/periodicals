@@ -46,15 +46,12 @@ public class CommandAccessFilter implements Filter, Serializable {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.debug("Filter starts");
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-
         if (accessAllowed(request)) {
             log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
             log.error("Error in do filter method at CommandAccessFilter");
-            httpResponse.sendRedirect(Path.REDIRECT__LOGIN.replace("redirect:", ""));
+            ((HttpServletResponse)response).sendRedirect(Path.FORWARD__LOGIN);
         }
     }
 

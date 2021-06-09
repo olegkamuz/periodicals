@@ -6,6 +6,7 @@ import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.UserRepository;
 import com.training.periodical.model.repository.UserSubscriptionRepository;
+import com.training.periodical.util.validator.Valid;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class ClientCabinetCommand extends AbstractCommand {
 
         String replenish = request.getParameter("replenish");
 
-        if (replenish != null && !replenish.equals("")) {
+        if (Valid.notNullNotEmpty(replenish)) {
             try {
                 BigDecimal newBalance = (new BigDecimal(replenish))
                         .add(user.getBalance());
@@ -57,10 +58,6 @@ public class ClientCabinetCommand extends AbstractCommand {
         return Path.PAGE__CLIENT_CABINET;
     }
 
-    private void setPreviousParametersToSession(String previousParameters) {
-        request.getSession().setAttribute("backWithPreviousParameters", previousParameters);
-    }
-
     private void showBalance(long userId) {
         try {
             BigDecimal balanceFromDB = getUser(userId).getBalance();
@@ -70,11 +67,11 @@ public class ClientCabinetCommand extends AbstractCommand {
         }
     }
 
-    private User getUser(long userId) throws CommandException{
+    private User getUser(long userId) throws CommandException {
         User user;
         try {
             Optional<User> optionalUser = userRepository.findById(userId);
-            if(optionalUser.isPresent()){
+            if (optionalUser.isPresent()) {
                 user = optionalUser.get();
             } else {
                 throw createCommandException("exception in getUser");
@@ -85,7 +82,7 @@ public class ClientCabinetCommand extends AbstractCommand {
         return user;
     }
 
-    private List<UserSubscriptionBean> getSubscriptions() throws CommandException{
+    private List<UserSubscriptionBean> getSubscriptions() throws CommandException {
         try {
             return userSubscriptionRepository.findSubscriptionByUserId(((User) request.getSession().getAttribute("user")).getId());
         } catch (RepositoryException e) {
@@ -93,11 +90,11 @@ public class ClientCabinetCommand extends AbstractCommand {
         }
     }
 
-    private void setSessionSubscriptionList(List<UserSubscriptionBean> subscriptionList) throws CommandException {
+    private void setSessionSubscriptionList(List<UserSubscriptionBean> subscriptionList) {
         request.getSession().setAttribute("subscriptionList", subscriptionList);
     }
 
-    private boolean isAttributeSet( String attributeName) {
-        return request.getSession().getAttribute(attributeName) != null;
+    private boolean isAttributeSet(String attributeName) {
+        return Valid.isAttributeNull(request, attributeName);
     }
 }

@@ -39,23 +39,11 @@ public class SubscriptionCommand extends AbstractCommand {
         log.debug("Command starts");
         this.request = request;
 
-//        setPreviousParameters();
-
         Long userId = ((User) request.getSession().getAttribute("user")).getId();
-        List<String> magazineIds = new ArrayList<>();
-        Object obj = request.getSession().getAttribute("magazineId");
-        if (obj instanceof List) {
-            for (Object ob : (List) obj) {
-                if (ob instanceof String) {
-                    magazineIds.add((String) ob);
-                }
-            }
-        } // todo separate method
 
-        magazineIds = removePossibleMagIdsDuplication(magazineIds);
+        List<String> magazineIds = getMagazineIds();
 
         magazineIds = checkForAlreadyAdded(subscriptionRepository, userId, magazineIds);
-
 
         if (magazineIds.size() == 0) {
             log.debug("Command finished");
@@ -63,7 +51,7 @@ public class SubscriptionCommand extends AbstractCommand {
         }
 
         try {
-            if (isEnoughMoney(String.valueOf(userId), magazineIds)) {
+            if (isEnoughMoney(userId, magazineIds)) {
                 subscriptionRepository.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
                 cleanSessionMagazineId();
             }
@@ -92,14 +80,6 @@ public class SubscriptionCommand extends AbstractCommand {
         }
     }
 
-    private List<String> removePossibleMagIdsDuplication(List<String> magazineIds) {
-        List<String> magId = new ArrayList<>();
-        if (!magazineIds.isEmpty()) {
-            magId = new ArrayList<>(
-                    new HashSet<>(magazineIds));
-        }
-        return magId;
-    }
 
     private void cleanSessionSubscriptionList() {
         if (request.getSession().getAttribute("subscriptionList") != null) {
@@ -120,7 +100,7 @@ public class SubscriptionCommand extends AbstractCommand {
         return userBalance = userBalance.subtract(sumPriceMagazines);
     }
 
-    private boolean isEnoughMoney(String userId, List<String> magazineIds) throws CommandException {
+    private boolean isEnoughMoney(long userId, List<String> magazineIds) throws CommandException {
         try {
             sumPriceMagazines = getSumPriceMagazines(magazineIds);
             if (sumPriceMagazines == null) return false;
@@ -128,7 +108,7 @@ public class SubscriptionCommand extends AbstractCommand {
             userBalance = getUserBalance(userId);
             if (userBalance == null) return false;
         } catch (RepositoryException e) {
-            throw new CommandException(e);
+            throw createCommandException("isEnoughMoney", e);
         }
 
         return userBalance.compareTo(sumPriceMagazines) >= 0;
@@ -138,9 +118,9 @@ public class SubscriptionCommand extends AbstractCommand {
         return magazineRepository.findSumPriceByIds(magazineIds);
     }
 
-    private BigDecimal getUserBalance(String userId) throws RepositoryException {
+    private BigDecimal getUserBalance(long userId) throws RepositoryException {
         BigDecimal userBalance;
-        Optional<User> optionalUser = userRepository.findById(Long.parseLong(userId));
+        Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             userBalance = user.getBalance();

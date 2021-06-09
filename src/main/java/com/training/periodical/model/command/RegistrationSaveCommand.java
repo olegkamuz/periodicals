@@ -45,12 +45,9 @@ public class RegistrationSaveCommand extends AbstractCommand {
         return Path.REDIRECT__LOGIN;
     }
 
-    private boolean validateAllFields(String login, String password, String firstName, String lastName) throws CommandException {
-            if(Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)
-            && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName)){
-                return true;
-            }
-        return false;
+    private boolean validateAllFields(String login, String password, String firstName, String lastName) {
+        return Valid.notNullNotEmpty(login) && Valid.notNullNotEmpty(password)
+                && Valid.notNullNotEmpty(firstName) && Valid.notNullNotEmpty(lastName);
     }
 
     private User buildUser(String login, String password, String firstName, String lastName) {

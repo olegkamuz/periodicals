@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 /**
  * Data access object for Order entity and UserOrderBean bean.
@@ -64,15 +65,25 @@ public class SubscriptionDao extends AbstractDao<Subscription> {
 
     public void createSubscription(Long userId, List<String> magazineIds, UserDao userDao, BigDecimal userBalance) throws DaoException {
         try {
+            connection.setAutoCommit(false);
             for (String magazineId : magazineIds) {
                 executeUpdate( SubscriptionQuery.SQL__INSERT_SUBSCRIPTION, userId, magazineId);
             }
             userDao.updateUser(userId, userBalance);
-        } catch (DaoException e) {
+        } catch (DaoException | SQLException e) {
             rollback();
             throw new DaoException(e);
         } finally {
             commit();
+            setAutocommitTrue();
+        }
+    }
+
+    private void setAutocommitTrue() {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            log.error("exception at setAutocommitTrue at SubscriptionDao", e);
         }
     }
 

@@ -64,24 +64,10 @@ public class SubscriptionRepository extends AbstractRepository<Subscription> {
     }
 
     @Override
-    public List<Subscription> findPage(int pageSize, int offSet) throws RepositoryException {
+    public List<Subscription> findPage(int pageSize, int offSet) {
         return null;
     }
 
-    @Override
-    protected RepositoryException createRepositoryException(String methodName, DaoException e) {
-        return new RepositoryException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
-
-    protected RepositoryException createRepositoryException(String methodName, Exception e) {
-        return new RepositoryException("exception in " +
-                methodName +
-                " method at " +
-                this.getClass().getSimpleName(), e);
-    }
 }
 
 

@@ -1,20 +1,24 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
-<c:url var="url_command" value="${fn:replace(fn:replace(fn:replace(fn:replace(pageContext.request.requestURL, '.jsp', ''),'WEB-INF/jsp/admin/', ''),'WEB-INF/jsp/client/', '' ), 'WEB-INF/jsp/','')}">
+<c:url var="url_command"
+       value="${fn:replace(fn:replace(fn:replace(fn:replace(pageContext.request.requestURL, '.jsp', ''),'WEB-INF/jsp/admin/', ''),'WEB-INF/jsp/client/', '' ), 'WEB-INF/jsp/','')}">
 </c:url>
 
 <c:url var="url_clean" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, '')}/">
 </c:url>
 <div id="header">
-    <a class="home" href="${url_clean}index">
+    <a class="home" href="${url_clean}index
+<c:if test='${not empty currentPage}'>?page=${currentPage}</c:if>
+">
+
         <fmt:message key="header_jspf.anchor.home"/>
     </a>
 
 
-        <c:if test="${not empty user}">
+    <c:if test="${not empty user}">
         <div id="leftHeader">
-                <a href="${url_clean}view-settings">
+            <a href="${url_clean}view-settings">
                 <fmt:message key="header_jspf.anchor.settings"/>
             </a>
         </div>

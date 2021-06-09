@@ -343,9 +343,7 @@ public class IndexCommand extends AbstractCommand {
     }
 
     private boolean validateFilterOrSort(String data) {
-            if (Valid.notNullNotEmptyUrlDecodeAll(data))
-                return true;
-        return false;
+        return Valid.notNullNotEmptyUrlDecodeAll(data);
     }
 
     private int getAllMagazineAmount() throws CommandException {

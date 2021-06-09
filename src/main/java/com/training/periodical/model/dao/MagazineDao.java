@@ -75,10 +75,8 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 return null;
             }
         } catch (SQLException ex) {
-            rollback();
             throw new DaoException(ex);
         } finally {
-            commit();
             close(rs);
         }
     }
@@ -87,7 +85,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     @Override
     public int create(Magazine magazine) throws DaoException {
         Object[] parameters = builder.unBuildStrippedMagazine(magazine);
-        return executeUpdateNow(MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
+        return executeUpdate(MagazineQuery.SQL__CREATE_MAGAZINE, parameters);
     }
 
     public int update(Magazine magazine) throws DaoException {
@@ -96,22 +94,17 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return executeUpdate(query, parameters);
     }
 
-    public int updateNow(Magazine magazine) throws DaoException {
-        String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
-        Object[] parameters = builder.unBuild(magazine);
-        return executeUpdateNow(query, parameters);
-    }
+//    public int updateNow(Magazine magazine) throws DaoException {
+//        String query = MagazineQuery.SQL__UPDATE_MAGAZINE;
+//        Object[] parameters = builder.unBuild(magazine);
+//        return executeUpdate(query, parameters);
+//    }
 
     @Override
-    public int delete(long id) {
-        return 0;
-    }
-
-
-    public int deleteNow(long id) throws DaoException {
+    public int delete(long id) throws DaoException {
         String query = MagazineQuery.SQL__DELETE_MAGAZINE;
         Object[] parameters = {id};
-        return executeUpdateNow(query, parameters);
+        return executeUpdate(query, parameters);
     }
 
     /**

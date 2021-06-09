@@ -49,7 +49,7 @@ public class UpdateSettingsCommand extends AbstractCommand {
 
         if (updateUser) {
             try {
-                userRepository.updateNow(user);
+                userRepository.update(user);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -60,21 +60,21 @@ public class UpdateSettingsCommand extends AbstractCommand {
         return Path.PAGE__SETTINGS;
     }
 
-    private boolean isUpdateFirstName(String firstName,User user) throws CommandException {
+    private boolean isUpdateFirstName(String firstName,User user) {
             if (Valid.notNullNotEmpty(firstName)) {
                 user.setFirstName(firstName);
                 return true;
             }
         return false;
     }
-    private boolean isUpdateLastName(String lastName,User user) throws CommandException {
+    private boolean isUpdateLastName(String lastName,User user) {
             if (Valid.notNullNotEmpty(lastName)) {
                 user.setLastName(lastName);
                 return true;
             }
         return false;
     }
-    private boolean isUpdateLocale(String localeToSet, User user, HttpServletRequest request) throws CommandException {
+    private boolean isUpdateLocale(String localeToSet, User user, HttpServletRequest request) {
             if (Valid.notNullNotEmpty(localeToSet)) {
                 HttpSession session = request.getSession();
                 Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);

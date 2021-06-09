@@ -18,6 +18,9 @@ public final class Path implements Serializable {
 	public static final String PAGE__SETTINGS = "/WEB-INF/jsp/view-settings.jsp";
     public static final String PAGE_INDEX = "/WEB-INF/jsp/index.jsp";
 
+    // forward
+    public static final String FORWARD__LOGIN = "/login";
+    public static final String FORWARD__SUBSCRIPTION = "/create-subscription";
 
     // redirects
     public static final String REDIRECT__LOGIN = "redirect:/login";

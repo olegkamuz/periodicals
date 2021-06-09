@@ -118,7 +118,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         if (deleteMagazine != null) {
             Long magazineId = Long.parseLong(request.getParameter("magazine_id"));
             try {
-                magazineRepository.deleteNow(magazineId);
+                magazineRepository.delete(magazineId);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -128,7 +128,7 @@ public class AdminCabinetCommand extends AbstractCommand {
     private void updateMagazine(Magazine magazine) throws CommandException {
         setParameters(magazine);
         try {
-            magazineRepository.updateNow(magazine);
+            magazineRepository.update(magazine);
         } catch (RepositoryException e) {
             throw new CommandException(e);
         }
@@ -141,7 +141,7 @@ public class AdminCabinetCommand extends AbstractCommand {
             int changed = Integer.parseInt(block) == 0 ? 1 : 0;
             user.setBlocked(changed);
             try {
-                userRepository.updateNow(user);
+                userRepository.update(user);
             } catch (RepositoryException e) {
                 throw new CommandException(e);
             }
@@ -181,7 +181,7 @@ public class AdminCabinetCommand extends AbstractCommand {
     private Magazine getMagazineById(HttpServletRequest request) throws CommandException {
         String magazineId = request.getParameter("magazine_id");
         Optional<Magazine> optionalMagazine;
-        if (magazineId != null && !magazineId.equals("")) {
+        if(Valid.notNullNotEmpty(magazineId)){
             try {
                 optionalMagazine = magazineRepository.findById(Long.parseLong(magazineId));
                 if (optionalMagazine.isPresent()) {

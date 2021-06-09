@@ -5,7 +5,6 @@ import com.training.periodical.model.dao.AbstractDaoFactory;
 import com.training.periodical.model.dao.DaoException;
 import com.training.periodical.model.dao.IDaoFactory;
 import com.training.periodical.model.dao.UserDao;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +12,6 @@ import java.util.Optional;
 
 public class UserRepository extends AbstractRepository<User> {
     private static final long serialVersionUID = 8200073681069516742L;
-    private static final Logger log = Logger.getLogger(UserRepository.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
     public void updateBalance(BigDecimal userBalance, long userId) throws RepositoryException {
@@ -32,13 +30,13 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
-    public int updateNow(User user) throws RepositoryException {
-        try(UserDao userDao = daoFactory.createUserDao()) {
-            return userDao.updateNow(user);
-        } catch (DaoException e) {
-            throw createRepositoryException("update", e);
-        }
-    }
+//    public int updateNow(User user) throws RepositoryException {
+//        try(UserDao userDao = daoFactory.createUserDao()) {
+//            return userDao.updateNow(user);
+//        } catch (DaoException e) {
+//            throw createRepositoryException("update", e);
+//        }
+//    }
 
     public Optional<User> findUserByLogin(String login) throws RepositoryException {
         try (UserDao userDao = daoFactory.createUserDao()) {
@@ -76,7 +74,7 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     @Override
-    public List<User> findPage(int pageSize, int offSet) throws RepositoryException {
+    public List<User> findPage(int pageSize, int offSet) {
         return null;
     }
 
@@ -96,15 +94,6 @@ public class UserRepository extends AbstractRepository<User> {
         } catch (DaoException e) {
             throw createRepositoryException("getById", e);
         }
-    }
-
-    @Override
-    protected RepositoryException createRepositoryException(
-            String methodName,
-            DaoException e) {
-        return new RepositoryException("exception in " +
-                methodName + " method at " +
-                this.getClass().getSimpleName(), e);
     }
 
 }

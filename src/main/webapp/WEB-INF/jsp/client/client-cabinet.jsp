@@ -24,7 +24,8 @@
                             <fmt:message key="client-cabinet_jsp.label.replenish"/>
                         </legend>
                         <input name="replenish"/>
-                    <input type="submit" value='<fmt:message key="client-cabinet_jsp.label.replenish"/>'>
+                        <input type="submit" value='<fmt:message key="client-cabinet_jsp.label.replenish"/>'>
+                    </fieldset>
                 </form>
                 <p class="lead text-muted"><fmt:message key="client-cabinet_jsp.p.your_subscription"/></p>
             </div>
@@ -32,7 +33,7 @@
         <c:choose>
             <c:when test="${fn:length(subscriptionList) == 0}">
                 <div class="get_back_wrapper">
-                    <div class="get_back" >
+                    <div class="get_back">
                         <div>
                             <h3>
                                 <fmt:message key="client-cabinet_jsp.div.no_subscription"/>
@@ -40,8 +41,11 @@
                         </div>
                         <div>
                             <h3>
-                                <a href="/index<c:if test='${not empty pre_sub_sort or not empty pre_sub_filter or not empty pre_sub_page}'>?</c:if><c:if test='${not empty pre_sub_sort}'>&sort=${pre_sub_sort}</c:if><c:if test='${not empty pre_sub_filter}'>&filter=${pre_sub_filter}</c:if><c:if test='${not empty pre_sub_page}'>&page=${pre_sub_page}</c:if>">
-                                    <fmt:message key="client-cabinet_jsp.a.back_with_pre_params"/></a>
+                                <a class="home" href="index
+<c:if test='${not empty currentPage}'>?page=${currentPage}</c:if>
+">
+                                    <fmt:message key="client-cabinet_jsp.a.back_with_pre_params"/>
+                                </a>
                             </h3>
                         </div>
                     </div>

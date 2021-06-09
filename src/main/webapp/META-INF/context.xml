@@ -9,10 +9,25 @@
               maxWaitMillis="10000"
               InitialSize="3"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              defaultAutoCommit ="false"
               defaultTransactionIsolation="READ_COMMITTED"
               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
               url="jdbc:mysql://localhost:3306/periodical" />
 </Context>
 
 
+<!--<Context>-->
+<!--<Resource name="jdbc/periodical"-->
+<!--          auth="Container"-->
+<!--          type="javax.sql.DataSource"-->
+<!--          username="springuser"-->
+<!--          password="ThePassword"-->
+<!--          maxTotal="100"-->
+<!--          maxIdle="30"-->
+<!--          maxWaitMillis="10000"-->
+<!--          InitialSize="3"-->
+<!--          driverClassName="com.mysql.cj.jdbc.Driver"-->
+<!--          defaultAutoCommit ="false"-->
+<!--          defaultTransactionIsolation="READ_COMMITTED"-->
+<!--          factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"-->
+<!--          url="jdbc:mysql://localhost:3306/periodical" />-->
+<!--</Context>-->

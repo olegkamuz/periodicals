@@ -17,7 +17,7 @@ public interface IDao<T> extends AutoCloseable, Serializable {
 
     int update(T entity) throws DaoException;
 
-    int delete(long id);
+    int delete(long id) throws DaoException;
 
     DaoException createDaoException(String methodName, Exception e);
 
