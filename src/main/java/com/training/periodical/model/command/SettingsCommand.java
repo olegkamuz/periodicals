@@ -8,7 +8,7 @@ import com.training.periodical.Path;
 /**
  * View settings command.
  */
-public class ViewSettingsCommand extends AbstractCommand {
+public class SettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = -8183706805970306137L;
 
     @Override
@@ -17,7 +17,7 @@ public class ViewSettingsCommand extends AbstractCommand {
         log.debug("Command starts");
         this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         log.debug("Command finished");
         return Path.PAGE__SETTINGS;

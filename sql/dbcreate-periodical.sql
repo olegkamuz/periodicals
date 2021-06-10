@@ -212,3 +212,6 @@ CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
     COLLATE = utf8mb4_ru_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+SELECT * FROM magazine WHERE name LIKE 'Guit%'

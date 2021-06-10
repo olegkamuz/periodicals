@@ -20,7 +20,7 @@
 <div class="main-container">
     <form class="form-custom" id="make_order" action="create-subscription">
         <div class="wrapper">
-            <%-- GREETINGS --%>
+<%-- GREETINGS --%>
             <section class="jumbotron text-center">
                 <div class="container">
                     <h1 class="jumbotron-heading"><fmt:message key="index_jsp.h1.periodicals_subscription"/></h1>
@@ -213,53 +213,65 @@
                                 </a>
                             </div>
                         </div>
-<%-- SORTING --%>
-                        <div class="dropdown show dropdown-custom">
 
-                            <c:url var="url_sort" value="">
-                                <c:forEach items="${param}" var="entry">
-                                    <c:if test="${
+                        <div class="search">
+                            <form id="login_form" action="client-cabinet" method="post">
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-outline-secondary" type="submit"><fmt:message key="index_jsp.input.search"/></button>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                </div>
+                            </form>
+                        </div>
+<%-- SORTING --%>
+                      <div class="dropdown show dropdown-custom">
+
+        <c:url var="url_sort" value="">
+            <c:forEach items="${param}" var="entry">
+                <c:if test="${
                                          entry.key != 'magazineId' &&
                                          entry.key != 'reset_checked' &&
                                          entry.key != 'login' &&
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                        <c:param name="${entry.key}" value="${entry.value}"/>
-                                    </c:if>
-                                </c:forEach>
-                            </c:url>
-                            <a class="btn btn-secondary dropdown-toggle" href="${url_sort}" role="button"
-                               id="dropdownMenuLink"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <c:set var="name_asc" value="name_asc"/>
-                                <c:set var="name_desc" value="name_desc"/>
-                                <c:set var="price_asc" value="price_asc"/>
-                                <c:set var="price_desc" value="price_desc"/>
-                                <c:set var="all" value="all"/>
-                                <c:choose>
-                                    <c:when test="${fieldToSort eq name_asc}">
-                                        <fmt:message key="index_jsp.label.sort.name_asc"/>
-                                    </c:when>
-                                    <c:when test="${fieldToSort eq name_desc}">
-                                        <fmt:message key="index_jsp.label.sort.name_desc"/>
-                                    </c:when>
-                                    <c:when test="${fieldToSort eq price_asc}">
-                                        <fmt:message key="index_jsp.label.sort.price_asc"/>
-                                    </c:when>
-                                    <c:when test="${fieldToSort eq price_desc}">
-                                        <fmt:message key="index_jsp.label.sort.price_desc"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
-                                    </c:otherwise>
-                                </c:choose>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <c:param name="${entry.key}" value="${entry.value}"/>
+                </c:if>
+            </c:forEach>
+        </c:url>
+        <a class="btn btn-secondary dropdown-toggle" href="${url_sort}" role="button"
+           id="dropdownMenuLink"
+           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <c:set var="name_asc" value="name_asc"/>
+            <c:set var="name_desc" value="name_desc"/>
+            <c:set var="price_asc" value="price_asc"/>
+            <c:set var="price_desc" value="price_desc"/>
+            <c:set var="all" value="all"/>
+            <c:choose>
+                <c:when test="${fieldToSort eq name_asc}">
+                    <fmt:message key="index_jsp.label.sort.name_asc"/>
+                </c:when>
+                <c:when test="${fieldToSort eq name_desc}">
+                    <fmt:message key="index_jsp.label.sort.name_desc"/>
+                </c:when>
+                <c:when test="${fieldToSort eq price_asc}">
+                    <fmt:message key="index_jsp.label.sort.price_asc"/>
+                </c:when>
+                <c:when test="${fieldToSort eq price_desc}">
+                    <fmt:message key="index_jsp.label.sort.price_desc"/>
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
+                </c:otherwise>
+            </c:choose>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
-                                <c:url var="url" value="">
-                                    <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' &&
+            <c:url var="url" value="">
+                <c:forEach items="${param}" var="entry">
+                    <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
@@ -267,20 +279,20 @@
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                            <c:param name="${entry.key}" value="${entry.value}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:param name="sort" value="all"/>
-                                    <c:param name="page" value="1"/>
-                                </c:url>
-                                <a class="dropdown-item"
-                                   href="<c:out value='${url}'/>">
-                                    <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
-                                </a>
+                        <c:param name="${entry.key}" value="${entry.value}"/>
+                    </c:if>
+                </c:forEach>
+                <c:param name="sort" value="all"/>
+                <c:param name="page" value="1"/>
+            </c:url>
+            <a class="dropdown-item"
+               href="<c:out value='${url}'/>">
+                <fmt:message key="index_jsp.label.sort.all_wo_sorting"/>
+            </a>
 
-                                <c:url var="url" value="">
-                                    <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' &&
+            <c:url var="url" value="">
+                <c:forEach items="${param}" var="entry">
+                    <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
@@ -288,21 +300,21 @@
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                            <c:param name="${entry.key}" value="${entry.value}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:param name="sort" value="name_asc"/>
-                                    <c:param name="page" value="1"/>
-                                </c:url>
-                                <a class="dropdown-item"
-                                   href="<c:out value='${url}'/>">
-                                    <fmt:message key="index_jsp.label.sort.name_asc"/>
-                                </a>
+                        <c:param name="${entry.key}" value="${entry.value}"/>
+                    </c:if>
+                </c:forEach>
+                <c:param name="sort" value="name_asc"/>
+                <c:param name="page" value="1"/>
+            </c:url>
+            <a class="dropdown-item"
+               href="<c:out value='${url}'/>">
+                <fmt:message key="index_jsp.label.sort.name_asc"/>
+            </a>
 
 
-                                <c:url var="url" value="">
-                                    <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' &&
+            <c:url var="url" value="">
+                <c:forEach items="${param}" var="entry">
+                    <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
@@ -310,21 +322,21 @@
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                            <c:param name="${entry.key}" value="${entry.value}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:param name="sort" value="name_desc"/>
-                                    <c:param name="page" value="1"/>
-                                </c:url>
-                                <a class="dropdown-item"
-                                   href="<c:out value='${url}'/>">
-                                    <fmt:message key="index_jsp.label.sort.name_desc"/>
-                                </a>
+                        <c:param name="${entry.key}" value="${entry.value}"/>
+                    </c:if>
+                </c:forEach>
+                <c:param name="sort" value="name_desc"/>
+                <c:param name="page" value="1"/>
+            </c:url>
+            <a class="dropdown-item"
+               href="<c:out value='${url}'/>">
+                <fmt:message key="index_jsp.label.sort.name_desc"/>
+            </a>
 
 
-                                <c:url var="url" value="">
-                                    <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' &&
+            <c:url var="url" value="">
+                <c:forEach items="${param}" var="entry">
+                    <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
@@ -332,21 +344,21 @@
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                            <c:param name="${entry.key}" value="${entry.value}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:param name="sort" value="price_asc"/>
-                                    <c:param name="page" value="1"/>
-                                </c:url>
-                                <a class="dropdown-item"
-                                   href="<c:out value='${url}'/>">
-                                    <fmt:message key="index_jsp.label.sort.price_asc"/>
-                                </a>
+                        <c:param name="${entry.key}" value="${entry.value}"/>
+                    </c:if>
+                </c:forEach>
+                <c:param name="sort" value="price_asc"/>
+                <c:param name="page" value="1"/>
+            </c:url>
+            <a class="dropdown-item"
+               href="<c:out value='${url}'/>">
+                <fmt:message key="index_jsp.label.sort.price_asc"/>
+            </a>
 
 
-                                <c:url var="url" value="">
-                                    <c:forEach items="${param}" var="entry">
-                                        <c:if test="${entry.key != 'sort' &&
+            <c:url var="url" value="">
+                <c:forEach items="${param}" var="entry">
+                    <c:if test="${entry.key != 'sort' &&
                                          entry.key != 'page' &&
                                          entry.key != 'magazineId' &&
                                                             entry.key != 'reset_checked' &&
@@ -354,18 +366,18 @@
                                          entry.key != 'localeToSet' &&
                                          entry.key != 'password'
                                          }">
-                                            <c:param name="${entry.key}" value="${entry.value}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <c:param name="sort" value="price_desc"/>
-                                    <c:param name="page" value="1"/>
-                                </c:url>
-                                <a class="dropdown-item"
-                                   href="<c:out value='${url}'/>">
-                                    <fmt:message key="index_jsp.label.sort.price_desc"/>
-                                </a>
-                            </div>
-                        </div>
+                        <c:param name="${entry.key}" value="${entry.value}"/>
+                    </c:if>
+                </c:forEach>
+                <c:param name="sort" value="price_desc"/>
+                <c:param name="page" value="1"/>
+            </c:url>
+            <a class="dropdown-item"
+               href="<c:out value='${url}'/>">
+                <fmt:message key="index_jsp.label.sort.price_desc"/>
+            </a>
+        </div>
+    </div>
                     </div>
 <%-- PAGE --%>
                     <c:choose>

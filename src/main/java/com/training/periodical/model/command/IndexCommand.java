@@ -42,7 +42,7 @@ public class IndexCommand extends AbstractCommand {
         log.debug("Command starts");
         this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         resetCheckedIfRequested();
         setCheckedUncheckedMagazines();

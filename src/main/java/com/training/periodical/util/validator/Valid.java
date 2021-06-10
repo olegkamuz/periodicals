@@ -1,24 +1,49 @@
 package com.training.periodical.util.validator;
 
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class Valid {
-
-    public static boolean notNull(String... data) {
-        for (String s : data) {
-            ChainValidator notNull = new CheckNotNull(s);
-            if (!notNull.isValid()) {
+    public static boolean isNotNull(Object... inputArr) {
+        for(Object input: inputArr) {
+            if (input == null) {
                 return false;
             }
         }
         return true;
     }
 
+    public static boolean isValidSymbols(String... inputArr) {
+        for(String input: inputArr) {
+            ChainValidator validSymbols =  new CheckValidSymbols(input);
+
+            if (!validSymbols.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isValidLocale(String... inputArr) {
+        for(String input: inputArr) {
+            ChainValidator validLocale =  new CheckValidLocale(input);
+
+            if (!validLocale.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static String escapeInput(String input) {
+        return StringEscapeUtils.escapeHtml4(input);
+    }
+
+
     public static boolean isMagazineIdEmpty(HttpServletRequest request) {
         Object magIds = request.getSession().getAttribute("magazineId");
-
         if (magIds instanceof List) {
             if (((List) magIds).size() > 0) {
                 return false;
@@ -31,12 +56,7 @@ public class Valid {
         return request.getSession().getAttribute(attributeName) != null;
     }
 
-
     public static boolean notNullNotEmpty(String... data) {
-//        ChainValidator notNull = new CheckNotNull(data);
-//        ChainValidator notEmpty = new CheckNotEmpty(data);
-//        notNull.chainWith(notEmpty);
-//        return notNull.isValid();
         for (String s : data) {
             ChainValidator notNull = new CheckNotNull(s);
             ChainValidator notEmpty = new CheckNotEmpty(s);
@@ -49,16 +69,6 @@ public class Valid {
     }
 
     public static boolean notNullNotEmptyUrlDecodeAll(String... data) {
-//        ChainValidator notNull = new CheckNotNull(data);
-//        ChainValidator notEmpty = new CheckNotEmpty(data);
-//        ChainValidator urlDecode = new CheckUrlDecode(data);
-//        ChainValidator all = new CheckAll(data);
-//
-//        notNull.chainWith(notEmpty);
-//        notEmpty.chainWith(urlDecode);
-//        urlDecode.chainWith(all);
-//
-//        return notNull.isValid();
 
         for (String s : data) {
             ChainValidator notNull = new CheckNotNull(s);
@@ -78,17 +88,6 @@ public class Valid {
     }
 
     public static boolean notNullNotEmptyCastToIntInRange(int range_to, String... data) {
-//        ChainValidator notNull = new CheckNotNull(data);
-//        ChainValidator notEmpty = new CheckNotEmpty(data);
-//        ChainValidator isCastToInt = new CheckIsCastToInt(data);
-//        ChainValidator inRange = new CheckInRange(data, range_to);
-//
-//        notNull.chainWith(notEmpty);
-//        notEmpty.chainWith(isCastToInt);
-//        isCastToInt.chainWith(inRange);
-//
-//        return notNull.isValid();
-
         for (String s : data) {
             ChainValidator notNull = new CheckNotNull(s);
             ChainValidator notEmpty = new CheckNotEmpty(s);
@@ -98,6 +97,38 @@ public class Valid {
             notNull.chainWith(notEmpty);
             notEmpty.chainWith(isCastToInt);
             isCastToInt.chainWith(inRange);
+
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean notNullNotEmptyValidSymbols(String... data) {
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            ChainValidator validSymbols = new CheckValidSymbols(s);
+
+            notNull.chainWith(notEmpty);
+            notEmpty.chainWith(validSymbols);
+
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean notNullNotEmptyValidLocale(String... data) {
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            ChainValidator validLocale = new CheckValidLocale(s);
+
+            notNull.chainWith(notEmpty);
+            notEmpty.chainWith(validLocale);
 
             if (!notNull.isValid()) {
                 return false;

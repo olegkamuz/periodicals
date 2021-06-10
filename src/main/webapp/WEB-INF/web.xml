@@ -52,7 +52,7 @@
         <url-pattern>/registration-save</url-pattern>
         <url-pattern>/client-cabinet</url-pattern>
         <url-pattern>/admin-cabinet</url-pattern>
-        <url-pattern>/view-settings</url-pattern>
+        <url-pattern>/settings</url-pattern>
         <url-pattern>/update-settings</url-pattern>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
@@ -102,11 +102,11 @@
         </init-param>
         <init-param>
             <param-name>common</param-name>
-            <param-value>view-settings update-settings</param-value>
+            <param-value>settings update-settings logout</param-value>
         </init-param>
         <init-param>
             <param-name>out-of-control</param-name>
-            <param-value>registration-save registration index login login-check logout one-theme-magazines</param-value>
+            <param-value>registration-save registration index login login-check</param-value>
         </init-param>
     </filter>
 

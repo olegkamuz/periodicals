@@ -35,7 +35,7 @@ public class AdminCabinetCommand extends AbstractCommand {
         log.info("Admin cabinet command starts");
         this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         User user = getUserById();
         changeUser(user);

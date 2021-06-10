@@ -12,7 +12,7 @@ public class RegistrationCommand extends AbstractCommand {
         log.info("Registration command starts");
         this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         log.info("Registration command finish");
         return Path.PAGE__REGISTRATION;

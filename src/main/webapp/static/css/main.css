@@ -11,11 +11,25 @@ body {
     background-color: rgb(52, 54, 53);
     width: 100%;
     height: 35px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
 }
 
 #leftHeader {
     float: left;
     padding: 4px 6px 0px;
+    width: 52%;
+    display: flex;
+    justify-content: space-between;
+}
+.leftRightWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .rightHeader {
@@ -24,14 +38,17 @@ body {
     margin-right: 10px;
     color: wheat;
     padding: 6px 6px 0px;
-    width: 430px;
-
+    width: 30%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: stretch;
     justify-content: space-evenly;
     align-items: baseline;
+}
+
+.head_wrapper{
+    width: 10%;
 }
 
 .rightHeader.admin_header {
@@ -157,6 +174,12 @@ a.disabled {
 .sorting {
     width: 100%;
     margin: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: stretch;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .theme-name h3 {
@@ -188,10 +211,12 @@ a.disabled {
 .login_form {
     padding-top: 100px;
     display: flex;
-    align-content: center;
-    justify-content: center;
+    align-content: stretch;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 }
-
 
 .mag_image img {
     border-radius: 5px;
@@ -225,7 +250,7 @@ a.disabled {
 
 .dropdown-menu-custom.show {
     float: left;
-    transform: translate3d(-30px, 23px, 0px) !important;
+    transform: translate3d(-15px, 23px, 0px) !important;
     min-width: 9rem;
 }
 
@@ -261,7 +286,9 @@ body div#error_wrapper {
 
 .error {
     color: crimson;
-    padding-bottom: 35px;
+    margin: 10px;
+    font-size: 24px;
+    background-color: black;
 }
 
 /*client-cabinet*/
@@ -269,7 +296,8 @@ body div#error_wrapper {
     width: 400px;
     text-align: center
 }
-.get_back a{
+
+.get_back a {
     text-decoration: #005cbf underline;
     color: #005cbf;
 }
@@ -277,4 +305,13 @@ body div#error_wrapper {
 .get_back_wrapper {
     display: flex;
     justify-content: center;
+}
+
+.search {
+    padding-left: 234px;
+}
+
+.error_header {
+    color: #c62e2e;
+    padding-top: 3px;
 }

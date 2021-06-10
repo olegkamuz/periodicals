@@ -10,48 +10,59 @@
 <div>
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
-<div class="login_form">
-    <table id="main-container">
+<form id="registration_form" action="registration-save" method="post">
+    <div class="login_form">
+        <div>
+            <fieldset>
+                <legend style="color: #6e614c !important">
+                    <fmt:message key="login_jsp.label.login"/>
+                </legend>
+                <input name="login"/>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <legend style="color: #6e614c !important">
+                    <fmt:message key="login_jsp.label.password"/>
+                </legend>
+                <input type="password" name="password"/>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <legend style="color: #6e614c !important">
+                    <fmt:message key="settings_jsp.label.first_name"/>
+                </legend>
+                <input name="firstName"/>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <legend style="color: #6e614c !important">
+                    <fmt:message key="settings_jsp.label.last_name"/>
+                </legend>
+                <input name="lastName"/>
+            </fieldset>
+        </div>
 
-        <tr>
-            <td class="content center">
-                <form id="registration_form" action="registration-save" method="post">
-                    <fieldset>
-                        <legend style="color: #6e614c !important">
-                            <fmt:message key="login_jsp.label.login"/>
-                        </legend>
-                        <input name="login"/>
-                    </fieldset>
-                    <fieldset>
-                        <legend style="color: #6e614c !important">
-                            <fmt:message key="login_jsp.label.password"/>
-                        </legend>
-                        <input type="password" name="password"/>
-                    </fieldset>
-                    <fieldset>
-                        <legend style="color: #6e614c !important">
-                            <fmt:message key="settings_jsp.label.first_name"/>
-                        </legend>
-                        <input name="first-name"/>
-                    </fieldset>
-                    <fieldset>
-                        <legend style="color: #6e614c !important">
-                            <fmt:message key="settings_jsp.label.last_name"/>
-                        </legend>
-                        <input name="last-name"/>
-                    </fieldset>
-
-                    <div class="error">
-                        <c:if test="${not empty error_reg}">
-                            <fmt:message key="registration_jsp.error.error_reg"/>
-                        </c:if>
-                    </div>
-                    <input type="submit" value='<fmt:message key="login_jsp.label.registration"/>'>
-                </form>
-            </td>
-        </tr>
-    </table>
-</div>
+        <c:if test="${not empty error_reg}">
+            <div class="error">
+                <fmt:message key="registration_jsp.error.error_reg"/>
+            </div>
+        </c:if>
+        <c:if test="${not empty error_symbols}">
+            <div class="error">
+                <fmt:message key="registration_jsp.error.error_symbols"/>
+            </div>
+        </c:if>
+        <c:if test="${not empty error_taken_login}">
+            <div class="error">
+                <fmt:message key="registration_jsp.error.error_taken_login"/>
+            </div>
+        </c:if>
+        <input type="submit" value='<fmt:message key="login_jsp.label.registration"/>'>
+    </div>
+</form>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

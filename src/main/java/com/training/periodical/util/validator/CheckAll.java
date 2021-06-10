@@ -1,7 +1,7 @@
 package com.training.periodical.util.validator;
 
 public class CheckAll extends ChainValidator{
-    private String data;
+    private final String data;
 
     public CheckAll(String data) {
         this.data = data;

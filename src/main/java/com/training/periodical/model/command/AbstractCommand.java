@@ -1,14 +1,13 @@
 package com.training.periodical.model.command;
 
 import com.training.periodical.entity.Magazine;
+import com.training.periodical.entity.User;
 import com.training.periodical.model.repository.Repository;
 import com.training.periodical.model.repository.RepositoryException;
-import com.training.periodical.util.encoder.EncoderException;
 import com.training.periodical.util.validator.Valid;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,12 +19,17 @@ public abstract class AbstractCommand implements Command {
     final int PAGE_SIZE = 5;
     HttpServletRequest request;
 
-    void updateLocaleIfRequested(String localeToSet) throws CommandException {
-            if (Valid.notNullNotEmpty(localeToSet)) {
-                HttpSession session = request.getSession();
-                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-                session.setAttribute("defaultLocale", localeToSet);
+    void updateLocaleIfRequested() {
+        request.getSession().removeAttribute("error_not_valid_symbols_locale_format");
+        String localeToSet = request.getParameter("localeToSet");
+        if (Valid.notNullNotEmpty(localeToSet)) {
+            if(Valid.isValidLocale(localeToSet)){
+                Config.set(request.getSession(), "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            } else {
+                setError("Only valid symbols", "error_not_valid_symbols_locale_format");
             }
+
+        }
     }
 
     List<Magazine> getMagazinesPage(Repository repository, int currentPage) {
@@ -44,6 +48,10 @@ public abstract class AbstractCommand implements Command {
         log.error("errorMessage --> " + errorMessage);
     }
 
+    User getUser() {
+        return (User) request.getSession().getAttribute("user");
+    }
+
     String getLogin() {
         return request.getParameter("login");
     }
@@ -53,11 +61,11 @@ public abstract class AbstractCommand implements Command {
     }
 
     String getFirstName() {
-        return request.getParameter("first-name");
+        return request.getParameter("firstName");
     }
 
     String getLastName() {
-        return request.getParameter("last-name");
+        return request.getParameter("lastName");
     }
 
     @Override
@@ -91,7 +99,7 @@ public abstract class AbstractCommand implements Command {
         return magazineAmount % PAGE_SIZE == 0 ? numberOfPages : ++numberOfPages;
     }
 
-    List<String> getMagazineIds(){
+    List<String> getMagazineIds() {
         List<String> magazineIds = new ArrayList<>();
         Object obj = request.getSession().getAttribute("magazineId");
         if (obj instanceof List) {
@@ -104,6 +112,7 @@ public abstract class AbstractCommand implements Command {
         magazineIds = removePossibleMagIdsDuplication(magazineIds);
         return magazineIds;
     }
+
     private List<String> removePossibleMagIdsDuplication(List<String> magazineIds) {
         List<String> magId = new ArrayList<>();
         if (!magazineIds.isEmpty()) {

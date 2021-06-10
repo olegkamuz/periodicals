@@ -28,8 +28,8 @@ public class CommandContainer implements Serializable {
         commands.put("", new LoginCommand());
         commands.put("login-check", new LoginCheckCommand(new UserRepository(), new MagazineRepository()));
 		commands.put("logout", new LogoutCommand());
-		commands.put("view-settings", new ViewSettingsCommand());
-		commands.put("update-settings", new UpdateSettingsCommand(new UserRepository()));
+		commands.put("settings", new SettingsCommand());
+		commands.put("update-settings", new SettingsUpdateCommand(new UserRepository()));
 
 		// out of control
         commands.put("index", new IndexCommand(new ThemeRepository(), new MagazineRepository()));

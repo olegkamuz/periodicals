@@ -39,7 +39,6 @@ public class LoginCheckCommand extends AbstractCommand {
     @Override
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
-
         log.debug("Command starts");
         this.request = request;
 

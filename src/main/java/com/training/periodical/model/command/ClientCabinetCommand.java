@@ -31,7 +31,7 @@ public class ClientCabinetCommand extends AbstractCommand {
         log.info("User cabinet command starts");
         this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         long userId = ((User) request.getSession().getAttribute("user")).getId();
         User user = getUser(userId);

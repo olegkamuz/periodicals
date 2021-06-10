@@ -15,8 +15,9 @@ public class LoginCommand extends AbstractCommand {
     public String execute(HttpServletRequest request,
                           HttpServletResponse response) throws CommandException {
         log.debug("Login command starts");
+        this.request = request;
 
-        updateLocaleIfRequested(request.getParameter("localeToSet"));
+        updateLocaleIfRequested();
 
         log.debug("Login command finished");
         return Path.PAGE__LOGIN;
