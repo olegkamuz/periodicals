@@ -62,6 +62,14 @@ public class MagazineRepository extends AbstractRepository<Magazine> {
         }
     }
 
+    public List<Magazine> findSearchedFilteredSortedPaginated(String search, String filterName, String sortSubQuery, int limit, int offset) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSearchedFilteredSortedPaginated(search, filterName, sortSubQuery, limit, offset);
+        } catch (DaoException e) {
+            throw createRepositoryException("findSorted", e);
+        }
+    }
+
     @Override
     public List<Magazine> findPage(int limit, int offset) throws RepositoryException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {

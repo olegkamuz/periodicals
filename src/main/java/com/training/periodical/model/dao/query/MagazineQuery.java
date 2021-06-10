@@ -19,6 +19,9 @@ public class MagazineQuery implements Serializable {
     public static final String SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME =
             "SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";
 
+    public static final String SQL__FIND_ALL_SEARCHED_MAGAZINES_BY_THEME_NAME =
+            "SELECT * FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=? AND m.name LIKE ? ";
+
     public static final String SQL__COUNT_ALL =
             "SELECT COUNT(*) FROM `magazine`";
 

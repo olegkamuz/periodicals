@@ -18,7 +18,7 @@
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
-    <form class="form-custom" id="make_order" action="create-subscription">
+<%--    <form class="form-custom" id="make_order" action="create-subscription">--%>
         <div class="wrapper">
 <%-- GREETINGS --%>
             <section class="jumbotron text-center">
@@ -38,6 +38,7 @@
 <%-- MAGAZINES BY PAGES --%>
                 <div class="row row-custom">
                     <div class="subscription_submit">
+                        <form class="form-custom" id="make_order" action="create-subscription">
                         <input class="btn btn-primary my-2" type="submit"
                                value='<fmt:message key="index_jsp.button.buy_subscription"/>'/>
                         <c:url var="reset_url" value="">
@@ -54,6 +55,7 @@
                             </c:forEach>
                             <c:param name="reset_checked" value="all"/>
                         </c:url>
+                        </form>
                         <a href="<c:out value='${reset_url}'/>">
                             <span class="btn btn-secondary my-2">
                                 <fmt:message key="index_jsp.button.reset_checked"/>
@@ -215,13 +217,13 @@
                         </div>
 
                         <div class="search">
-                            <form id="login_form" action="client-cabinet" method="post">
+                            <form id="search_form" action="index" method="post">
 
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <button class="btn btn-outline-secondary" type="submit"><fmt:message key="index_jsp.input.search"/></button>
                                     </div>
-                                    <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                    <input name="search" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                 </div>
                             </form>
                         </div>
@@ -645,6 +647,6 @@
             </div>
 
         </div>
-    </form>
+<%--    </form>--%>
     <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

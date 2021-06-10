@@ -150,6 +150,13 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
 
+    public List<Magazine> findSearchedFilteredSortedPaginated(String search, String filterName, String sortSubQuery, int limit, int offset) throws DaoException {
+        Object[] parameters = {filterName, search, limit, offset};
+        return find(MagazineQuery.SQL__FIND_ALL_SEARCHED_MAGAZINES_BY_THEME_NAME +
+                sortSubQuery +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
+    }
+
 
     public List<Magazine> findPage(int limit, int offset) throws DaoException {
         return findAll(mapper, limit, offset);

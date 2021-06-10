@@ -53,17 +53,17 @@ public class IndexCommand extends AbstractCommand {
         final String filter = getFilter();
         final String page = getPage();
 
-
-        if (validateFilterOrSort(sort) && validateFilterOrSort(filter)) {
+        if (Valid.notNullNotEmptyUrlDecodeAll(sort, filter)) {
             log.debug("Command finished");
             return showFilteredSorted(sort, filter, page);
-        } else if (validateFilterOrSort(getFilter())) {
+        } else if (Valid.notNullNotEmptyUrlDecodeAll(filter)) {
             log.debug("Command finished");
             return showFiltered(filter, page);
-        } else if (validateFilterOrSort(getSort())) {
+        } else if (Valid.notNullNotEmptyUrlDecodeAll(sort)) {
             log.debug("Command finished");
             return showSorted(sort, page);
         } else {
+            log.debug("Command finished");
             return showAll(page);
         }
     }
@@ -247,6 +247,18 @@ public class IndexCommand extends AbstractCommand {
         return filteredSortedPaginated;
     }
 
+    private List<Magazine> getMagazinesSearchedFilteredSortedPaginates(String search, String filterName, String sortSubQuery,
+                                                               int currentPage) {
+        List<Magazine> filteredSortedPaginated = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findSearchedFilteredSortedPaginated(search, filterName, sortSubQuery, PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return filteredSortedPaginated;
+    }
+
     private String getSortSubQuery(String sort) {
         String sortSubQuery = "";
         switch (sort) {
@@ -410,11 +422,12 @@ public class IndexCommand extends AbstractCommand {
 
     private String getSort() {
         String sort = "";
-        if (request.getParameter("sort") != null && !request.getParameter("sort").equals("")) {
+        if (Valid.notNullNotEmpty()) {
+//        if (request.getParameter("sort") != null && !request.getParameter("sort").equals("")) {
             return request.getParameter("sort");
         }
-
-        if (request.getSession().getAttribute("fieldToSort") != null && !request.getSession().getAttribute("fieldToSort").equals("")) {
+        if (Valid.notNullNotEmpty("fieldToSort")){
+//        if (request.getSession().getAttribute("fieldToSort") != null && !request.getSession().getAttribute("fieldToSort").equals("")) {
             return (String) request.getSession().getAttribute("fieldToSort");
         }
 
@@ -422,21 +435,26 @@ public class IndexCommand extends AbstractCommand {
     }
 
     private String getFilter() {
-        if (request.getParameter("filter") != null && !request.getParameter("filter").equals("")) {
+        if (Valid.notNullNotEmpty("filter")){
+//        if (request.getParameter("filter") != null && !request.getParameter("filter").equals("")) {
             return request.getParameter("filter");
         }
-        if (request.getSession().getAttribute("fieldToFilter") != null && !request.getSession().getAttribute("fieldToFilter").equals("")) {
+
+        if (Valid.notNullNotEmpty("fieldToSort")){
+//        if (request.getSession().getAttribute("fieldToFilter") != null && !request.getSession().getAttribute("fieldToFilter").equals("")) {
             return (String) request.getSession().getAttribute("fieldToFilter");
         }
         return "";
     }
 
     private String getPage() {
-        if (request.getParameter("page") != null && !request.getParameter("page").equals("")) {
+        if (Valid.notNullNotEmpty("page")){
+//        if (request.getParameter("page") != null && !request.getParameter("page").equals("")) {
             return request.getParameter("page");
         }
 
-        if (request.getSession().getAttribute("currentPage") != null && request.getSession().getAttribute("currentPage").equals("")) {
+        if (Valid.notNullNotEmpty("currentPage")){
+//        if (request.getSession().getAttribute("currentPage") != null && request.getSession().getAttribute("currentPage").equals("")) {
             return String.valueOf(request.getSession().getAttribute("currentPage"));
         }
         return "";
