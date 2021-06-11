@@ -2,7 +2,6 @@ package com.training.periodical.model.command;
 
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.repository.MagazineRepository;
-import com.training.periodical.model.repository.Repository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.ThemeRepository;
 import com.training.periodical.util.validator.Valid;
@@ -88,7 +87,7 @@ public class IndexCommand extends AbstractCommand {
     }
 
     private String resetPage(String page) {
-        if (!Valid.isNotNull(page)) {
+        if (!Valid.notNull(page)) {
             return "1";
         }
         return page;
@@ -626,14 +625,22 @@ public class IndexCommand extends AbstractCommand {
 
     private String getSearch() {
         String search = "";
-        if (Valid.notNullNotEmpty(request.getParameter("search"))) {
-            return request.getParameter("search");
-        }
-        if (Valid.notNullNotEmpty("fieldToSearch")) {
+        if (Valid.notNull(request.getParameter("search"))) {
+            if(Valid.notEmpty(request.getParameter("search"))){
+                return request.getParameter("search");
+            } else {
+                resetFieldToSearch();
+                return "";
+            }
+        } else if (Valid.notNullNotEmpty((String)request.getSession().getAttribute("fieldToSearch"))) {
             return (String) request.getSession().getAttribute("fieldToSearch");
         }
 
         return search;
+    }
+
+    private void resetFieldToSearch() {
+        request.getSession().removeAttribute("fieldToSearch");
     }
 
     private String getSort() {

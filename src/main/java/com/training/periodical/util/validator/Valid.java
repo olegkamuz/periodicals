@@ -6,9 +6,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class Valid {
-    public static boolean isNotNull(Object... inputArr) {
+    public static boolean notNull(Object... inputArr) {
         for(Object input: inputArr) {
             if (input == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean notEmpty(String... inputArr) {
+        for(String input: inputArr) {
+            ChainValidator notEmpty = new CheckNotEmpty(input);
+            if (!notEmpty.isValid()) {
                 return false;
             }
         }

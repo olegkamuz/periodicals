@@ -10,6 +10,7 @@ Functional features:
     - for guest to client
     - for client
       until subscriptions purchased or reset checked magazines by button
+- search with sort, filter, page
 - fully functional pagination (for any amount of pages) using
   simple paging when less than 7 and carriage style with three dots on every side othewise
 - validation using pattern 'chain of responsibility'
