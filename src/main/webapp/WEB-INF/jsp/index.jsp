@@ -18,7 +18,6 @@
     <%@ include file="/WEB-INF/jspf/header.jspf" %>
 </div>
 <div class="main-container">
-<%--    <form class="form-custom" id="make_order" action="create-subscription">--%>
         <div class="wrapper">
 <%-- GREETINGS --%>
             <section class="jumbotron text-center">
@@ -216,7 +215,7 @@
                                 </a>
                             </div>
                         </div>
-
+<%-- SEARCH --%>
                         <div class="search">
                             <form id="search_form" action="index" method="post">
 
@@ -658,6 +657,5 @@
                 </c:forEach>
             </div>
         </div>
-<%--    </form>--%>
     <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

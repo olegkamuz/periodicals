@@ -54,6 +54,9 @@ public class IndexCommand extends AbstractCommand {
         String filter = getFilter();
         String page = getPage();
         page = resetPage(page);
+        if (!Valid.notNullNotEmptyValidSymbols(page)) {
+            return Path.PAGE__INDEX;
+        }
 
         if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort, filter)) {
             log.debug("Command finished");
@@ -71,7 +74,7 @@ public class IndexCommand extends AbstractCommand {
             log.debug("Command finished");
             return showSearchedAll(search, page);
         }
-        if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(sort, filter)) {
             log.debug("Command finished");
             return showFilteredSorted(sort, filter, page);
         }
@@ -630,13 +633,13 @@ public class IndexCommand extends AbstractCommand {
     private String getSearch() {
         String search = "";
         if (Valid.notNull(request.getParameter("search"))) {
-            if(Valid.notEmpty(request.getParameter("search"))){
+            if (Valid.notEmpty(request.getParameter("search"))) {
                 return request.getParameter("search");
             } else {
                 resetFieldToSearch();
                 return "";
             }
-        } else if (Valid.notNullNotEmpty((String)request.getSession().getAttribute("fieldToSearch"))) {
+        } else if (Valid.notNullNotEmpty((String) request.getSession().getAttribute("fieldToSearch"))) {
             return (String) request.getSession().getAttribute("fieldToSearch");
         }
 

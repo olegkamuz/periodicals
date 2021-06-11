@@ -176,12 +176,6 @@ a.disabled {
 .sorting {
     width: 100%;
     margin: 5px;
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    align-content: stretch;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .theme-name h3 {
@@ -195,6 +189,7 @@ a.disabled {
 
 .dropdown-filtering {
     float: left;
+    width: 397px;
 }
 
 .container_by_themes {
@@ -310,7 +305,7 @@ body div#error_wrapper {
 }
 
 .search {
-    /*padding-left: 234px;*/
+    float: left;
 }
 
 .error_header {
@@ -330,7 +325,9 @@ body div#error_wrapper {
     height: 605px;
     margin-bottom: 30px;
 }
-
+.main-container.main-container-admin{
+    height: auto;
+}
 .mags {
     width: 100%;
     display: flex;

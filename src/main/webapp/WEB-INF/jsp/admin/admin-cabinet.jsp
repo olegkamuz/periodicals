@@ -9,7 +9,7 @@
 
 <body>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
-<div class="main-container">
+<div class="main-container main-container-admin">
     <div class="wrapper wrapper-cabinet admin">
         <c:choose>
             <c:when test="${fn:length(userList) == 0}">no users registered</c:when>
