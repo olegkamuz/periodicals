@@ -20,6 +20,7 @@ public final class Path implements Serializable {
 
     // forward
     public static final String FORWARD__LOGIN = "/login";
+    public static final String FORWARD__INDEX = "/index";
     public static final String FORWARD__SUBSCRIPTION = "/create-subscription";
 
     // redirects

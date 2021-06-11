@@ -21,3 +21,5 @@ Functional features:
 - xss attack prevention
 - html escaped string
 - blocked user can't log in
+- not enough money can't buy subscription
+-

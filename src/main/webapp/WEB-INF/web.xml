@@ -55,6 +55,7 @@
         <url-pattern>/settings</url-pattern>
         <url-pattern>/update-settings</url-pattern>
         <url-pattern>/logout</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

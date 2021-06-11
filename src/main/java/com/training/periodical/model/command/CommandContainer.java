@@ -25,7 +25,7 @@ public class CommandContainer implements Serializable {
     static {
 		// common commands
 		commands.put("login", new LoginCommand());
-        commands.put("", new LoginCommand());
+        commands.put("", new IndexCommand(new ThemeRepository(), new MagazineRepository()));
         commands.put("login-check", new LoginCheckCommand(new UserRepository(), new MagazineRepository()));
 		commands.put("logout", new LogoutCommand());
 		commands.put("settings", new SettingsCommand());
@@ -60,7 +60,7 @@ public class CommandContainer implements Serializable {
 	public static Command get(String commandName) {
 		if (commandName == null || !commands.containsKey(commandName)) {
 			log.trace("Command not found, name --> " + commandName);
-			return commands.get("noCommand"); 
+			return commands.get("index");
 		}
 		
 		return commands.get(commandName);

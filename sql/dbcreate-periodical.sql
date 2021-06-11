@@ -223,3 +223,5 @@ SELECT COUNT(*) FROM `magazine`
 SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit'
 
 SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit%'
+
+SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit%'

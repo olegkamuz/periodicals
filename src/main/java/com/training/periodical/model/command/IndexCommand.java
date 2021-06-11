@@ -182,12 +182,13 @@ public class IndexCommand extends AbstractCommand {
 
         resetMagazinesPage();
         if (isPageOutOfRange(allSearchedMagazineAmount, page)) {
-            log.debug("Page out of range");
-            return Path.PAGE__INDEX + "?page=1";
+            log.debug("Page out of range, reset to 1");
+            page = "1";
         }
 
         int currentPage = Integer.parseInt(page);
 
+        request.getSession().setAttribute("fieldToSearch", search);
         request.getSession().setAttribute("fieldToSort", "all");
         request.getSession().setAttribute("fieldToFilter", "all");
 
@@ -317,7 +318,7 @@ public class IndexCommand extends AbstractCommand {
         resetMagazinesPage();
         if (isPageOutOfRange(searchedFilteredMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.PAGE__INDEX + "?page=1";
+            page = "1";
         }
         int currentPage = Integer.parseInt(page);
 
@@ -377,7 +378,7 @@ public class IndexCommand extends AbstractCommand {
         resetMagazinesPage();
         if (isPageOutOfRange(searchedFilteredMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.PAGE__INDEX + "?page=1";
+            page = "1";
         }
         int currentPage = Integer.parseInt(page);
 
