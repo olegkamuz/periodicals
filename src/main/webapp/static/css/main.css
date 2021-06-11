@@ -25,6 +25,7 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
 .leftRightWrapper {
     width: 100%;
     display: flex;
@@ -47,7 +48,7 @@ body {
     align-items: baseline;
 }
 
-.head_wrapper{
+.head_wrapper {
     width: 10%;
 }
 
@@ -110,6 +111,7 @@ a {
     width: 100%;
     justify-content: center;
     display: flex;
+    height: 100%;
 }
 
 .main-container.user {
@@ -315,7 +317,25 @@ body div#error_wrapper {
     color: #c62e2e;
     padding-top: 3px;
 }
+
 .no_magazines {
     text-align: center;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.row.row-custom {
+    height: 605px;
+    margin-bottom: 30px;
+}
+
+.mags {
+    width: 100%;
+    display: flex;
+    height: 383px;
+}
+
+.container.container_by_themes {
 }

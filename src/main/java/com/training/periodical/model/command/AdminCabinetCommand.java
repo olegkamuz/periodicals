@@ -1,6 +1,5 @@
 package com.training.periodical.model.command;
 
-import com.sun.istack.internal.NotNull;
 import com.training.periodical.Path;
 import com.training.periodical.entity.Magazine;
 import com.training.periodical.entity.User;

@@ -54,32 +54,36 @@ public class IndexCommand extends AbstractCommand {
         String filter = getFilter();
         String page = getPage();
         page = resetPage(page);
-        if(!Valid.notNullNotEmptyValidSymbols(page)){
-            return Path.PAGE__INDEX;
-        }
 
         if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort, filter)) {
             log.debug("Command finished");
             return showSearchedFilteredSorted(search, sort, filter, page);
-        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, filter)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(search, filter)) {
             log.debug("Command finished");
             return showSearchedFiltered(search, filter, page);
-        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
             log.debug("Command finished");
             return showSearchedSorted(search, sort, page);
-        } else if (Valid.notNullNotEmptyValidSymbols(search)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbols(search)) {
             log.debug("Command finished");
             return showSearchedAll(search, page);
-        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
             log.debug("Command finished");
             return showFilteredSorted(sort, filter, page);
-        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(filter)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(filter)) {
             log.debug("Command finished");
             return showFiltered(filter, page);
-        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(sort)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(sort)) {
             log.debug("Command finished");
             return showSorted(sort, page);
-        } else if (Valid.notNullNotEmptyValidSymbols(page)) {
+        }
+        if (Valid.notNullNotEmptyValidSymbols(page)) {
             log.debug("Command finished");
             return showAll(page);
         }

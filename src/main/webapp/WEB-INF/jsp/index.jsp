@@ -65,6 +65,7 @@
 
                     <div class="sorting">
 <%-- FILTERING --%>
+
                         <div class="dropdown show dropdown-filtering">
                             <c:url var="url_filter" value="">
                                 <c:forEach items="${param}" var="entry">
@@ -382,7 +383,9 @@
     </div>
                     </div>
 <%-- PAGE --%>
-                    <c:choose>
+
+                    <div class="mags">
+                        <c:choose>
                         <c:when test="${fn:length(magazinesPage) == 0}">
                             <div class="no_magazines">
                                 <h3>
@@ -426,6 +429,7 @@
                                 </div>
                             </c:forEach>
 <%-- PAGINATION--%>
+                            </div>
                             <div class="page_bar">
                                 <c:if test="${firstPage != null}">
                                     <a style="padding: 0 3px"
@@ -624,34 +628,35 @@
                 </div>
 
 <%-- MAGAZINE BY THEMES  --%>
-                <div class="container container_by_themes">
-                    <c:forEach var="theme" items="${magazinesByThemes}">
-                        <div class="row">
-                            <div class="theme-name"><h3>
-                                <c:if test="${theme.key.name eq 'Sport'}"><fmt:message key="index_jsp.h3.sport"/></c:if>
-                                <c:if test="${theme.key.name eq 'IT world'}"><fmt:message key="index_jsp.h3.it"/></c:if>
-                                <c:if test="${theme.key.name eq 'Music'}"><fmt:message key="index_jsp.h3.music"/></c:if>
-                                <c:if test="${theme.key.name eq 'Interior'}"><fmt:message key="index_jsp.h3.interior"/></c:if>
-                            </h3></div>
-                            <c:forEach var="magazine" items="${theme.value}" end="2">
-                                <div class="col">
-                                    <div class="mag_image">
-                                        <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
-                                    </div>
-                                    <div class="name">
-                                        <p>${magazine.name}</p>
-                                    </div>
-                                    <div class="price">
-                                        <p>${magazine.price}</p>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </c:forEach>
-                </div>
+
 
             </div>
 
+            <div class="container container_by_themes">
+                <c:forEach var="theme" items="${magazinesByThemes}">
+                    <div class="row">
+                        <div class="theme-name"><h3>
+                            <c:if test="${theme.key.name eq 'Sport'}"><fmt:message key="index_jsp.h3.sport"/></c:if>
+                            <c:if test="${theme.key.name eq 'IT world'}"><fmt:message key="index_jsp.h3.it"/></c:if>
+                            <c:if test="${theme.key.name eq 'Music'}"><fmt:message key="index_jsp.h3.music"/></c:if>
+                            <c:if test="${theme.key.name eq 'Interior'}"><fmt:message key="index_jsp.h3.interior"/></c:if>
+                        </h3></div>
+                        <c:forEach var="magazine" items="${theme.value}" end="2">
+                            <div class="col">
+                                <div class="mag_image">
+                                    <img src="<c:url value="/static/images/${magazine.image}"/>" width="100%"/>
+                                </div>
+                                <div class="name">
+                                    <p>${magazine.name}</p>
+                                </div>
+                                <div class="price">
+                                    <p>${magazine.price}</p>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
 <%--    </form>--%>
     <%@ include file="/WEB-INF/jspf/footer.jspf" %>
