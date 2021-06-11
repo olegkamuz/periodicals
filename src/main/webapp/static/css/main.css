@@ -308,10 +308,14 @@ body div#error_wrapper {
 }
 
 .search {
-    padding-left: 234px;
+    /*padding-left: 234px;*/
 }
 
 .error_header {
     color: #c62e2e;
     padding-top: 3px;
+}
+.no_magazines {
+    text-align: center;
+    width: 100%;
 }

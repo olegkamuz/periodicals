@@ -223,7 +223,7 @@
                                     <div class="input-group-prepend">
                                         <button class="btn btn-outline-secondary" type="submit"><fmt:message key="index_jsp.input.search"/></button>
                                     </div>
-                                    <input name="search" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                    <input value="<c:if test='${not empty fieldToSearch}'>${fieldToSearch}</c:if>" name="search" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                 </div>
                             </form>
                         </div>
@@ -383,7 +383,13 @@
                     </div>
 <%-- PAGE --%>
                     <c:choose>
-                        <c:when test="${fn:length(magazinesPage) == 0}">No magazines in filtered theme</c:when>
+                        <c:when test="${fn:length(magazinesPage) == 0}">
+                            <div class="no_magazines">
+                                <h3>
+                                    <fmt:message key="index_jsp.label.no_magazines"/>
+                                </h3>
+                            </div>
+                        </c:when>
                         <c:otherwise>
                             <c:forEach var="magazine" items="${magazinesPage}">
                                 <c:url var="check_url" value="">

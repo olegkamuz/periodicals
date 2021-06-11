@@ -47,11 +47,46 @@ public class MagazineDao extends AbstractDao<Magazine> {
         return 0;
     }
 
+    public int getSearchedCount(String search) throws DaoException {
+        ResultSet rs = null;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(MagazineQuery.SQL__COUNT_ALL_SEARCHED)) {
+            prepareStatement(preparedStatement, search + "%");
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("COUNT(*)");
+            }
+        } catch (SQLException e) {
+            throw new DaoException();
+        } finally {
+            close(rs);
+        }
+        return 0;
+    }
+
     public int getCountFiltered(String filterName) throws DaoException {
         ResultSet rs = null;
         try (PreparedStatement preparedStatement =
                      connection.prepareStatement(MagazineQuery.SQL__COUNT_FILTERED)) {
             Object[] parameters = {filterName};
+            prepareStatement(preparedStatement, parameters);
+            rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("COUNT(*)");
+            }
+        } catch (SQLException e) {
+            throw new DaoException();
+        } finally {
+            close(rs);
+        }
+        return 0;
+    }
+
+    public int getCountSearchedFiltered(String search, String filterName) throws DaoException {
+        ResultSet rs = null;
+        try (PreparedStatement preparedStatement =
+                     connection.prepareStatement(MagazineQuery.SQL__COUNT_SEARCHED_FILTERED)) {
+            Object[] parameters = {filterName, search + "%"};
             prepareStatement(preparedStatement, parameters);
             rs = preparedStatement.executeQuery();
             if (rs.next()) {
@@ -116,7 +151,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME, parameters);
     }
 
-    private List<Magazine> find(String query, Object[] parameters) {
+    private List<Magazine> find(String query, Object... parameters) {
         return executeQuery(query, mapper, parameters);
     }
 
@@ -131,6 +166,12 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 sortSubQuery +
                 MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
+    public List<Magazine> findSearchedSortedPaginated(String search, String sortSubQuery, int limit, int offset) throws DaoException {
+//        Object[] parameters = {search + "%", limit, offset};
+        return find(MagazineQuery.SQL_FIND_SEARCHED_SORT +
+                sortSubQuery +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, search + "%", limit, offset);
+    }
 
     public List<Magazine> findFiltered(String filterName) throws DaoException {
         Object[] parameters = {filterName};
@@ -143,6 +184,12 @@ public class MagazineDao extends AbstractDao<Magazine> {
                 MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
     }
 
+    public List<Magazine> findSearchedFilteredPaginated(String search, String filterName, int limit, int offset) throws DaoException {
+        Object[] parameters = {filterName, search + "%", limit, offset};
+        return find(MagazineQuery.SQL__FIND_ALL_SEARCHED_MAGAZINES_BY_THEME_NAME +
+                MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
+    }
+
     public List<Magazine> findFilteredSortedPaginated(String filterName, String sortSubQuery, int limit, int offset) throws DaoException {
         Object[] parameters = {filterName, limit, offset};
         return find(MagazineQuery.SQL__FIND_ALL_MAGAZINES_BY_THEME_NAME +
@@ -151,7 +198,7 @@ public class MagazineDao extends AbstractDao<Magazine> {
     }
 
     public List<Magazine> findSearchedFilteredSortedPaginated(String search, String filterName, String sortSubQuery, int limit, int offset) throws DaoException {
-        Object[] parameters = {filterName, search, limit, offset};
+        Object[] parameters = {filterName, search + "%", limit, offset};
         return find(MagazineQuery.SQL__FIND_ALL_SEARCHED_MAGAZINES_BY_THEME_NAME +
                 sortSubQuery +
                 MagazineQuery.SQL__FIND_SUB_PAGINATED, parameters);
@@ -160,6 +207,11 @@ public class MagazineDao extends AbstractDao<Magazine> {
 
     public List<Magazine> findPage(int limit, int offset) throws DaoException {
         return findAll(mapper, limit, offset);
+    }
+
+
+    public List<Magazine> findSearchedPage(String search, int limit, int offset) throws DaoException {
+        return findSearchedAll(search, mapper, limit, offset);
     }
 
     @Override

@@ -32,16 +32,6 @@ public abstract class AbstractCommand implements Command {
         }
     }
 
-    List<Magazine> getMagazinesPage(Repository repository, int currentPage) {
-        List<Magazine> page = new ArrayList<>();
-        try {
-            int offset = PAGE_SIZE * (currentPage - 1);
-            return repository.findPage(PAGE_SIZE, offset);
-        } catch (RepositoryException e) {
-            e.printStackTrace();
-        }
-        return page;
-    }
 
     void setError(String errorMessage, String attributeName) {
         request.getSession().setAttribute(attributeName, errorMessage);

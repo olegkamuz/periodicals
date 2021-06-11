@@ -74,7 +74,7 @@ public class Valid {
             ChainValidator notNull = new CheckNotNull(s);
             ChainValidator notEmpty = new CheckNotEmpty(s);
             ChainValidator urlDecode = new CheckUrlDecode(s);
-            ChainValidator all = new CheckAll(s);
+            ChainValidator all = new CheckNotAll(s);
 
             notNull.chainWith(notEmpty);
             notEmpty.chainWith(urlDecode);
@@ -113,6 +113,24 @@ public class Valid {
 
             notNull.chainWith(notEmpty);
             notEmpty.chainWith(validSymbols);
+
+            if (!notNull.isValid()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean notNullNotEmptyValidSymbolsNotAll(String... data) {
+        for (String s : data) {
+            ChainValidator notNull = new CheckNotNull(s);
+            ChainValidator notEmpty = new CheckNotEmpty(s);
+            ChainValidator validSymbols = new CheckValidSymbols(s);
+            ChainValidator notAll = new CheckNotAll(s);
+
+            notNull.chainWith(notEmpty);
+            notEmpty.chainWith(validSymbols);
+            validSymbols.chainWith(notAll);
 
             if (!notNull.isValid()) {
                 return false;

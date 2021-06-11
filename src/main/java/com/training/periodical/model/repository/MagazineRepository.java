@@ -37,6 +37,13 @@ public class MagazineRepository extends AbstractRepository<Magazine> {
             throw createRepositoryException("findSorted", e);
         }
     }
+    public List<Magazine> findSearchedSortedPaginated(String search, String sortSubQuery, int limit, int offset) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSearchedSortedPaginated(search, sortSubQuery, limit, offset);
+        } catch (DaoException e) {
+            throw createRepositoryException("findSorted", e);
+        }
+    }
 
     public List<Magazine> findFiltered(String filterName) throws RepositoryException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
@@ -49,6 +56,13 @@ public class MagazineRepository extends AbstractRepository<Magazine> {
     public List<Magazine> findFilteredPaginated(String filterName, int limit, int offset) throws RepositoryException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.findFilteredPaginated(filterName, limit, offset);
+        } catch (DaoException e) {
+            throw createRepositoryException("findSorted", e);
+        }
+    }
+    public List<Magazine> findSearchedFilteredPaginated(String search, String filterName, int limit, int offset) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSearchedFilteredPaginated(search, filterName, limit, offset);
         } catch (DaoException e) {
             throw createRepositoryException("findSorted", e);
         }
@@ -79,6 +93,14 @@ public class MagazineRepository extends AbstractRepository<Magazine> {
         }
     }
 
+    public List<Magazine> findSearchedPage(String search, int limit, int offset) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.findSearchedPage(search, limit, offset);
+        } catch (DaoException e) {
+            throw createRepositoryException("findPage", e);
+        }
+    }
+
     @Override
     public int delete(long magazineId) throws RepositoryException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
@@ -95,10 +117,25 @@ public class MagazineRepository extends AbstractRepository<Magazine> {
             throw createRepositoryException("getCount", e);
         }
     }
+    public int getSearchedCount(String search) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.getSearchedCount(search);
+        } catch (DaoException e) {
+            throw createRepositoryException("getCount", e);
+        }
+    }
 
     public int getCountFiltered(String filterName) throws RepositoryException {
         try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
             return magazineDao.getCountFiltered(filterName);
+        } catch (DaoException e) {
+            throw createRepositoryException("getCount", e);
+        }
+    }
+
+    public int getCountSearchedFiltered(String search, String filterName) throws RepositoryException {
+        try (MagazineDao magazineDao = daoFactory.createMagazineDao()) {
+            return magazineDao.getCountSearchedFiltered(search, filterName);
         } catch (DaoException e) {
             throw createRepositoryException("getCount", e);
         }

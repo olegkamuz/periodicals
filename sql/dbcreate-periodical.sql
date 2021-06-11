@@ -215,3 +215,11 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 SELECT * FROM magazine WHERE name LIKE 'Guit%'
+
+SELECT COUNT(*) FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='IT world' AND m.name LIKE 'Guit%'
+
+SELECT COUNT(*) FROM `magazine`
+
+SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit'
+
+SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit%'

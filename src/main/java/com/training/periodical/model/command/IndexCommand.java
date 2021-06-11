@@ -2,6 +2,7 @@ package com.training.periodical.model.command;
 
 import com.training.periodical.model.dao.query.MagazineQuery;
 import com.training.periodical.model.repository.MagazineRepository;
+import com.training.periodical.model.repository.Repository;
 import com.training.periodical.model.repository.RepositoryException;
 import com.training.periodical.model.repository.ThemeRepository;
 import com.training.periodical.util.validator.Valid;
@@ -49,23 +50,48 @@ public class IndexCommand extends AbstractCommand {
 
         showMagazinesByThemes();
 
-        final String sort = getSort();
-        final String filter = getFilter();
-        final String page = getPage();
+        String search = getSearch();
+        String sort = getSort();
+        String filter = getFilter();
+        String page = getPage();
+        page = resetPage(page);
+        if(!Valid.notNullNotEmptyValidSymbols(page)){
+            return Path.PAGE__INDEX;
+        }
 
-        if (Valid.notNullNotEmptyUrlDecodeAll(sort, filter)) {
+        if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort, filter)) {
+            log.debug("Command finished");
+            return showSearchedFilteredSorted(search, sort, filter, page);
+        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, filter)) {
+            log.debug("Command finished");
+            return showSearchedFiltered(search, filter, page);
+        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
+            log.debug("Command finished");
+            return showSearchedSorted(search, sort, page);
+        } else if (Valid.notNullNotEmptyValidSymbols(search)) {
+            log.debug("Command finished");
+            return showSearchedAll(search, page);
+        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(search, sort)) {
             log.debug("Command finished");
             return showFilteredSorted(sort, filter, page);
-        } else if (Valid.notNullNotEmptyUrlDecodeAll(filter)) {
+        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(filter)) {
             log.debug("Command finished");
             return showFiltered(filter, page);
-        } else if (Valid.notNullNotEmptyUrlDecodeAll(sort)) {
+        } else if (Valid.notNullNotEmptyValidSymbolsNotAll(sort)) {
             log.debug("Command finished");
             return showSorted(sort, page);
-        } else {
+        } else if (Valid.notNullNotEmptyValidSymbols(page)) {
             log.debug("Command finished");
             return showAll(page);
         }
+        return Path.PAGE__INDEX;
+    }
+
+    private String resetPage(String page) {
+        if (!Valid.isNotNull(page)) {
+            return "1";
+        }
+        return page;
     }
 
     private void resetCheckedIfRequested() {
@@ -120,9 +146,10 @@ public class IndexCommand extends AbstractCommand {
 
         int allMagazineAmount = getAllMagazineAmount();
 
+        resetMagazinesPage();
         if (isPageOutOfRange(allMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.REDIRECT__INDEX + "?page=1";
+            return Path.PAGE__INDEX + "?page=1";
         }
 
         int currentPage = Integer.parseInt(page);
@@ -131,7 +158,7 @@ public class IndexCommand extends AbstractCommand {
         request.getSession().setAttribute("fieldToFilter", "all");
 
         if (allMagazineAmount > 0) {
-            setMagazinesPage(getMagazinesPage(magazineRepository, currentPage));
+            setMagazinesPage(getMagazinesPage(currentPage));
             setPaginationBar(currentPage, getNumberOfPages(allMagazineAmount));
             log.debug("Show all magazines");
         } else {
@@ -140,7 +167,57 @@ public class IndexCommand extends AbstractCommand {
         }
 
         log.debug("Command finished");
-        return Path.PAGE_INDEX;
+        return Path.PAGE__INDEX;
+    }
+
+    private String showSearchedAll(String search, String page) throws CommandException {
+
+        int allSearchedMagazineAmount = getAllSearchedMagazineAmount(search);
+
+        resetMagazinesPage();
+        if (isPageOutOfRange(allSearchedMagazineAmount, page)) {
+            log.debug("Page out of range");
+            return Path.PAGE__INDEX + "?page=1";
+        }
+
+        int currentPage = Integer.parseInt(page);
+
+        request.getSession().setAttribute("fieldToSort", "all");
+        request.getSession().setAttribute("fieldToFilter", "all");
+
+        if (allSearchedMagazineAmount > 0) {
+            setMagazinesPage(getSearchedMagazinesPage(search, currentPage));
+            setPaginationBar(currentPage, getNumberOfPages(allSearchedMagazineAmount));
+            log.debug("Show all magazines");
+        } else {
+            setMagazinesPage(Collections.emptyList());
+            log.trace("No magazines");
+        }
+
+        log.debug("Command finished");
+        return Path.PAGE__INDEX;
+    }
+
+    List<Magazine> getMagazinesPage(int currentPage) {
+        List<Magazine> page = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findPage(PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return page;
+    }
+
+    List<Magazine> getSearchedMagazinesPage(String search, int currentPage) {
+        List<Magazine> page = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findSearchedPage(search, PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return page;
     }
 
     private String showSorted(String sort, String page) throws CommandException {
@@ -151,10 +228,11 @@ public class IndexCommand extends AbstractCommand {
         int allMagazineAmount = getAllMagazineAmount();
         if (isPageOutOfRange(allMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.REDIRECT__INDEX + "?page=1";
+            return Path.PAGE__INDEX + "?page=1";
         }
         int currentPage = Integer.parseInt(page);
 
+        resetMagazinesPage();
         if (allMagazineAmount > 0) {
             setMagazinesPage(getMagazinesSortedPaginated(sortSubQuery, currentPage));
             setPaginationBar(currentPage, getNumberOfPages(allMagazineAmount));
@@ -165,7 +243,34 @@ public class IndexCommand extends AbstractCommand {
         }
 
         log.debug("Command finished");
-        return Path.PAGE_INDEX;
+        return Path.PAGE__INDEX;
+    }
+
+    private String showSearchedSorted(String search, String sort, String page) throws CommandException {
+        String sortSubQuery = getSortSubQuery(sort);
+        request.getSession().setAttribute("fieldToSearch", search);
+        request.getSession().setAttribute("fieldToSort", sort);
+        request.getSession().setAttribute("fieldToFilter", "all");
+
+        int allMagazineAmount = getAllSearchedMagazineAmount(search);
+        resetMagazinesPage();
+        if (isPageOutOfRange(allMagazineAmount, page)) {
+            log.debug("Page out of range");
+            return Path.PAGE__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(page);
+
+        if (allMagazineAmount > 0) {
+            setMagazinesPage(getMagazinesSearchedSortedPaginated(search, sortSubQuery, currentPage));
+            setPaginationBar(currentPage, getNumberOfPages(allMagazineAmount));
+            log.debug("Show filtered magazines");
+        } else {
+            setMagazinesPage(Collections.emptyList());
+            log.trace("No magazines");
+        }
+
+        log.debug("Command finished");
+        return Path.PAGE__INDEX;
     }
 
     private String showFiltered(String filter, String page) throws CommandException {
@@ -174,9 +279,10 @@ public class IndexCommand extends AbstractCommand {
         request.getSession().setAttribute("fieldToSort", "all");
 
         int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
+        resetMagazinesPage();
         if (isPageOutOfRange(filteredMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.REDIRECT__INDEX + "?page=1";
+            return Path.PAGE__INDEX + "?page=1";
         }
         int currentPage = Integer.parseInt(page);
 
@@ -191,7 +297,34 @@ public class IndexCommand extends AbstractCommand {
             log.trace("No magazines in filter theme -->" + filterName);
         }
         log.debug("Command finished");
-        return Path.PAGE_INDEX;
+        return Path.PAGE__INDEX;
+    }
+
+    private String showSearchedFiltered(String search, String filter, String page) throws CommandException {
+        String filterName = getFilterName(filter);
+        request.getSession().setAttribute("fieldToSearch", search);
+        request.getSession().setAttribute("fieldToFilter", filter);
+        request.getSession().setAttribute("fieldToSort", "all");
+
+
+        int searchedFilteredMagazineAmount = getSearchedFilteredMagazineAmount(search, filterName);
+        resetMagazinesPage();
+        if (isPageOutOfRange(searchedFilteredMagazineAmount, page)) {
+            log.debug("Page out of range");
+            return Path.PAGE__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(page);
+
+        if (searchedFilteredMagazineAmount > 0) {
+            setMagazinesPage(getMagazinesSearchedFilteredPaginated(search, filterName, currentPage));
+            setPaginationBar(currentPage, getNumberOfPages(searchedFilteredMagazineAmount));
+            log.debug("Show searched, sorted magazines");
+        } else {
+            setMagazinesPage(Collections.emptyList());
+            log.trace("No magazines in search: " + search + " and filter theme -->" + filterName);
+        }
+        log.debug("Command finished");
+        return Path.PAGE__INDEX;
     }
 
     private String showFilteredSorted(String sort, String filter, String page) throws
@@ -204,9 +337,10 @@ public class IndexCommand extends AbstractCommand {
 
         int filteredMagazineAmount = getFilteredMagazineAmount(filterName);
 
+        resetMagazinesPage();
         if (isPageOutOfRange(filteredMagazineAmount, page)) {
             log.debug("Page out of range");
-            return Path.REDIRECT__INDEX + "?page=1";
+            return Path.PAGE__INDEX + "?page=1";
         }
         int currentPage = Integer.parseInt(page);
 
@@ -220,7 +354,43 @@ public class IndexCommand extends AbstractCommand {
         }
 
         log.debug("Command finished");
-        return Path.PAGE_INDEX;
+        return Path.PAGE__INDEX;
+    }
+
+    private String showSearchedFilteredSorted(String search, String sort, String filter, String page) throws
+            CommandException {
+        String sortSubQuery = getFilterSortSubQuery(sort);
+        String filterName = getFilterName(filter);
+
+        request.getSession().setAttribute("fieldToSearch", search);
+        request.getSession().setAttribute("fieldToSort", sort);
+        request.getSession().setAttribute("fieldToFilter", filter);
+
+        int searchedFilteredMagazineAmount = getSearchedFilteredMagazineAmount(search, filterName);
+
+        resetMagazinesPage();
+        if (isPageOutOfRange(searchedFilteredMagazineAmount, page)) {
+            log.debug("Page out of range");
+            return Path.PAGE__INDEX + "?page=1";
+        }
+        int currentPage = Integer.parseInt(page);
+
+        if (searchedFilteredMagazineAmount > 0) {
+            setMagazinesPage(getMagazinesSearchedFilteredSortedPaginates(search, filterName, sortSubQuery, currentPage));
+            setPaginationBar(currentPage, getNumberOfPages(searchedFilteredMagazineAmount));
+            log.debug("Show searched,filtered and sorted magazines");
+        } else {
+            setMagazinesPage(Collections.emptyList());
+            log.trace("No magazines in search: " + search + " with filter theme " + filterName);
+        }
+
+        log.debug("Command finished");
+        return Path.PAGE__INDEX;
+    }
+
+    private void resetMagazinesPage() {
+        request.getSession().removeAttribute("magazinesPage");
+        log.trace("Reset(remove) the request attribute: magazinesPage");
     }
 
 
@@ -233,6 +403,17 @@ public class IndexCommand extends AbstractCommand {
             e.printStackTrace();
         }
         return filteredPaginated;
+    }
+
+    private List<Magazine> getMagazinesSearchedFilteredPaginated(String search, String filterName, int currentPage) {
+        List<Magazine> searchedFilteredPaginated = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findSearchedFilteredPaginated(search, filterName, PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return searchedFilteredPaginated;
     }
 
     private List<Magazine> getMagazinesFilteredSortedPaginates(String filterName, String sortSubQuery,
@@ -248,7 +429,7 @@ public class IndexCommand extends AbstractCommand {
     }
 
     private List<Magazine> getMagazinesSearchedFilteredSortedPaginates(String search, String filterName, String sortSubQuery,
-                                                               int currentPage) {
+                                                                       int currentPage) {
         List<Magazine> filteredSortedPaginated = new ArrayList<>();
         try {
             int offset = PAGE_SIZE * (currentPage - 1);
@@ -327,6 +508,17 @@ public class IndexCommand extends AbstractCommand {
         return sorted;
     }
 
+    private List<Magazine> getMagazinesSearchedSortedPaginated(String search, String sortSubQuery, int currentPage) {
+        List<Magazine> searchedSorted = new ArrayList<>();
+        try {
+            int offset = PAGE_SIZE * (currentPage - 1);
+            return magazineRepository.findSearchedSortedPaginated(search, sortSubQuery, PAGE_SIZE, offset);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+        return searchedSorted;
+    }
+
     private void setMagazinesByThemes(Map<Theme, List<Magazine>> map) {
         request.getSession().setAttribute("magazinesByThemes", map);
         log.trace("Set the request attribute: menuByCategoryItems --> " + map);
@@ -354,10 +546,6 @@ public class IndexCommand extends AbstractCommand {
         return map;
     }
 
-    private boolean validateFilterOrSort(String data) {
-        return Valid.notNullNotEmptyUrlDecodeAll(data);
-    }
-
     private int getAllMagazineAmount() throws CommandException {
         try {
             return magazineRepository.getCount();
@@ -366,9 +554,25 @@ public class IndexCommand extends AbstractCommand {
         }
     }
 
+    private int getAllSearchedMagazineAmount(String search) throws CommandException {
+        try {
+            return magazineRepository.getSearchedCount(search);
+        } catch (RepositoryException e) {
+            throw new CommandException(e);
+        }
+    }
+
     private int getFilteredMagazineAmount(String filterName) throws CommandException {
         try {
             return magazineRepository.getCountFiltered(filterName);
+        } catch (RepositoryException e) {
+            throw new CommandException(e);
+        }
+    }
+
+    private int getSearchedFilteredMagazineAmount(String search, String filterName) throws CommandException {
+        try {
+            return magazineRepository.getCountSearchedFiltered(search, filterName);
         } catch (RepositoryException e) {
             throw new CommandException(e);
         }
@@ -420,14 +624,24 @@ public class IndexCommand extends AbstractCommand {
         request.getSession().setAttribute("nextPage", currentPage + 1);
     }
 
+    private String getSearch() {
+        String search = "";
+        if (Valid.notNullNotEmpty(request.getParameter("search"))) {
+            return request.getParameter("search");
+        }
+        if (Valid.notNullNotEmpty("fieldToSearch")) {
+            return (String) request.getSession().getAttribute("fieldToSearch");
+        }
+
+        return search;
+    }
+
     private String getSort() {
         String sort = "";
-        if (Valid.notNullNotEmpty()) {
-//        if (request.getParameter("sort") != null && !request.getParameter("sort").equals("")) {
+        if (Valid.notNullNotEmpty(request.getParameter("sort"))) {
             return request.getParameter("sort");
         }
-        if (Valid.notNullNotEmpty("fieldToSort")){
-//        if (request.getSession().getAttribute("fieldToSort") != null && !request.getSession().getAttribute("fieldToSort").equals("")) {
+        if (Valid.notNullNotEmpty("fieldToSort")) {
             return (String) request.getSession().getAttribute("fieldToSort");
         }
 
@@ -435,27 +649,28 @@ public class IndexCommand extends AbstractCommand {
     }
 
     private String getFilter() {
-        if (Valid.notNullNotEmpty("filter")){
-//        if (request.getParameter("filter") != null && !request.getParameter("filter").equals("")) {
+        if (Valid.notNullNotEmpty(request.getParameter("filter"))) {
             return request.getParameter("filter");
         }
 
-        if (Valid.notNullNotEmpty("fieldToSort")){
-//        if (request.getSession().getAttribute("fieldToFilter") != null && !request.getSession().getAttribute("fieldToFilter").equals("")) {
+        if (Valid.notNullNotEmpty("fieldToSort")) {
             return (String) request.getSession().getAttribute("fieldToFilter");
         }
         return "";
     }
 
     private String getPage() {
-        if (Valid.notNullNotEmpty("page")){
-//        if (request.getParameter("page") != null && !request.getParameter("page").equals("")) {
+        if (Valid.notNullNotEmpty(request.getParameter("page"))) {
             return request.getParameter("page");
         }
 
-        if (Valid.notNullNotEmpty("currentPage")){
-//        if (request.getSession().getAttribute("currentPage") != null && request.getSession().getAttribute("currentPage").equals("")) {
-            return String.valueOf(request.getSession().getAttribute("currentPage"));
+        if (Valid.notNullNotEmpty("currentPage")) {
+            Object currentPage = request.getSession().getAttribute("currentPage");
+            if (currentPage instanceof Integer) {
+                return String.valueOf(currentPage);
+            } else {
+                return (String) request.getSession().getAttribute("currentPage");
+            }
         }
         return "";
     }

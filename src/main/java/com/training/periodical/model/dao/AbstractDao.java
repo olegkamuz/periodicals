@@ -52,10 +52,13 @@ public abstract class AbstractDao<T> implements IDao<T> {
     }
 
     public List<T> findAll(Mapper<T> mapper, int limit, int offset) throws DaoException {
-        Object[] parameters = {limit, offset};
-        return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, mapper, parameters);
+        return executeQuery(MagazineQuery.SQL__FIND_MAGAZINE_PAGE, mapper, limit, offset);
     }
 
+    public List<T> findSearchedAll(String search, Mapper<T> mapper, int limit, int offset) throws DaoException {
+        return executeQuery(MagazineQuery.SQL__FIND_SEARCHED_MAGAZINE_PAGE, mapper, search + "%", limit, offset);
+
+    }
 
     protected List<T> executeQuery(String query, Mapper<T> mapper, Object... parameters) {
         ResultSet resultSet = null;

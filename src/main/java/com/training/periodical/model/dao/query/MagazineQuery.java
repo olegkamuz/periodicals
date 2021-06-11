@@ -25,8 +25,14 @@ public class MagazineQuery implements Serializable {
     public static final String SQL__COUNT_ALL =
             "SELECT COUNT(*) FROM `magazine`";
 
+    public static final String SQL__COUNT_ALL_SEARCHED =
+            "SELECT COUNT(*) FROM `magazine` WHERE name LIKE ?";
+
     public static final String SQL__COUNT_FILTERED =
             "SELECT COUNT(*) FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=?";
+
+    public static final String SQL__COUNT_SEARCHED_FILTERED =
+            "SELECT COUNT(*) FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name=? AND m.name LIKE ? ";
 
     public static final String SQL__FIND_MAGAZINE_BY_ID =
             "SELECT * FROM magazine WHERE id=?";
@@ -39,6 +45,9 @@ public class MagazineQuery implements Serializable {
 
     public static final String SQL__FIND_MAGAZINE_PAGE =
             "SELECT * FROM `magazine` LIMIT ? OFFSET ?";
+
+    public static final String SQL__FIND_SEARCHED_MAGAZINE_PAGE =
+            "SELECT * FROM `magazine` WHERE name LIKE ? LIMIT ? OFFSET ?";
 
     public static final String SQL__FIND_SUB_PAGINATED =
             " LIMIT ? OFFSET ?";
@@ -53,7 +62,8 @@ public class MagazineQuery implements Serializable {
             " ORDER BY price DESC ";
     public static final String SQL_FIND_SORT =
             "SELECT * FROM `magazine` ";
-
+    public static final String SQL_FIND_SEARCHED_SORT =
+            "SELECT * FROM `magazine` WHERE name LIKE ? ";
     public static final String SQL__SUB_FILTER_SORT_NAME_ASC =
             " ORDER BY m.name ASC ";
     public static final String SQL__SUB_FILTER_SORT_NAME_DESC =
