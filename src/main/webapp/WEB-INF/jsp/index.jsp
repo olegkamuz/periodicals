@@ -221,9 +221,9 @@
 
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <button class="btn btn-outline-secondary" type="submit"><fmt:message key="index_jsp.input.search"/></button>
+                                        <button class="btn btn-outline-secondary" id="search" type="submit"><fmt:message key="index_jsp.input.search"/></button>
                                     </div>
-                                    <input value="<c:if test='${not empty fieldToSearch}'>${fieldToSearch}</c:if>" name="search" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                    <input id="search_input" value="<c:if test='${not empty fieldToSearch}'>${fieldToSearch}</c:if>" name="search" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
                                 </div>
                             </form>
                         </div>
@@ -523,7 +523,7 @@
                                                 <c:param name="filter" value="${filter}"/>
                                             </c:url>
                                             <a style="padding: 0 3px"
-                                               <c:if test="${currentPage == page}">class="active"</c:if>
+                                               class="page_number <c:if test='${currentPage == page}'> active</c:if>"
                                                href="<c:out value='${url}'/>">${page}</a>
                                         </c:forEach>
 
@@ -568,8 +568,7 @@
                                                 <c:param name="sort" value="${sort}"/>
                                                 <c:param name="filter" value="${filter}"/>
                                             </c:url>
-                                            <a style="padding: 0 3px"
-                                               <c:if test="${currentPage == page}">class="active"</c:if>
+                                            <a style="padding: 0 3px" class="page_number <c:if test="${currentPage == page}"> active</c:if>"
                                                href="<c:out value='${url}'/>">${page}</a>
                                         </c:forEach>
                                     </c:otherwise>

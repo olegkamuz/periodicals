@@ -22,4 +22,4 @@ Functional features:
 - html escaped string
 - blocked user can't log in
 - not enough money can't buy subscription
--
+- Selenium tested

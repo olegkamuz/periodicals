@@ -137,7 +137,7 @@ VALUES (DEFAULT, 'Legends Of The NBA', 115, 'legends-of-the-nba.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'Ultimate Guide To The Masters', 125, 'ultimate-guide-to-the-masters.jpg', 2);
 INSERT INTO `magazine`
-VALUES (DEFAULT, 'Legends Of Tho NFL', 205, 'legends-of-the-nfl.jpg', 2);
+VALUES (DEFAULT, 'Legends Of The NFL', 205, 'legends-of-the-nfl.jpg', 2);
 INSERT INTO `magazine`
 VALUES (DEFAULT, 'The Modern Home', 295, 'the-modern-home.jpg', 1);
 INSERT INTO `magazine`
@@ -212,16 +212,3 @@ CREATE TABLE IF NOT EXISTS `periodical`.`subscription`
     COLLATE = utf8mb4_ru_0900_ai_ci;
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-
-SELECT * FROM magazine WHERE name LIKE 'Guit%'
-
-SELECT COUNT(*) FROM magazine m JOIN theme c ON m.theme_id=c.id WHERE c.name='IT world' AND m.name LIKE 'Guit%'
-
-SELECT COUNT(*) FROM `magazine`
-
-SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit'
-
-SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit%'
-
-SELECT COUNT(*) FROM `magazine` WHERE name LIKE 'Guit%'
