@@ -3,6 +3,12 @@ package com.training.periodical.util.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Link of chain validation
+ * Checks for correct symbols
+ * @see ChainValidator
+ *
+ */
 public class CheckValidSymbols extends ChainValidator{
     private final String data;
 

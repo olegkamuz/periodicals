@@ -10,6 +10,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository for User entity
+ * @see User
+ *
+ */
 public class UserRepository extends AbstractRepository<User> {
     private static final long serialVersionUID = 8200073681069516742L;
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();

@@ -19,11 +19,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Login check command.
- *
  * Validate login/password
- * Form error messages if needed
- * Logs user in
+ * Show error messages if field data not valid
+ * Logs user in application
+ *
  */
 public class LoginCheckCommand extends AbstractCommand {
     private static final long serialVersionUID = 7629970801615724477L;

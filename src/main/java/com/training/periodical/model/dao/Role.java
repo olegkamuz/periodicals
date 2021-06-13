@@ -3,7 +3,7 @@ package com.training.periodical.model.dao;
 import com.training.periodical.entity.User;
 
 /**
- * Role entity.
+ * Role of authorization
  * 
  */
 

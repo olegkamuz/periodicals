@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * Builder build set entity
+ * Mapping ResultSet data to various entities
+ * @see ResultSet
  *
  */
 public interface Mapper<T> {

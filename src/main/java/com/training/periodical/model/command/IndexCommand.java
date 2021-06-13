@@ -23,7 +23,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Lists magazines with pagination, sorting and filtering; Shows magazines by themes.
+ * Show list of magazines with search, pagination, sorting and filtering;
+ * Shows magazines by themes.
  */
 public class IndexCommand extends AbstractCommand {
     private static final long serialVersionUID = -650070544358974520L;

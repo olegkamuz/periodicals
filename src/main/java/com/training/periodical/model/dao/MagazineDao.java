@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Data access object for magazine related entities.
+ * Data access object for Magazine entities.
+ * @see Magazine
+ *
  */
 public class MagazineDao extends AbstractDao<Magazine> {
     private static final long serialVersionUID = -1560516295484382753L;

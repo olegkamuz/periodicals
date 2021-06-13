@@ -6,6 +6,12 @@ import com.training.periodical.model.dao.Fields;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Mapping ResultSet data to Magazine entity
+ * @see ResultSet
+ * @see Magazine
+ *
+ */
 public class MagazineMapper implements Mapper<Magazine> {
     @Override
     public Magazine build(ResultSet rs) throws SQLException {

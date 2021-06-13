@@ -10,6 +10,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Repository for Magazine entity
+ * @see Magazine
+ *
+ */
 public class MagazineRepository extends AbstractRepository<Magazine> {
     private static final long serialVersionUID = -3746123482820783199L;
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();

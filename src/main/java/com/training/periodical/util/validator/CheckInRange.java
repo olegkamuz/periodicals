@@ -1,6 +1,11 @@
 package com.training.periodical.util.validator;
 
-
+/**
+ * Link of chain validation
+ * Checks for correct Integer range of data
+ * @see ChainValidator
+ *
+ */
 public class CheckInRange extends ChainValidator {
     private String data;
     private final Integer range_to;

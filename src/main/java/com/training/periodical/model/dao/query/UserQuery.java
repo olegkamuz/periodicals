@@ -1,7 +1,14 @@
 package com.training.periodical.model.dao.query;
 
+import com.training.periodical.entity.User;
+
 import java.io.Serializable;
 
+/**
+ * Holder of queries related to User entity
+ * @see User
+ *
+ */
 public class UserQuery implements Serializable {
     private static final long serialVersionUID = -1144394670552689910L;
     public static final String SQL__FIND_USER_BY_LOGIN =

@@ -2,6 +2,10 @@ package com.training.periodical.util.constants;
 
 import java.io.Serializable;
 
+/**
+ *  Constants for Theme entities
+ *  security and match issues purpose
+ */
 public class ThemeConstants implements Serializable {
     private static final long serialVersionUID = 8143063899641957375L;
     public static final String INTERIOR = "Interior";

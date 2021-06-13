@@ -4,6 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Link of chain validation
+ * Checks for possibility of URL decoding
+ * @see ChainValidator
+ *
+ */
 public class CheckUrlDecode extends ChainValidator {
     private String data;
 

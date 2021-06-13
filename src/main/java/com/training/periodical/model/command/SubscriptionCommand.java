@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Create Subscription.
+ * Create Subscription for client
  */
 public class SubscriptionCommand extends AbstractCommand {
     private static final long serialVersionUID = 4085515554426545356L;

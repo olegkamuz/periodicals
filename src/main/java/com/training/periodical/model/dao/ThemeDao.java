@@ -7,6 +7,11 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Data access object for Theme entity.
+ * @see Theme
+ *
+ */
 public class ThemeDao extends AbstractDao<Theme> {
     private static final long serialVersionUID = -4329084276299458939L;
     private final ThemeMapper mapper;

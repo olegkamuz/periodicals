@@ -14,11 +14,25 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Repository for Subscription entity
+ * @see Subscription
+ *
+ */
 public class SubscriptionRepository extends AbstractRepository<Subscription> {
     private static final long serialVersionUID = -1935724741540882617L;
     private static final Logger log = Logger.getLogger(SubscriptionRepository.class);
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
+    /**
+     * Transaction to create subscriptions and update user balance
+     *
+     * @param userId user id
+     * @param magazineIds list of magazine ids
+     * @param userBalance user balance
+     * @throws RepositoryException
+     */
     public void createSubscriptionPurchase(Long userId, List<String> magazineIds, BigDecimal userBalance) throws RepositoryException {
         try (SubscriptionDao subscriptionDao = daoFactory.createSubscriptionDao();
              Connection connection = subscriptionDao.getConnection();

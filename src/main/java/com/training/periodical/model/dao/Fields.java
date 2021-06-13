@@ -1,9 +1,8 @@
 package com.training.periodical.model.dao;
 
 /**
- * Holder for fields names of DB tables and beans.
+ * Holder of field names for DB tables and beans.
  * 
- *
  */
 public final class Fields {
 	

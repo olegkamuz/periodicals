@@ -1,5 +1,11 @@
 package com.training.periodical.util.validator;
 
+/**
+ * Link of chain validation
+ * Checks for correct locale naming
+ * @see ChainValidator
+ *
+ */
 public class CheckValidLocale extends ChainValidator{
     private final String data;
 

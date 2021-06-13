@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.training.periodical.Path;
 
 /**
- * Logout command.
+ * Logout client and admin from application
  *
  */
 public class LogoutCommand extends AbstractCommand {

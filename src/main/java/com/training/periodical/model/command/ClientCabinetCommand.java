@@ -15,6 +15,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *  Show client cabinet with replenish possibility and subscriptions bought
+ *
+ */
 public class ClientCabinetCommand extends AbstractCommand {
     private static final long serialVersionUID = 5034889545771020837L;
     private static final Logger log = Logger.getLogger(ClientCabinetCommand.class);

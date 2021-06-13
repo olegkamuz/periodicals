@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface for Data Access Objects
+ *
+ */
 public interface IDao<T> extends AutoCloseable, Serializable {
     int create(T entity) throws DaoException;
 
@@ -21,4 +25,5 @@ public interface IDao<T> extends AutoCloseable, Serializable {
     DaoException createDaoException(String methodName, Exception e);
 
     void close(ResultSet rs) throws DaoException;
+
 }

@@ -2,6 +2,10 @@ package com.training.periodical.model.dao.query;
 
 import java.io.Serializable;
 
+/**
+ * Helper class for query building
+ *
+ */
 public class Query implements Serializable {
     private static final long serialVersionUID = 7100834364683912258L;
 

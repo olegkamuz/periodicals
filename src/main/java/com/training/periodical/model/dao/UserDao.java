@@ -20,6 +20,7 @@ import com.training.periodical.model.mapper.UserSubscriptionsMapper;
 
 /**
  * Data access object for User entity.
+ * @see User
  */
 public class UserDao extends AbstractDao<User> {
     private static final long serialVersionUID = 8896652975777115207L;

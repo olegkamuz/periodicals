@@ -6,6 +6,12 @@ import com.training.periodical.model.dao.Fields;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Mapping ResultSet data to Theme entity
+ * @see ResultSet
+ * @see Theme
+ *
+ */
 public class ThemeMapper implements Mapper<Theme> {
 
     public Theme build (ResultSet rs)  throws SQLException {

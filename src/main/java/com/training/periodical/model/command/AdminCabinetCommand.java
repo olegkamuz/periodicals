@@ -17,6 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ *  Show admin cabinet with
+ *  list of users with blocking possibility
+ *  Form to add new magazine
+ *  List of magazines for editing or deletion
+ *
+ */
 public class AdminCabinetCommand extends AbstractCommand {
     private static final Logger log = Logger.getLogger(AdminCabinetCommand.class);
     private final UserRepository userRepository;

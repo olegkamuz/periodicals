@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
+
+/**
+ * Register user in application
+ * Show errors if fields data not valid
+ *
+ */
 public class RegistrationSaveCommand extends AbstractCommand {
     private static final long serialVersionUID = 584824241835000931L;
     private final UserRepository userRepository;

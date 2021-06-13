@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.training.periodical.Path;
 
 /**
- * View settings command.
+ * Show personal settings of client or admin.
  */
 public class SettingsCommand extends AbstractCommand {
     private static final long serialVersionUID = -8183706805970306137L;

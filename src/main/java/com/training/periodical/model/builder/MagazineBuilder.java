@@ -4,6 +4,10 @@ import com.training.periodical.entity.Magazine;
 
 import java.math.BigDecimal;
 
+/**
+ * Build magazine entity with set fields
+ *
+ */
 public class MagazineBuilder implements Builder<Magazine> {
     private String id;
     private String name;

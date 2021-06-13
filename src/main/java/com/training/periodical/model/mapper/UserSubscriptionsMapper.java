@@ -1,11 +1,18 @@
 package com.training.periodical.model.mapper;
 
 import com.training.periodical.bean.UserSubscriptionBean;
+import com.training.periodical.entity.Magazine;
 import com.training.periodical.model.dao.Fields;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Mapping ResultSet data to Magazine entity
+ * @see ResultSet
+ * @see Magazine
+ *
+ */
 public class UserSubscriptionsMapper implements Mapper<UserSubscriptionBean> {
 
     @Override

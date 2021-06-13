@@ -1,7 +1,14 @@
 package com.training.periodical.model.repository;
 
+import com.training.periodical.entity.Magazine;
 import com.training.periodical.model.dao.DaoException;
 
+
+/**
+ * Abstract class for repositories for various entities
+ * @see Magazine
+ *
+ */
 public abstract class AbstractRepository<T> implements Repository<T> {
     private static final long serialVersionUID = -3395603216979632119L;
 

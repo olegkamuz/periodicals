@@ -1,5 +1,9 @@
 package com.training.periodical.model.dao;
 
+import com.training.periodical.entity.Magazine;
+import com.training.periodical.entity.Subscription;
+import com.training.periodical.entity.Theme;
+import com.training.periodical.entity.User;
 import com.training.periodical.model.builder.MagazineBuilder;
 import com.training.periodical.model.builder.UserBuilder;
 import com.training.periodical.model.mapper.MagazineMapper;
@@ -10,6 +14,15 @@ import com.training.periodical.model.mapper.UserSubscriptionsMapper;
 
 import java.sql.Connection;
 
+/**
+ * Factory of JDBC Data access objects for various entities
+ * with injected dependencies
+ * @see Magazine
+ * @see User
+ * @see Subscription
+ * @see Theme
+ *
+ */
 public class JDBCDaoFactory extends AbstractDaoFactory{
     private static final long serialVersionUID = 9081081887394751631L;
     private DBManager dbManager = DBManager.getInstance();

@@ -5,7 +5,8 @@ import com.training.periodical.entity.User;
 import java.math.BigDecimal;
 
 /**
- * Extracts a user from the result set row.
+ * Build user entity with set fields
+ *
  */
 public class UserBuilder implements Builder<User> {
     private static final long serialVersionUID = 1955202766270229852L;

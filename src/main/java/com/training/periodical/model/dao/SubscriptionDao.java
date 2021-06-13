@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Data access object for Order entity and UserOrderBean bean.
+ * Data access object for Subscription entity
+ * @see Subscription
+ *
  */
 public class SubscriptionDao extends AbstractDao<Subscription> {
     private static final long serialVersionUID = -6448380123363743542L;

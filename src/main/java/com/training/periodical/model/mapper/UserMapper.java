@@ -7,7 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Extracts a user from the result set row.
+ * Mapping ResultSet data to User entity
+ * @see ResultSet
+ * @see User
+ *
  */
 public class UserMapper implements Mapper<User> {
 

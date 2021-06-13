@@ -9,15 +9,15 @@ import com.training.periodical.model.dao.ThemeDao;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Repository for Theme entity
+ * @see Theme
+ *
+ */
 public class ThemeRepository extends AbstractRepository<Theme> {
     private static final long serialVersionUID = 7039501575798690288L;
     private final IDaoFactory daoFactory = AbstractDaoFactory.getInstance();
 
-    /**
-     * Returns all themes.
-     *
-     * @return List of themes entities.
-     */
     public List<Theme> findAll() throws RepositoryException {
         try (ThemeDao themeDao = daoFactory.createThemeDao()) {
                 return themeDao.findAll();
@@ -30,22 +30,18 @@ public class ThemeRepository extends AbstractRepository<Theme> {
     public int update(Theme entity) throws RepositoryException {
         return 0;
     }
-
     @Override
     public int delete(long id) throws RepositoryException {
         return 0;
     }
-
     @Override
     public List<Theme> findPage(int pageSize, int offSet) {
         return null;
     }
-
     @Override
     public int create(Theme entity) throws RepositoryException {
         return 0;
     }
-
     @Override
     public Optional<Theme> findById(long id) throws RepositoryException {
         return Optional.empty();

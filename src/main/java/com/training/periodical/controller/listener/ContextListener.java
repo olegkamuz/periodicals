@@ -14,6 +14,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Context listener.
+ * Initialization for classes needs to be pre defined
  * 
  */
 public class ContextListener implements ServletContextListener, Serializable {
@@ -80,7 +81,6 @@ public class ContextListener implements ServletContextListener, Serializable {
 	
 	/**
 	 * Initializes CommandContainer.
-	 * 
 	 * @param servletContext
 	 */
 	private void initCommandContainer() {

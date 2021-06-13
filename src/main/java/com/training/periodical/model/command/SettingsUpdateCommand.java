@@ -13,7 +13,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 
 /**
- * Update settings items.
+ * Update personal settings for clint or admin.
+ *
  */
 public class SettingsUpdateCommand extends AbstractCommand {
     private static final long serialVersionUID = 3553552307337644253L;

@@ -1,5 +1,10 @@
 package com.training.periodical.util.encoder;
 
+
+/**
+ * Exception for Encoder utility
+ *
+ */
 public class EncoderException extends Exception {
 
     private static final long serialVersionUID = -9030975630019330970L;

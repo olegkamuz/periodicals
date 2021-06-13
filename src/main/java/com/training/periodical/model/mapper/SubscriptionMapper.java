@@ -7,7 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Extracts a subscription from the result set row.
+ * Mapping ResultSet data to Subscription entity
+ * @see ResultSet
+ * @see Subscription
+ *
  */
 public class SubscriptionMapper implements Mapper<Subscription> {
 

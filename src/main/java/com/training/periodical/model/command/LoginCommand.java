@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Login command. Just to return page path;
+ * Show login page with login form for clint or admin
+ *
  */
 public class LoginCommand extends AbstractCommand {
     private static final long serialVersionUID = -507636500922845647L;

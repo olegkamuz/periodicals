@@ -1,5 +1,11 @@
 package com.training.periodical.util.validator;
 
+/**
+ * Link of chain validation
+ * Checks for casting to Integer possibility
+ * @see ChainValidator
+ *
+ */
 public class CheckIsCastToInt extends ChainValidator {
     private String data;
     public CheckIsCastToInt(String data) {

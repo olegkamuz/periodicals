@@ -6,7 +6,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * This class helps to encrypt user password for safe keeping.
+ * Helper class to encrypt user password for safe keeping.
+ *
  */
 public class Encoder {
     private static final Logger log = Logger.getLogger(Encoder.class);

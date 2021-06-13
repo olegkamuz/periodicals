@@ -1,5 +1,11 @@
 package com.training.periodical.util.validator;
 
+/**
+ * Link of chain validation
+ * Checks for not empty data
+ * @see ChainValidator
+ *
+ */
 public class CheckNotEmpty extends ChainValidator {
     private String data;
 

@@ -1,5 +1,10 @@
 package com.training.periodical.model.repository;
 
+
+/**
+ * Exception for repository layer
+ *
+ */
 public class RepositoryException extends Exception {
     private static final long serialVersionUID = 2970936039964677068L;
 

@@ -1,5 +1,11 @@
 package com.training.periodical.util.validator;
 
+/**
+ * Link of chain validation
+ * Checks for 'all' string in data
+ * @see ChainValidator
+ *
+ */
 public class CheckNotAll extends ChainValidator{
     private final String data;
 

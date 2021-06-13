@@ -5,6 +5,10 @@ import org.apache.commons.text.StringEscapeUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Various validation strategies encapsulation class
+ *
+ */
 public class Valid {
     public static boolean notNull(Object... inputArr) {
         for(Object input: inputArr) {

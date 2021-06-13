@@ -3,8 +3,7 @@ package com.training.periodical.model.builder;
 import java.sql.SQLException;
 
 /**
- *
- * Builder build set entity
+ * Build entity with set fields
  *
  */
 public interface Builder<T> {

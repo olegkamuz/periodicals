@@ -3,7 +3,7 @@ package com.training.periodical;
 import java.io.Serializable;
 
 /**
- * Path holder (jsp pages, redirects).
+ * Path holder (jsp pages, forwards(to command) and redirects).
  * 
  */
 public final class Path implements Serializable {
