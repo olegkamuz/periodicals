@@ -26,7 +26,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class viewInterfaceTest {
     private static WebDriver driver;
-    private static WebDriverWait wait;
 
     @BeforeClass
     public static void setUp() {
@@ -36,9 +35,7 @@ public class viewInterfaceTest {
         opt.addArguments("headless");
         driver = new ChromeDriver(opt);
 
-//        driver = new ChromeDriver();
         driver.get("http://localhost:8080");
-        wait = new WebDriverWait(driver, 10);
     }
 
     @AfterClass
@@ -52,7 +49,6 @@ public class viewInterfaceTest {
     @Test
     public void testCase_1() {
         try {
-            wait.until(presenceOfElementLocated(By.xpath("//a[@id='dropdownMenuLinkFilter']")));
             driver.findElement(By.id("dropdownMenuLinkFilter")).click();
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Спорт")) {
@@ -61,7 +57,6 @@ public class viewInterfaceTest {
                 }
             }
 
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']")));
             List<WebElement> elements = driver.findElements(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']"));
             List<String> actualList = new ArrayList<>();
 
@@ -88,7 +83,6 @@ public class viewInterfaceTest {
     public void testCase_2() {
         try {
             driver.findElement(By.id("dropdownMenuLinkFilter")).click();
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='dropdown-menu show']")));
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Спорт")) {
                     we.click();
@@ -97,7 +91,6 @@ public class viewInterfaceTest {
             }
 
             driver.findElement(By.id("dropdownMenuLink")).click();
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='dropdown-menu show']")));
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Сортировать по имени по возрастанию")) {
                     we.click();
@@ -105,7 +98,6 @@ public class viewInterfaceTest {
                 }
             }
 
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']")));
             List<WebElement> elements = driver.findElements(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']"));
             List<String> actualList = new ArrayList<>();
 
@@ -133,7 +125,6 @@ public class viewInterfaceTest {
     public void testCase_3() {
         try {
             driver.findElement(By.id("dropdownMenuLinkFilter")).click();
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='dropdown-menu show']")));
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Спорт")) {
                     we.click();
@@ -142,7 +133,6 @@ public class viewInterfaceTest {
             }
 
             driver.findElement(By.id("dropdownMenuLink")).click();
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='dropdown-menu show']")));
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Сортировать по имени по возрастанию")) {
                     we.click();
@@ -153,7 +143,6 @@ public class viewInterfaceTest {
             driver.findElement(By.name("search")).sendKeys("Legends");
             driver.findElement(By.id("search")).click();
 
-            wait.until(presenceOfElementLocated(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']")));
             List<WebElement> elements = driver.findElements(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']"));
             List<String> actualList = new ArrayList<>();
 
@@ -186,7 +175,6 @@ public class viewInterfaceTest {
                 }
             }
 
-            Thread.sleep(500);
             driver.findElement(By.id("dropdownMenuLink")).click();
             for (WebElement we : driver.findElements(By.className("dropdown-item"))) {
                 if (we.getText().equals("Сортировать по цене по убыванию")) {
@@ -195,12 +183,10 @@ public class viewInterfaceTest {
                 }
             }
 
-            Thread.sleep(500);
             driver.findElement(By.id("search_input")).clear();
             driver.findElement(By.id("search_input")).sendKeys("");
             driver.findElement(By.id("search")).click();
 
-            Thread.sleep(500);
             for (WebElement we : driver.findElements(By.className("page_number"))) {
                 if (we.getText().equals("3")) {
                     we.click();
@@ -208,8 +194,6 @@ public class viewInterfaceTest {
                 }
             }
 
-
-            Thread.sleep(500);
             List<WebElement> elements = driver.findElements(By.xpath("//div[@class='col-xl-3 col-custom col-custom-index']"));
             List<String> actualList = new ArrayList<>();
 
