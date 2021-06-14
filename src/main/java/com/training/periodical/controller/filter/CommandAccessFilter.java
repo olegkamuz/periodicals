@@ -51,7 +51,7 @@ public class CommandAccessFilter implements Filter, Serializable {
             chain.doFilter(request, response);
         } else {
             log.error("Error in do filter method at CommandAccessFilter");
-            ((HttpServletResponse) response).sendRedirect(Path.FORWARD__INDEX);
+            ((HttpServletResponse) response).sendRedirect(Path.FORWARD__LOGIN);
         }
     }
 
