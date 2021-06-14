@@ -336,3 +336,7 @@ body div#error_wrapper {
 
 .container.container_by_themes {
 }
+.client_cabinet_error_wrapper {
+    display: flex;
+    justify-content: center;
+}

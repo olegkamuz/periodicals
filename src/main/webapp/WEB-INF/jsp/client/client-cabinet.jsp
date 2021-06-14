@@ -52,6 +52,13 @@
                 </div>
             </c:when>
             <c:otherwise>
+                <c:if test="${not empty notEnough}">
+                    <div class="client_cabinet_error_wrapper">
+                        <div class="error">
+                            <fmt:message key="client-cabinet_jsp.div.not_enough_money_for_subscription"/>
+                        </div>
+                    </div>
+                </c:if>
                 <div class="container">
                     <div class="row">
                         <c:forEach var="item" items="${subscriptionList}">

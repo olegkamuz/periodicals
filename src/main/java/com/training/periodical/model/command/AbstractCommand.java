@@ -38,6 +38,10 @@ public abstract class AbstractCommand implements Command {
         log.error("errorMessage --> " + errorMessage);
     }
 
+    void resetError(String attributeName){
+        request.getSession().removeAttribute(attributeName);
+    }
+
     User getUser() {
         return (User) request.getSession().getAttribute("user");
     }

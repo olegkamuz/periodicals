@@ -53,6 +53,9 @@ public class SubscriptionCommand extends AbstractCommand {
             if (isEnoughMoney(userId, magazineIds)) {
                 subscriptionRepository.createSubscriptionPurchase(userId, magazineIds, getSubtractedBalance());
                 cleanSessionMagazineId();
+                resetError("notEnough");
+            } else {
+                setError("not enough money for subscription, replenish", "notEnough");
             }
         } catch (RepositoryException e) {
             throw new CommandException("exception in execute method at " +
